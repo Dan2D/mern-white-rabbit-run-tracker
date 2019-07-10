@@ -1,0 +1,102 @@
+:root {
+    --rabbit-x: 0;
+}
+.home {
+    color: white;
+}
+
+.goal-container {
+    position: relative;
+}
+
+.upcoming-runs {
+    position: relative;
+}
+.title-blk {
+    width: 100vw;
+    padding:5px 15px;
+    margin-bottom: 10px;
+}
+
+.title-blk__title {
+    margin:0;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.title-blk--upcoming-runs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #009975;
+}
+
+.title-blk--completed-runs {
+    background: #58B368;
+}
+/* 
+.upcoming-runs__title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+    padding:5px 15px;
+    margin-bottom: 10px;
+    background: #D9D872;
+}
+
+.upcoming-runs__title-container h5 {
+    height: 15px;
+} */
+
+.title-bar__add-btn {
+    width: 7vw;
+    height: 7vw;
+    background: url('../../images/add-button.png');
+    background-size: cover;
+}
+
+.visual-progress{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.rabbit-percent {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    left: 15px;
+    bottom: 0;
+    transform: translateX(var(--rabbit-x));
+}
+
+.rabbit-percent p {
+    color: white;
+    font-weight: 300;
+    margin: -2px;
+}
+
+.rabbit-percent__rabbit {
+    height: 7vw;
+    width: 7vw;
+}
+
+.tree-goal{
+    position: relative;
+}
+
+.tree-goal__goal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-weight: 300;
+    background: rgba(0,0,0,0.5);
+    border-radius: 5px;
+}
+
+.tree-goal__tree {
+    height: 25vw;
+    width: 25vw;
+}

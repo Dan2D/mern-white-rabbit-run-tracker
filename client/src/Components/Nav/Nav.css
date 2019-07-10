@@ -1,0 +1,70 @@
+.navBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    height: 10vh;
+    width: 100vw;
+    background: #454D66;
+  }
+
+  .navBar-title {
+      order: 0;
+      font-family: 'Nunito';
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: baseline;
+  }
+
+  .navBar-title__title {
+      margin-bottom: 0;
+  }
+
+  .navBar-title__logo{
+    width: 15vw;
+  }
+
+  .navBar button {
+      color: white;
+      font-size: 2rem;
+  }
+
+  .navBar__menu {
+      position: absolute;
+      top: 100%;
+      padding: 0.5rem 0.5rem 0.5rem 0;
+      background: #454D66;
+  }
+  
+  .navBar__menu ul {
+      padding: 0 10px;
+  }
+
+  .navBar__menu a {
+      color: white;
+      text-decoration: none;
+  }
+
+  .navBar__menu a:hover {
+      color: slategrey;
+      text-decoration: none;
+  }
+
+  .navBar__menu.open {
+    right: 0;
+    transition: right 500ms ease-out;
+  }
+
+  .navBar__menu.closed {
+      right: -40vw;
+      transition: right 500ms ease-in;
+  }
+
+  button.add-goal {
+      margin-top: 15px;
+      font-size: 15px;
+      padding: 5px;
+      background: #009975;
+      border-radius: 5px;
+  }
