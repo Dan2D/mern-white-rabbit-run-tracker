@@ -4,7 +4,10 @@
   "description": "Running Tracker for races/marathons",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [
     "'running'",
@@ -14,8 +17,13 @@
   "author": "DSS",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.0",
+    "concurrently": "^4.1.1",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "mongoose": "^5.6.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
   }
 }
