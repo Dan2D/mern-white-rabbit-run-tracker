@@ -3,7 +3,6 @@ import { addRun } from "../../store/actions/runActions";
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
 import DatePicker from "react-datepicker";
-import uuid from 'uuid';
 import "react-datepicker/dist/react-datepicker.css";
 import "./Runs.css";
 
@@ -16,16 +15,18 @@ class CreateRun extends Component {
     }
   handleSubmit = e => {
     e.preventDefault();
+    const goalID = this.props.currGoal._id;
     const newRun = {
-      id: uuid(),
+      goalID,
       name: this.state.name,
-      date: this.state.date.toISOString().substr(0,10),
+      date: this.state.date.toString().substr(0,10),
       targetPace: this.state.pace,
       distance: this.state.distance,
       type: this.state.runType,
       completed: false,
       mood: 0
     };
+    console.log(newRun,"ADD BTN CLICKED")
     this.props.dispatch(addRun(newRun));
     e.target.parentElement.click();
 }
@@ -116,7 +117,9 @@ class CreateRun extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state.goals.Goals.find(goal => goal.completed === false))
   return {
+      currGoal: state.goals.Goals.find(goal => goal.completed === false),
       distUnits: state.goals.distUnits
   }
 }

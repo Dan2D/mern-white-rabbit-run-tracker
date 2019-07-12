@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { editRun } from "../../store/actions/runActions";
+import { editGoal } from "../../store/actions/runActions";
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
 import DatePicker from "react-datepicker";
@@ -8,45 +8,39 @@ import "./Runs.css";
 
 
 
-class EditRun extends Component {
+class EditGoal extends Component {
     state = {
-      date: new Date(),
-      runType: 'Long Distance'
+    date: new Date(),
+    goalType: "5K"
     }
-
     componentDidMount(){
-        const goal = this.props.goal.find(goal => goal._id === this.props.location.state.goal);
-        const id = this.props.match.params.id;
-        const run = goal.runs.find(run => run._id === id);
-        const {name, date, targetPace, distance, type, completed, mood} = run;
+        const goal = this.props.goals.find(goal => goal._id === this.props.match.params.id);
+        console.log(goal)
+        const {name, raceDay, targetPace, goalDist, goalType,runs,  completed} = goal;
         this.setState({
-            id,
             name,
-            date: new Date(date),
+            date: new Date(raceDay),
             targetPace,
-            distance,
-            type,
-            completed,
-            mood
+            goalDist,
+            goalType,
+            runs,
+            completed
         })
     }
-
-
   handleSubmit = e => {
     e.preventDefault();
-    const updatedRun = {
+    const updatedGoal = {
       userGoalsID: this.props.userGoalsID,
-      goalID: this.props.location.state.goal,
-      id: this.state.id,
+      goalID: this.props.match.params.id,
       name: this.state.name,
-      date: this.state.date.toISOString().substr(0,10),
+      raceDay: this.state.date,
       targetPace: this.state.targetPace,
-      distance: this.state.distance,
-      type: this.state.runType,
+      goalDist: this.state.goalDist,
+      goalType: this.state.goalType,
+      runs: this.state.runs,
       completed: this.state.completed,
-      mood: this.state.mood
     };
-    this.props.editRun(updatedRun);
+    this.props.editGoal(updatedGoal);
     e.target.parentElement.click();
 }
 
@@ -59,32 +53,32 @@ class EditRun extends Component {
   }
 
   render() {
-    const runTypes = [
-      "Long Distance",
-      "Short Distance",
-      "Speed Run",
-      "Trail Run",
-      "Hills",
-      "Intervals"
+    const goalTypes = [
+      "5K",
+      "10K",
+      "Half-Marathon",
+      "Marathon",
+      "Fast Mile",
+      "Relay"
     ];
     return (
       <div className="create-run container">
         <form onSubmit={e => this.handleSubmit(e)}>
           <div className="form-group">
-            <label htmlFor="name">Run</label>
+            <label htmlFor="name">Goal</label>
             <input
               className="form-control"
               type="text"
               required
               onChange={this.handleChange}
               name="name"
-              placeholder="Title"
               value={this.state.name}
+              placeholder="Title"
             />
           </div>
           <div className="form-group">
             <label htmlFor="name" style={{ display: "block" }}>
-              Date
+              Goal Date
             </label>
             <DatePicker
               className="form-control date-picker"
@@ -99,21 +93,24 @@ class EditRun extends Component {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="pace">Target Pace (min, sec)</label>
+            <label htmlFor="pace">Goal Pace (min , sec)</label>
             <p><i>For example 09:45</i></p>
-            <input className="form-control" onChange={this.handleChange} type="text" name="pace" value={this.state.targetPace} />
+            <span>
+            <input className="form-control" onChange={this.handleChange} value={this.state.targetPace} type="text" name="targetPace"/>
+            </span>
+            
           </div>
           <div className="form-group">
             <label htmlFor="distance">{`Distance (${this.props.distUnits})`}</label>
-            <input className="form-control" onChange={this.handleChange} type="text" name="distance" value={this.state.distance} />
+            <input className="form-control" onChange={this.handleChange} value={this.state.goalDist} type="text" name="goalDist" />
           </div>
           <div className="form-group">
             <label htmlFor="run-type">Type</label>
-            <select className="form-control" onChange={this.handleChange}  name="runType" id="runType" value={this.state.type}>
-              {runTypes.map(run => {
+            <select className="form-control" onChange={this.handleChange} value={this.state.goalType} name="goalType" id="goalType">
+              {goalTypes.map(goal => {
                 return (
-                  <option key={run} value={run}>
-                    {run}
+                  <option key={goal} value={goal}>
+                    {goal}
                   </option>
                 );
               })}
@@ -124,7 +121,7 @@ class EditRun extends Component {
             {/* https://github.com/fullstackreact/google-maps-react */}
           </div>
           <Link to="/">
-            <button type="submit" className="btn btn-primary" onClick={e => this.handleSubmit(e)}>Update Run</button>
+            <button type="submit" className="btn btn-primary" onClick={e => this.handleSubmit(e)}>Update Goal</button>
           </Link>
         </form>
       </div>
@@ -132,13 +129,12 @@ class EditRun extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        userGoalsID: state.goals._id,
-        goal: state.goals.Goals,
-        distUnits: state.goals.distUnits
-    }
+const mapStateToProps = state => {
+  return {
+      userGoalsID: state.goals._id,
+      goals: state.goals.Goals,
+      distUnits: state.goals.distUnits
+  }
 }
 
-
-export default connect(mapStateToProps, {editRun})(EditRun);
+export default connect(mapStateToProps, {editGoal})(EditGoal);

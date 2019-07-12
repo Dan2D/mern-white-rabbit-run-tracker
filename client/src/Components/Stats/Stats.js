@@ -9,6 +9,7 @@ import './Stats.css';
 function Stats(props) {
     const allGoals = [props.currGoal, ...props.pastGoals];
     let units = props.distUnits;
+    console.log(allGoals)
   return (
     <div className="stats-container container">
         <div className="stats-goals">
@@ -16,7 +17,7 @@ function Stats(props) {
         <h5>Goals</h5>
         {allGoals.map(goal => {
             return (
-              <GoalCrd key={goal.id} id={goal.id} name={goal.name} complete={goal.completed} distUnits={units}/>
+              <GoalCrd key={goal._id} id={goal._id} name={goal.name} complete={goal.completed} distUnits={units}/>
             );
         })}
       </div>
@@ -29,8 +30,8 @@ function Stats(props) {
 
 const mapStateToProps = state => {
   return {
-    currGoal: state.goals.currentGoal,
-    pastGoals: [...state.goals.pastGoals],
+    currGoal: state.goals.Goals.find(goal => goal.completed === false),
+    pastGoals: [...state.goals.Goals.filter(goal => goal.completed === true)],
     distUnits: state.goals.distUnits
   };
 };

@@ -4,7 +4,6 @@ import { addGoal } from "../../store/actions/runActions";
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
 import DatePicker from "react-datepicker";
-import uuid from 'uuid';
 import "react-datepicker/dist/react-datepicker.css";
 import "./Runs.css";
 
@@ -12,21 +11,22 @@ import "./Runs.css";
 
 class CreateRun extends Component {
     state = {
-
+      date: new Date(),
+    goalType: "5K"
     }
   handleSubmit = e => {
     e.preventDefault();
     const newGoal = {
-      id: uuid(),
+      userGoalsID: this.props.userGoalsID,
       name: this.state.name,
-      raceDay: this.state.date.toISOString().substr(0,10),
+      raceDay: this.state.date.toString().substr(0,10),
       targetPace: this.state.pace,
       goalDist: this.state.distance,
       goalType: this.state.goalType,
       runs: [],
       completed: false,
     };
-    this.props.dispatch(addGoal(newGoal));
+    this.props.addGoal(newGoal);
     e.target.parentElement.click();
 }
 
@@ -48,11 +48,11 @@ class CreateRun extends Component {
       "Fast Mile",
       "Relay"
     ];
-    if (this.props.currGoal){
-        return (
-            <GoalWarning/>
-        )
-    }
+    // if (this.props.currGoal){
+    //     return (
+    //         <GoalWarning/>
+    //     )
+    // }
     return (
       <div className="create-run container">
         <form onSubmit={e => this.handleSubmit(e)}>
@@ -122,9 +122,10 @@ class CreateRun extends Component {
 
 const mapStateToProps = state => {
   return {
-      currGoal: state.goals.currentGoal,
+      userGoalsID: state.goals._id,
+      currGoal: state.goals.Goals.find(goal => goal.completed === false),
       distUnits: state.goals.distUnits
   }
 }
 
-export default connect(mapStateToProps)(CreateRun);
+export default connect(mapStateToProps, {addGoal})(CreateRun);

@@ -10,7 +10,7 @@ class CurrStatsCrd extends Component {
   componentDidMount() {
     const { runs } = this.props.goal;
     let { lngRun, fstRun, compRuns, ttlDist } = this.state;
-    let spdIndx = 0;
+    let runIndx = 0;
     runs.forEach((run, indx) => {
       if (run.completed) {
         let pace = run.actualPace.split(":");
@@ -24,18 +24,22 @@ class CurrStatsCrd extends Component {
         }
         if (pace < fstRun) {
           fstRun = pace;
-          spdIndx = indx;
+          runIndx = indx;
         }
       }
     });
-    this.setState({
-      lngRun,
-      fstRun: runs[spdIndx].actualPace,
-      compRuns,
-      ttlRuns: runs.length,
-      ttlDist
-    });
+    if (this.state.compRuns === 0){
+      this.setState({fstRun: 0})
+    }
+    else {
+      this.setState({
+        lngRun,
+        fstRun: runs[runIndx].actualPace,
+        compRuns,
+        ttlDist
+    })
   }
+}
   render() {
     return (
       <div className="curr-stats-container">

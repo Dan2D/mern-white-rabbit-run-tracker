@@ -8,33 +8,42 @@ class overAllStats extends Component {
     ttlDist: 0
   };
   componentDidMount() {
-    let { lngRun, fstRun, compRuns, ttlDist } = this.state;
-    let goalIndx, runIndx;
+    return this.getOverallStats(); 
+    }
+
+    getOverallStats = () => {
+      let { lngRun, fstRun, compRuns, ttlDist } = this.state;
+      let goalIndx, runIndx;
         this.props.goals.forEach((goal, gIndx) => {
-            goal.runs.forEach((run, indx) => {
+            goal.runs.forEach((run, rIndx) => {
                 if (run.completed){
                     let pace = run.actualPace.split(":");
                     pace = pace[0]*60 + pace[1];
                     compRuns++;
                     ttlDist+= run.distance
-
                     if (run.distance >lngRun){
                         lngRun = run.distance;
                     }
                     if (pace < fstRun){
                         fstRun = pace;
-                        runIndx = indx;
+                        runIndx = rIndx;
                         goalIndx = gIndx;
                     }
                 }
             })
         })
-        this.setState({
+        if (this.state.compRuns === 0){
+          this.setState({fstRun: 0})
+        }
+        else {
+          this.setState({
             lngRun,
             fstRun: this.props.goals[goalIndx].runs[runIndx].actualPace,
             compRuns,
             ttlDist
         })
+        }
+        
     }
 
   render() {

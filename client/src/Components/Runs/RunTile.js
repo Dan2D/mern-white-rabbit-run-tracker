@@ -20,12 +20,13 @@ class RunTile extends Component {
         <div className="run-tile__title-bar">
           <h5>{this.props.name}</h5>
           <div className="title-bar__tile-btns">
-            <Link to={`/edit/${this.props.runId}`}>
+            <Link to={{pathname: `/edit/run/${this.props.runID}`,
+                       state: {goal: this.props.goalID}}}>
               <button className="title-bar__btn edit" />
             </Link>
             <button
               className="title-bar__btn"
-              onClick={() => this.props.delRun(this.props.runId)}
+              onClick={() => this.props.delRun(this.props.userID, this.props.goalID, this.props.runID)}
             >
               &times;
             </button>
@@ -34,7 +35,7 @@ class RunTile extends Component {
         <hr />
         <div className="run-tile__body">
           <div className="body__text">
-            <p>Date: {this.props.date}</p>
+            <p>Date: {this.props.date.substr(0,10)}</p>
             <p>Target Pace:{` ${this.props.tPace} min / ${this.props.distUnits}`}</p>
             {this.props.completed ? <p>Actual Pace: {`${this.props.aPace} min / ${this.props.distUnits}`}</p> : null}
             <p> Distance:{` ${this.props.dist} ${this.props.distUnits}`}</p>
@@ -54,6 +55,7 @@ class RunTile extends Component {
 
 const mapStateToProps = state => {
     return {
+      userID: state.goals._id,
         distUnits: state.goals.distUnits
     }
 }

@@ -2,17 +2,15 @@ const express = require("express");
 const Goal = require("../models/Goals");
 const router = express.Router();
 
-// Get userGoals
-router.get("/:id", async (req, res) => {
-  try {
-    const goals = await Goal.id(req.params.id).sort({ raceDay: 1 });
-    res.json(goals);
-  } catch (err) {
-    res.json({ message: err });
-  }
+// Get userGoals (WORKING)
+router.get("/:id", (req, res) => {
+   Goal.findById(req.params.id).sort({ raceDay: 1 })
+    .then(goals => res.json(goals))
+    .catch(err => res.json(`ERROR: ${err}`))
+    
 });
 
-// Add Goal
+// Add Goal (WORKING)
 router.post("/add", (req, res) => {
   const {
     userGoalsID,
@@ -23,7 +21,7 @@ router.post("/add", (req, res) => {
     goalType,
     completed
   } = req.body;
-
+  console.log(req.body)
   if (!name || !targetPace || !goalDist) {
     return res
       .status(400)
@@ -41,18 +39,16 @@ router.post("/add", (req, res) => {
   Goal.findById(userGoalsID)
     .then(goalList => {
       goalList.Goals.unshift(newGoal);
-      goalList
-        .save()
-        .then(goalList => res.json(goalList))
-        .then(goalList => console.log(goalList));
+      goalList.save()
+        .then(goalList => res.json(goalList.Goals[0]))
+        .then(goalList => console.log(goalList.Goals[0]))
     })
     .catch(err => res.status(400).json(`Error: ${err}`));
 });
 
-// Delete Goal
-router.delete("/goal/:goalID", (req, res) => {
-  const { userGoalsID } = req.body;
-  Goal.findById(userGoalsID)
+// Delete Goal (WORKING)
+router.delete("/:userGoalsID/goal/:goalID", (req, res) => {
+  Goal.findById(req.params.userGoalsID)
     .then(goalList => {
       goalList.Goals.pull(req.params.goalID);
       goalList.save().then(goalList => res.json(goalList));
@@ -61,7 +57,7 @@ router.delete("/goal/:goalID", (req, res) => {
 });
 
 
-// Update Goal
+// Update Goal (WORKING)
 router.patch("/goal/:goalID", (req, res) => {
   const {
     userGoalsID,
@@ -71,50 +67,46 @@ router.patch("/goal/:goalID", (req, res) => {
     raceDay,
     goalType,
   } = req.body;
-
+  console.log(req.body)
   Goal.findById(userGoalsID)
   .then(goalList => {
       let goal = goalList.Goals.id(req.params.goalID);
       goal.set({ name, targetPace, goalDist, raceDay, goalType})
       goalList.save()
-      .then(goal => res.json(goal))
+      .then(goalList => res.json(goalList.Goals.id(req.params.goalID)))
   })
   .catch(err => res.status(400).json(`ERROR: ${err}`))
 });
 
 
-
-
-// fuzzy comparator (2 equals) b/c mongo shows _id as Object and mongoose as string
-// Add Run to specific goal
-router.post("/add-run", (req, res) => {
-  const { userGoalsID, goalID, name, targetPace, distance } = req.body;
+// Add Run to specific goal (WORKING)
+router.post("/addrun", (req, res) => {
+  const { userGoalsID, goalID, name, targetPace, distance, date, type } = req.body;
   if (!name || !targetPace || !distance) {
     return res
       .status(400)
       .json("Please enter info for name, target pace, and run distance.");
   }
-  const newRun = { name, targetPace, distance };
+  const newRun = { name, targetPace, distance, type, date };
   Goal.findById(userGoalsID)
     .then(goalList => {
       goalList.Goals.id(goalID).runs.unshift(newRun);
-      goalList.save().then(goalList => res.json(goalList));
+      goalList.save().then(goalList => res.json(goalList.Goals.id(goalID)));
     })
-    .catch(err => res.json("ERROR: " + err));
+    .catch(err => res.json("ERRORs: " + err));
 });
 
-// Delete Specific Run from Specific Goal
-router.delete("/runs/:runID", (req, res) => {
-  const { userGoalsID, goalID } = req.body;
-  Goal.findById(userGoalsID)
+// Delete Specific Run from Specific Goal (WORKING)
+router.delete("/:userID/goal/:goalID/runs/:runID", (req, res) => {
+  Goal.findById(req.params.userID)
     .then(goalList => {
-      goalList.Goals.id(goalID).runs.pull(req.params.runID);
-      goalList.save().then(goal => res.json(goal));
+      goalList.Goals.id(req.params.goalID).runs.pull(req.params.runID);
+      goalList.save().then(goal => res.json(goal.Goals.id(req.params.goalID)));
     })
     .catch(err => res.status(400).json(`Error: ${err}`));
 });
 
-// Update Run
+// Update Run (WORKING)
 router.patch("/runs/:runID", (req, res) => {
   const {
     userGoalsID,
@@ -127,13 +119,13 @@ router.patch("/runs/:runID", (req, res) => {
     type,
     mood
   } = req.body;
-
+  console.log(req.body);
   Goal.findById(userGoalsID)
   .then(goalList => {
       let run = goalList.Goals.id(goalID).runs.id(req.params.runID)
       run.set({ name, targetPace, distance, date, type, actualPace, mood })
       goalList.save()
-      .then(run => res.json(run))
+      .then(goalList => res.json(goalList.Goals.id(goalID)))
   })
   .catch(err => res.status(400).json(`ERROR: ${err}`))
 });
