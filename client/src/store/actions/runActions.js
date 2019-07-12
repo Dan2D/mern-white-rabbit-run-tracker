@@ -1,12 +1,13 @@
-import {GET_GOALS, ADD_GOAL, EDIT_GOAL, DEL_GOAL, EDIT_RUN, ADD_RUN, DEL_RUN} from './types';
+import {GET_GOALS, ADD_GOAL, DEL_GOAL, EDIT_GOAL, FINISH_GOAL, ADD_RUN, DEL_RUN, EDIT_RUN, FINISH_RUN} from './types';
 import axios from 'axios';
 const config = {headers: {"Content-type": "application/json"}};
-// Will get ID FROM USER AFTER SET UP LOG IN
+
+// GET USER GOALS
 export const getUserGoals = () => dispatch => {
+    // Will get ID FROM USER AFTER SET UP LOG IN
     const id = "5d274f78ce98878a2c4ed59a";
  axios.get(`/goals/${id}`)
 .then(res => {
-    console.log(res.data, "RES DATA")
     dispatch({
         type: GET_GOALS,
         payload: res.data
@@ -14,31 +15,29 @@ export const getUserGoals = () => dispatch => {
 })
 .catch(err => console.log(`ERROR: ${err}`))
 }
-
+// ADD GOAL
 export const addGoal = (goalObj) => dispatch => {
     const {userGoalsID, name, raceDay, targetPace, goalDist, goalType} = goalObj;
     const body = JSON.stringify({userGoalsID, name, raceDay, targetPace, goalDist, goalType});
     axios.post('/goals/add', body, config)
     .then(res => {
-        console.log(res.data)
         dispatch({
             type: ADD_GOAL,
             payload: res.data
         })
     })
 }
-
+// DELETE GOAL
 export const delGoal = (userGoalsID, goalID) => dispatch => {
     axios.delete(`/goals/${userGoalsID}/goal/${goalID}`)
     .then(res => {
-        console.log(res.data)
         dispatch({
             type: DEL_GOAL,
             payload: goalID
         })
     })
 }
-
+// EDIT GOAL
 export const editGoal = (goalObj) => dispatch => {
     const {userGoalsID, goalID,  name, raceDay, targetPace, goalDist, goalType} = goalObj;
     const body = JSON.stringify({userGoalsID, name, raceDay, targetPace, goalDist, goalType});
@@ -53,56 +52,81 @@ export const editGoal = (goalObj) => dispatch => {
     })
 }
 
+// FINISH GOAL
+export const finishGoal = (goalObj) => dispatch => {
+    //usergoalsid goalid mood actualpace goalINDX
+    const {userGoalsID, goalID, actualPace, mood, goalIndx} = goalObj;
+    console.log(goalObj)
+    const body = JSON.stringify({userGoalsID, actualPace, mood});
+    axios.patch(`/goals/goal/complete/${goalID}`, body, config)
+    .then(res => {
+        console.log(res.data, "RES DATA")
+        dispatch({
+            type: FINISH_GOAL,
+            payload: res.data,
+            goalIndx
+        })
+    })
+}
+
+// ADD RUN
 export const addRun = (runObj) => dispatch => {
-    console.log(runObj)
     const userGoalsID = "5d274f78ce98878a2c4ed59a";
     const {goalID, name, targetPace, date, distance, type, completed, mood} = runObj;
-    const config = {
-        headers: {
-          "Content-type": "application/json"
-        }
-      };
     const body = JSON.stringify({userGoalsID, goalID, name, targetPace, date, distance, type, completed, mood});
-    console.log(body)
     axios.post('/goals/addrun', body, config)
     .then(res => {
-        console.log(res.data, "ADD RUN")
+        console.log(res.data)
         dispatch({
             type: ADD_RUN,
-            payload: res.data
+            payload: res.data,
+            goalID
         })
     })
 
 }
-
-export const delRun = (userGoalsID, goalID, runID) => dispatch => {
+// DELETE RUN
+export const delRun = (idObj) => dispatch => {
+    console.log(idObj)
+    const {userGoalsID, goalID, runID} = idObj;
     axios.delete(`/goals/${userGoalsID}/goal/${goalID}/runs/${runID}`)
       .then(res => {
-          console.log(res.data);
           dispatch({
               type: DEL_RUN,
-              payload: res.data
+              goalID,
+              runID
           })
       })
 }
-
+// EDIT RUN
 export const editRun = (runObj) => dispatch =>{
-    console.log(runObj)
-    const {userGoalsID, goalID, id, name, targetPace, date, distance, type, completed, mood} = runObj;
-   const config = {headers: {"Content-type": "application/json"}};
+    const {userGoalsID, goalID, id, name, targetPace, date, distance, type, completed, mood, runIndx} = runObj;
    const body = JSON.stringify({userGoalsID, goalID, name, targetPace, date, distance, type, completed, mood});
-
    axios.patch(`/goals/runs/${id}`, body, config)
    .then(res => {
-       console.log(res.data)
+       console.log(res.data, "RES DATA")
        dispatch({
            type: EDIT_RUN,
-           payload: res.data
+           payload: res.data,
+           goalID,
+           runIndx
        })
    })
-   
-   
-   
-    // dispatch(delRun(runObj.id));
-    // dispatch(addRun(runObj));
+}
+
+// FINISH RUN
+export const finishRun = (runObj) => dispatch => {
+    const {userGoalsID, goalID, runID, mood, actualPace, runIndx} = runObj;
+    console.log(runObj)
+    const body = JSON.stringify({userGoalsID, goalID, mood, actualPace});
+    axios.patch(`/goals/run/complete/${runID}`, body, config)
+    .then(res => {
+        console.log(res.data, "RUN")
+        dispatch({
+            type: FINISH_RUN,
+            payload: res.data,
+            goalID,
+            runIndx
+        })
+    })
 }

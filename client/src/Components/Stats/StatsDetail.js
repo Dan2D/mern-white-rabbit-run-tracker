@@ -21,15 +21,17 @@ class StatsDetail extends Component {
       e.target.parentElement.click();
     }
   render() {
-
     return (
             <div className="stats-detail-container">
-              <div>
+              <div className="goal-nav">
+              <Link to={`/complete/goal/${this.props.match.params.id}`}>
+                <button className="btn btn-info goal-nav__btn">Finish Goal>></button>
+              </Link>
                 <Link to={`/edit/goal/${this.props.match.params.id}`}>
-                  <button>Edit</button>
+                  <button className="btn btn-dark goal-nav__btn">Edit</button>
                 </Link>
                 <Link to="/">
-                  <button onClick={(e) => this.handleDeleteGoal(e)}>Delete Goal?</button>
+                  <button className="btn btn-dark goal-nav__btn" onClick={(e) => this.handleDeleteGoal(e)}>Delete Goal?</button>
                 </Link>
               </div>
                 <div className="title-blk title-blk--goal d-flex">
@@ -40,16 +42,18 @@ class StatsDetail extends Component {
                 {this.state.statGoal.runs.map((run, indx) => {
                   return (
                     <RunTile
-                      key={run._id}
-                      runId={run._id}
-                      name={run.name}
-                      date={run.date}
-                      tPace={run.targetPace}
-                      aPace={run.actualPace}
-                      dist={run.distance}
-                      type={run.type}
-                      completed={run.completed}
-                      mood={run.mood}
+                    key={run._id}
+                    userID={this.props.userGoalsID}
+                    goalID={this.state.statGoal._id}
+                    runID={run._id}
+                    name={run.name}
+                    date={run.date}
+                    tPace={run.targetPace}
+                    aPace={run.actualPace}
+                    dist={run.distance}
+                    type={run.type}
+                    completed={run.completed}
+                    mood={run.mood}
                     />
                   );
                 })

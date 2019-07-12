@@ -5,14 +5,18 @@ class CurrStatsCrd extends Component {
     lngRun: 0,
     fstRun: 9999000,
     compRuns: 0,
+    ttlRuns: 0,
     ttlDist: 0
   };
   componentDidMount() {
+    console.log(this.props.goal, "GOAL")
     const { runs } = this.props.goal;
-    let { lngRun, fstRun, compRuns, ttlDist } = this.state;
+    let { lngRun, fstRun, compRuns, ttlRuns, ttlDist } = this.state;
     let runIndx = 0;
     runs.forEach((run, indx) => {
+      ttlRuns++;
       if (run.completed) {
+        console.log("completed")
         let pace = run.actualPace.split(":");
         pace = parseInt(pace[0] * 60) + parseInt(pace[1]);
         
@@ -28,14 +32,16 @@ class CurrStatsCrd extends Component {
         }
       }
     });
-    if (this.state.compRuns === 0){
+    if (compRuns === 0){
       this.setState({fstRun: 0})
     }
     else {
+      console.log("ELSE")
       this.setState({
         lngRun,
         fstRun: runs[runIndx].actualPace,
         compRuns,
+        ttlRuns,
         ttlDist
     })
   }

@@ -19,7 +19,7 @@ class CreateRun extends Component {
     const newRun = {
       goalID,
       name: this.state.name,
-      date: this.state.date.toString().substr(0,10),
+      date: this.state.date.toISOString().substr(0,10),
       targetPace: this.state.pace,
       distance: this.state.distance,
       type: this.state.runType,

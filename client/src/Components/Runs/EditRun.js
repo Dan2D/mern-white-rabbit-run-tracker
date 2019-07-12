@@ -18,6 +18,7 @@ class EditRun extends Component {
         const goal = this.props.goal.find(goal => goal._id === this.props.location.state.goal);
         const id = this.props.match.params.id;
         const run = goal.runs.find(run => run._id === id);
+        const runIndx = goal.runs.indexOf(run);
         const {name, date, targetPace, distance, type, completed, mood} = run;
         this.setState({
             id,
@@ -27,7 +28,8 @@ class EditRun extends Component {
             distance,
             type,
             completed,
-            mood
+            mood,
+            runIndx
         })
     }
 
@@ -44,7 +46,8 @@ class EditRun extends Component {
       distance: this.state.distance,
       type: this.state.runType,
       completed: this.state.completed,
-      mood: this.state.mood
+      mood: this.state.mood,
+      runIndx: this.state.runIndx
     };
     this.props.editRun(updatedRun);
     e.target.parentElement.click();

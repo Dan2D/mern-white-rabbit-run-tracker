@@ -8,6 +8,9 @@ import progressTree from "../../images/progress-tree.png";
 import "./Home.css";
 
 class Home extends Component {
+  state ={
+    modal: false
+  }
   // componentDidMount(){
   //   this.props.getUserGoals();
   // }
@@ -48,9 +51,11 @@ class Home extends Component {
         newRuns++;
         return (
           <RunTile
+            onFinish={() => this.handleFinishRun()}
             key={run._id}
             goalID={this.props.currGoal._id}
             runID={run._id}
+            indx={indx}
             name={run.name}
             date={run.date}
             tPace={run.targetPace}
@@ -78,10 +83,10 @@ class Home extends Component {
           completedRuns++;
           return (
             <RunTile
-              key={run.id}
+              key={run._id}
               userID={this.props.userID}
               goalID={this.props.currGoal._id}
-              runId={run.id}
+              runID={run._id}
               name={run.name}
               date={run.date}
               tPace={run.targetPace}
@@ -109,7 +114,7 @@ const mapStateToProps = (state) => {
     console.log(state.goals._id, "GOALS")
   return {
     currGoal: state.goals.Goals.find(goal => goal.completed === false),
-    distUnits: state.goals.distUnits
+    distUnits: state.settings.distUnits
   };
 };
 

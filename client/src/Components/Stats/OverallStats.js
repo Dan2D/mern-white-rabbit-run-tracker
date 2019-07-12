@@ -32,7 +32,7 @@ class overAllStats extends Component {
                 }
             })
         })
-        if (this.state.compRuns === 0){
+        if (compRuns === 0){
           this.setState({fstRun: 0})
         }
         else {

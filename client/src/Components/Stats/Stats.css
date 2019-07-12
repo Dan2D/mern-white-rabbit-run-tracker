@@ -24,3 +24,12 @@
 .title-blk--goal {
     background: #D9D872;
 }
+
+.goal-nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.goal-nav__btn {
+    margin: 2px 5px;
+}

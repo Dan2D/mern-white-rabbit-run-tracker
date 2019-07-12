@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { delRun } from "../../store/actions/runActions";
+import { delRun, finishRun } from "../../store/actions/runActions";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import "./Runs.css";
@@ -15,8 +15,9 @@ class RunTile extends Component {
     //    this.setState({min, sec})
     }
   render() {
+    let idObj = {userGoalsID: this.props.userID, goalID: this.props.goalID, runID: this.props.runID};
     return (
-      <div className="run-tile" data-id={this.props.runId}>
+      <div className="run-tile" data-id={this.props.runID}>
         <div className="run-tile__title-bar">
           <h5>{this.props.name}</h5>
           <div className="title-bar__tile-btns">
@@ -26,7 +27,7 @@ class RunTile extends Component {
             </Link>
             <button
               className="title-bar__btn"
-              onClick={() => this.props.delRun(this.props.userID, this.props.goalID, this.props.runID)}
+              onClick={() => this.props.delRun(idObj)}
             >
               &times;
             </button>
@@ -35,7 +36,7 @@ class RunTile extends Component {
         <hr />
         <div className="run-tile__body">
           <div className="body__text">
-            <p>Date: {this.props.date.substr(0,10)}</p>
+            <p>Date: {this.props.date.toString().substr(0,10)}</p>
             <p>Target Pace:{` ${this.props.tPace} min / ${this.props.distUnits}`}</p>
             {this.props.completed ? <p>Actual Pace: {`${this.props.aPace} min / ${this.props.distUnits}`}</p> : null}
             <p> Distance:{` ${this.props.dist} ${this.props.distUnits}`}</p>
@@ -43,9 +44,13 @@ class RunTile extends Component {
             {this.props.completed ? <p>Felt Like: {this.props.mood}</p> : null}
           </div>
           {this.props.completed ? null :
+          <Link to={{pathname: `/complete/run/${this.props.runID}`,
+                     state: {goal: this.props.goalID}}}>
              <button className="body__complete-btn btn btn-info">
                 Finish>>
-            </button>}
+            </button>
+          </Link>
+        }
 
         </div>
       </div>
@@ -56,11 +61,11 @@ class RunTile extends Component {
 const mapStateToProps = state => {
     return {
       userID: state.goals._id,
-        distUnits: state.goals.distUnits
+        distUnits: state.settings.distUnits
     }
 }
 
 export default connect(
   mapStateToProps,
-  { delRun }
+  { delRun, finishRun }
 )(RunTile);

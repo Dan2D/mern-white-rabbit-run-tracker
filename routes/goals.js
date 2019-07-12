@@ -78,6 +78,20 @@ router.patch("/goal/:goalID", (req, res) => {
   .catch(err => res.status(400).json(`ERROR: ${err}`))
 });
 
+// Complete Goal
+router.patch("/goal/complete/:goalID", (req, res) => {
+  const{userGoalsID, actualPace, mood} = req.body;
+  console.log(req.body)
+  Goal.findById(userGoalsID)
+  .then(goalList => {
+    let goal = goalList.Goals.id(req.params.goalID);
+    goal.set({actualPace, mood, completed: true})
+    goalList.save()
+    .then(() => res.json(goal))
+  })
+  .catch(err => res.status(400).json(`ERROR: ${err}`))
+})
+
 
 // Add Run to specific goal (WORKING)
 router.post("/addrun", (req, res) => {
@@ -91,7 +105,7 @@ router.post("/addrun", (req, res) => {
   Goal.findById(userGoalsID)
     .then(goalList => {
       goalList.Goals.id(goalID).runs.unshift(newRun);
-      goalList.save().then(goalList => res.json(goalList.Goals.id(goalID)));
+      goalList.save().then(goalList => res.json(goalList.Goals.id(goalID).runs[0]));
     })
     .catch(err => res.json("ERRORs: " + err));
 });
@@ -125,9 +139,24 @@ router.patch("/runs/:runID", (req, res) => {
       let run = goalList.Goals.id(goalID).runs.id(req.params.runID)
       run.set({ name, targetPace, distance, date, type, actualPace, mood })
       goalList.save()
-      .then(goalList => res.json(goalList.Goals.id(goalID)))
+      .then(goalList => res.json(goalList.Goals.id(goalID).runs.id(req.params.runID)))
   })
   .catch(err => res.status(400).json(`ERROR: ${err}`))
 });
+
+// COMPLETE RUN
+router.patch("/run/complete/:runID", (req, res) => {
+  const {userGoalsID, goalID, mood, actualPace} = req.body;
+  console.log(req.body)
+  Goal.findById(userGoalsID)
+  .then(goalList => {
+    let run = goalList.Goals.id(goalID).runs.id(req.params.runID);
+    run.set({completed: true, mood, actualPace})
+    goalList.save()
+    .then(() => res.json(run))
+  })
+  .catch(err => res.status(400).json(`Error: ${err}`))
+}
+)
 
 module.exports = router;

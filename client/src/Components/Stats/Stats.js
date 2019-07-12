@@ -32,7 +32,7 @@ const mapStateToProps = state => {
   return {
     currGoal: state.goals.Goals.find(goal => goal.completed === false),
     pastGoals: [...state.goals.Goals.filter(goal => goal.completed === true)],
-    distUnits: state.goals.distUnits
+    distUnits: state.settings.distUnits
   };
 };
 
