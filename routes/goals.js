@@ -1,9 +1,25 @@
 const express = require("express");
 const Goal = require("../models/Goals");
 const router = express.Router();
+const auth = require('../middleware/auth');
+
+
+// Register New user goals 
+router.post("/register/:id", (req, res) => {
+  console.log("NEW GOAL NEW USER")
+  const {username} = req.body
+  const newGoal = new Goal({
+    _id: req.params.id,
+    user: username
+  })
+  console.log(newGoal)
+  newGoal.save()
+  .then(goalList => res.json(goalList))
+  .catch(err => res.status(400).json(`Error: ${err}`))
+})
 
 // Get userGoals (WORKING)
-router.get("/:id", (req, res) => {
+router.get("/:id", auth, (req, res) => { 
    Goal.findById(req.params.id).sort({ raceDay: 1 })
     .then(goals => res.json(goals))
     .catch(err => res.json(`ERROR: ${err}`))
@@ -22,7 +38,7 @@ router.post("/add", (req, res) => {
     completed
   } = req.body;
   console.log(req.body)
-  if (!name || !targetPace || !goalDist) {
+  if (!name || !targetPace || !goalDist) { 
     return res
       .status(400)
       .json("Please enter info for name, target pace, and goal distance.");
@@ -94,7 +110,7 @@ router.patch("/goal/complete/:goalID", (req, res) => {
 
 
 // Add Run to specific goal (WORKING)
-router.post("/addrun", (req, res) => {
+router.post("/addrun", auth, (req, res) => {
   const { userGoalsID, goalID, name, targetPace, distance, date, type } = req.body;
   if (!name || !targetPace || !distance) {
     return res
@@ -111,7 +127,7 @@ router.post("/addrun", (req, res) => {
 });
 
 // Delete Specific Run from Specific Goal (WORKING)
-router.delete("/:userID/goal/:goalID/runs/:runID", (req, res) => {
+router.delete("/:userID/goal/:goalID/runs/:runID", auth, (req, res) => {
   Goal.findById(req.params.userID)
     .then(goalList => {
       goalList.Goals.id(req.params.goalID).runs.pull(req.params.runID);
@@ -121,7 +137,7 @@ router.delete("/:userID/goal/:goalID/runs/:runID", (req, res) => {
 });
 
 // Update Run (WORKING)
-router.patch("/runs/:runID", (req, res) => {
+router.patch("/runs/:runID", auth, (req, res) => {
   const {
     userGoalsID,
     goalID,
@@ -145,7 +161,7 @@ router.patch("/runs/:runID", (req, res) => {
 });
 
 // COMPLETE RUN
-router.patch("/run/complete/:runID", (req, res) => {
+router.patch("/run/complete/:runID", auth, (req, res) => {
   const {userGoalsID, goalID, mood, actualPace} = req.body;
   console.log(req.body)
   Goal.findById(userGoalsID)

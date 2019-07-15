@@ -1,10 +1,12 @@
-import {ADD_RUN, DEL_RUN, EDIT_RUN, FINISH_RUN, ADD_GOAL, DEL_GOAL, GET_GOALS, EDIT_GOAL, FINISH_GOAL} from '../actions/types';
+import {REGISTER_GOALS, GET_GOALS, ADD_GOAL, DEL_GOAL, EDIT_GOAL, FINISH_GOAL, ADD_RUN, DEL_RUN, EDIT_RUN, FINISH_RUN} from '../actions/types';
 import produce from 'immer';
 
 let initialState = {};
 
 const runReducer = (state = initialState, action) => {
     switch(action.type){
+        case REGISTER_GOALS:
+            return action.payload;
         case GET_GOALS:
             return  action.payload;
         case ADD_RUN:

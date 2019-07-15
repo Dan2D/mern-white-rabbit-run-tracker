@@ -1,12 +1,27 @@
-import {GET_GOALS, ADD_GOAL, DEL_GOAL, EDIT_GOAL, FINISH_GOAL, ADD_RUN, DEL_RUN, EDIT_RUN, FINISH_RUN} from './types';
+import {REGISTER_GOALS, GET_GOALS, ADD_GOAL, DEL_GOAL, EDIT_GOAL, FINISH_GOAL, ADD_RUN, DEL_RUN, EDIT_RUN, FINISH_RUN} from './types';
 import axios from 'axios';
+import {tokenConfig} from './authActions';
 const config = {headers: {"Content-type": "application/json"}};
 
+
+// export const registerGoals = () => (dispatch, getState) => {
+//     const id = getState().auth.user._id;
+//     console.log(id)
+//     const body = JSON.stringify({id});
+//     axios.post('/goals', body, tokenConfig(getState))
+//     .then(res => {
+//         console.log("REGISTER_GOALS")
+//         dispatch({
+//             type: REGISTER_GOALS
+//         })
+//     })
+// }
+
 // GET USER GOALS
-export const getUserGoals = () => dispatch => {
-    // Will get ID FROM USER AFTER SET UP LOG IN
-    const id = "5d274f78ce98878a2c4ed59a";
- axios.get(`/goals/${id}`)
+export const getUserGoals = (userGoalsID) => (dispatch, getState) => {
+    console.log("GETTING GOALS")
+    console.log(userGoalsID, "USER ID")
+ axios.get(`/goals/${userGoalsID}`, tokenConfig(getState) )
 .then(res => {
     dispatch({
         type: GET_GOALS,
@@ -18,6 +33,7 @@ export const getUserGoals = () => dispatch => {
 // ADD GOAL
 export const addGoal = (goalObj) => dispatch => {
     const {userGoalsID, name, raceDay, targetPace, goalDist, goalType} = goalObj;
+    console.log(userGoalsID)
     const body = JSON.stringify({userGoalsID, name, raceDay, targetPace, goalDist, goalType});
     axios.post('/goals/add', body, config)
     .then(res => {

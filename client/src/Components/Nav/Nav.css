@@ -46,6 +46,11 @@
       text-decoration: none;
   }
 
+button.log-out{
+      font-size: 1rem;
+      padding: 0;
+  }
+
   .navBar__menu a:hover {
       color: slategrey;
       text-decoration: none;

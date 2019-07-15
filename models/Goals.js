@@ -71,6 +71,8 @@ const goalSchema = mongoose.Schema({
 })
 
 const goalListSchema = mongoose.Schema({
+    _id: String,
+    user: String,
     Goals: [goalSchema]
 })
 

@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import rabbitLogo from "../../images/white-rabbit-logo.png";
-import "./Nav.css";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {logOut} from '../../store/actions/authActions';
+import PropTypes from 'prop-types';
+import rabbitLogo from '../../images/white-rabbit-logo.png';
+import './Nav.css';
 
-function Nav() {
+function Nav(props) {
   const [menuToggle, setMenuToggle] = useState(false);
-  console.log(menuToggle);
+  const propTypes = {
+    logOut: PropTypes.func.isRequired
+  }
   return (
     <div className="navBar-container fixed-top">
       <div className="navBar">
@@ -37,7 +42,9 @@ function Nav() {
               <Link to="/settings">Settings</Link>
             </li>
             <li>
-              <Link to="/log">Log Out</Link>
+              <Link to="/login">
+                <button className="log-out" onClick={props.logOut}>Log Out</button>
+              </Link>
             </li>
             <li>
               <Link to="/add/goal">
@@ -51,4 +58,4 @@ function Nav() {
   );
 }
 
-export default Nav;
+export default connect(null, {logOut})(Nav);

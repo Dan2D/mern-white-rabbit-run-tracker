@@ -1,4 +1,6 @@
 
+export const REGISTER_GOALS = 'REGISTER_GOALS';
+export const GET_GOALS = 'GET_GOALS';
 export const ADD_GOAL = 'ADD_GOAL';
 export const DEL_GOAL = 'DEL_GOAL';
 export const EDIT_GOAL = 'EDIT_GOAL';
@@ -8,7 +10,6 @@ export const DEL_RUN = 'DEL_RUN';
 export const EDIT_RUN = 'EDIT_RUN';
 export const FINISH_RUN = 'FINISH_RUN';
 export const CHANGE_UNITS = 'CHANGE_UNITS';
-export const GET_GOALS = 'GET_GOALS';
 export const GOALS_LOADING = 'GOALS_LOADING';
 export const USER_LOADING = 'USER_LOADING';
 export const USER_LOADED = 'USER_LOADED';

@@ -1,0 +1,19 @@
+.userLog-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 100vw;
+    min-height: 100vh;
+    background: #454D66;
+    color:white;
+}
+
+.log-container img {
+    width: 10vw;
+    height: 10vw;
+}
+
+.error-msg {
+    font-weight: 300;
+}

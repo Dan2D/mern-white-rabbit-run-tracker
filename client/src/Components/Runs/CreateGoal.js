@@ -26,6 +26,7 @@ class CreateRun extends Component {
       runs: [],
       completed: false,
     };
+    console.log(newGoal)
     this.props.addGoal(newGoal);
     e.target.parentElement.click();
 }
@@ -39,7 +40,6 @@ class CreateRun extends Component {
   }
 
   render() {
-    console.log(this.props.currGoal)
     const goalTypes = [
       "5K",
       "10K",
@@ -123,7 +123,7 @@ class CreateRun extends Component {
 const mapStateToProps = state => {
   return {
       userGoalsID: state.goals._id,
-      currGoal: state.goals.Goals.find(goal => goal.completed === false),
+      // currGoal: state.goals.Goals.find(goal => goal.completed === false),
       distUnits: state.goals.distUnits
   }
 }
