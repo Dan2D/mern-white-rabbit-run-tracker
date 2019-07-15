@@ -32,9 +32,9 @@ export const getUserGoals = (userGoalsID) => (dispatch, getState) => {
 }
 // ADD GOAL
 export const addGoal = (goalObj) => dispatch => {
-    const {userGoalsID, name, raceDay, targetPace, goalDist, goalType} = goalObj;
+    const {userGoalsID, name, raceDay, targetPace, goalDist, distUnit, goalType} = goalObj;
     console.log(userGoalsID)
-    const body = JSON.stringify({userGoalsID, name, raceDay, targetPace, goalDist, goalType});
+    const body = JSON.stringify({userGoalsID, name, raceDay, targetPace, goalDist, distUnit, goalType});
     axios.post('/goals/add', body, config)
     .then(res => {
         dispatch({
@@ -55,8 +55,8 @@ export const delGoal = (userGoalsID, goalID) => dispatch => {
 }
 // EDIT GOAL
 export const editGoal = (goalObj) => dispatch => {
-    const {userGoalsID, goalID,  name, raceDay, targetPace, goalDist, goalType} = goalObj;
-    const body = JSON.stringify({userGoalsID, name, raceDay, targetPace, goalDist, goalType});
+    const {userGoalsID, goalID,  name, raceDay, targetPace, goalDist, distUnit, goalType} = goalObj;
+    const body = JSON.stringify({userGoalsID, name, raceDay, targetPace, goalDist, distUnit, goalType});
     console.log(body)
     axios.patch(`/goals/goal/${goalID}`, body, config)
     .then(res => {
@@ -86,11 +86,10 @@ export const finishGoal = (goalObj) => dispatch => {
 }
 
 // ADD RUN
-export const addRun = (runObj) => dispatch => {
-    const userGoalsID = "5d274f78ce98878a2c4ed59a";
-    const {goalID, name, targetPace, date, distance, type, completed, mood} = runObj;
-    const body = JSON.stringify({userGoalsID, goalID, name, targetPace, date, distance, type, completed, mood});
-    axios.post('/goals/addrun', body, config)
+export const addRun = (runObj) => (dispatch, getState) => {
+    const {userGoalsID, goalID, name, targetPace, date, distance, distUnit, type} = runObj;
+    const body = JSON.stringify({userGoalsID, goalID, name, targetPace, date, distance, distUnit, type});
+    axios.post('/goals/addrun', body, tokenConfig(getState))
     .then(res => {
         console.log(res.data)
         dispatch({
@@ -102,10 +101,10 @@ export const addRun = (runObj) => dispatch => {
 
 }
 // DELETE RUN
-export const delRun = (idObj) => dispatch => {
+export const delRun = (idObj) => (dispatch, getState) => {
     console.log(idObj)
     const {userGoalsID, goalID, runID} = idObj;
-    axios.delete(`/goals/${userGoalsID}/goal/${goalID}/runs/${runID}`)
+    axios.delete(`/goals/${userGoalsID}/goal/${goalID}/runs/${runID}`, tokenConfig(getState))
       .then(res => {
           dispatch({
               type: DEL_RUN,
@@ -115,10 +114,10 @@ export const delRun = (idObj) => dispatch => {
       })
 }
 // EDIT RUN
-export const editRun = (runObj) => dispatch =>{
-    const {userGoalsID, goalID, id, name, targetPace, date, distance, type, completed, mood, runIndx} = runObj;
-   const body = JSON.stringify({userGoalsID, goalID, name, targetPace, date, distance, type, completed, mood});
-   axios.patch(`/goals/runs/${id}`, body, config)
+export const editRun = (runObj) => (dispatch, getState) =>{
+    const {userGoalsID, goalID, id, name, targetPace, actualPace, date, distance, type, completed, mood, runIndx} = runObj;
+   const body = JSON.stringify({userGoalsID, goalID, name, targetPace, actualPace, date, distance, type, completed, mood});
+   axios.patch(`/goals/runs/${id}`, body, tokenConfig(getState))
    .then(res => {
        console.log(res.data, "RES DATA")
        dispatch({
@@ -131,11 +130,11 @@ export const editRun = (runObj) => dispatch =>{
 }
 
 // FINISH RUN
-export const finishRun = (runObj) => dispatch => {
+export const finishRun = (runObj) => (dispatch, getState) => {
     const {userGoalsID, goalID, runID, mood, actualPace, runIndx} = runObj;
     console.log(runObj)
     const body = JSON.stringify({userGoalsID, goalID, mood, actualPace});
-    axios.patch(`/goals/run/complete/${runID}`, body, config)
+    axios.patch(`/goals/run/complete/${runID}`, body, tokenConfig(getState))
     .then(res => {
         console.log(res.data, "RUN")
         dispatch({

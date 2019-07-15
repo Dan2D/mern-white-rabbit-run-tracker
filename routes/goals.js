@@ -34,6 +34,7 @@ router.post("/add", (req, res) => {
     raceDay,
     targetPace,
     goalDist,
+    distUnit,
     goalType,
     completed
   } = req.body;
@@ -49,15 +50,16 @@ router.post("/add", (req, res) => {
     raceDay,
     targetPace,
     goalDist,
+    distUnit,
     goalType,
     completed
   };
   Goal.findById(userGoalsID)
     .then(goalList => {
       goalList.Goals.unshift(newGoal);
+      console.log(goalList.Goals[0])
       goalList.save()
         .then(goalList => res.json(goalList.Goals[0]))
-        .then(goalList => console.log(goalList.Goals[0]))
     })
     .catch(err => res.status(400).json(`Error: ${err}`));
 });
@@ -80,6 +82,7 @@ router.patch("/goal/:goalID", (req, res) => {
     name,
     targetPace,
     goalDist,
+    distUnit,
     raceDay,
     goalType,
   } = req.body;
@@ -87,7 +90,7 @@ router.patch("/goal/:goalID", (req, res) => {
   Goal.findById(userGoalsID)
   .then(goalList => {
       let goal = goalList.Goals.id(req.params.goalID);
-      goal.set({ name, targetPace, goalDist, raceDay, goalType})
+      goal.set({ name, targetPace, goalDist, distUnit, raceDay, goalType})
       goalList.save()
       .then(goalList => res.json(goalList.Goals.id(req.params.goalID)))
   })
@@ -111,13 +114,14 @@ router.patch("/goal/complete/:goalID", (req, res) => {
 
 // Add Run to specific goal (WORKING)
 router.post("/addrun", auth, (req, res) => {
-  const { userGoalsID, goalID, name, targetPace, distance, date, type } = req.body;
+  const { userGoalsID, goalID, name, targetPace, distance, distUnit, date, type } = req.body;
+  console.log(goalID, userGoalsID)
   if (!name || !targetPace || !distance) {
     return res
       .status(400)
       .json("Please enter info for name, target pace, and run distance.");
   }
-  const newRun = { name, targetPace, distance, type, date };
+  const newRun = { name, targetPace, distance, distUnit, type, date };
   Goal.findById(userGoalsID)
     .then(goalList => {
       goalList.Goals.id(goalID).runs.unshift(newRun);
@@ -144,6 +148,7 @@ router.patch("/runs/:runID", auth, (req, res) => {
     name,
     targetPace,
     distance,
+    distUnit,
     date,
     actualPace,
     type,
@@ -153,7 +158,7 @@ router.patch("/runs/:runID", auth, (req, res) => {
   Goal.findById(userGoalsID)
   .then(goalList => {
       let run = goalList.Goals.id(goalID).runs.id(req.params.runID)
-      run.set({ name, targetPace, distance, date, type, actualPace, mood })
+      run.set({ name, targetPace, distance, distUnit, date, type, actualPace, mood })
       goalList.save()
       .then(goalList => res.json(goalList.Goals.id(goalID).runs.id(req.params.runID)))
   })

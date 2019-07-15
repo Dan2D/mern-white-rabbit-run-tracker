@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {getUserGoals} from '../../store/actions/runActions';
+import {getUserSettings} from '../../store/actions/settingsActions';
 import PropTypes from 'prop-types';
 import RunTile from '../Runs/RunTile';
 import progressRbbt from '../../images/progress-rabbit.png';
@@ -12,7 +13,11 @@ class Home extends Component {
   state ={
     noGoal: {
       name: "No Current Goal Set", 
-      goalDist: 0, 
+      targetPace: "0:00",
+      raceDay: "",
+      goalType: "",
+      goalDist: 0,
+      distUnit: this.props.settings.distUnit, 
       runs: []
     },
     modal: false}
@@ -20,36 +25,41 @@ class Home extends Component {
       if (this.props.auth.isAuthenticated && !this.props.auth.isLoading){
         console.log(this.props.auth, "MOUNT")
         this.props.getUserGoals(this.props.auth.user._id);
+        this.props.getUserSettings(this.props.auth.user._id);
       }
     }
-  componentDidUpdate(prevProps){
-      if (this.props.auth.isAuthenticated && !prevProps.auth.isAuthenticated){
-        console.log(this.props.auth, "UPDATE")
-      this.props.getUserGoals(this.props.auth.user._id);
-    }
-  }
 
   static propTypes = {
     getUserGoals: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
     goals: PropTypes.object.isRequired,
-    distUnits: PropTypes.string.isRequired
+    settings: PropTypes.object.isRequired
   }
 
   render() {
-    if (this.props.isAuthenticated === null){
+    if (this.props.auth.isAuthenticated === null){
       return <Redirect to="/login" />
     }
     let currentGoal = this.props.goals.Goals.find(goal => goal.completed === false) ? 
     this.props.goals.Goals.find(goal => goal.completed === false) : this.state.noGoal;
-
+    let unitConv = 1;
+    if (this.props.settings.distUnits !== currentGoal.distUnit){
+      if (currentGoal.distUnit === "mi"){
+        unitConv = 1.60934;
+      }
+      else {unitConv = 0.62137; }
+    }
     let newRuns = 0;
     let completedRuns = 0;
     return (
       <div className="home">
-       <h5>Progress</h5>
+       <h5 className="ml-2">Progress</h5>
 <div className="goal-container container">
-  <h6>{`Goal: ${currentGoal.name}`}</h6>
+  <h6><strong>Goal: </strong>{`${currentGoal.name}`}</h6>
+  <h6><strong>Goal Type: </strong>{`${currentGoal.goalType}`}</h6>
+  <h6><strong>Goal Date: </strong>{`${currentGoal.raceDay.substr(0,10)}`}</h6>
+  <h6><strong>Target Pace: </strong>{`${currentGoal.targetPace} min / ${this.props.settings.distUnits}`}</h6>
+  <h6><strong>Goal Distance: </strong>{`${(currentGoal.goalDist * unitConv).toFixed(2)} ${this.props.settings.distUnits}`}</h6>
   <div className="visual-progress">
     <div className="rabbit-percent">
       <p>0%</p>
@@ -61,7 +71,7 @@ class Home extends Component {
       />
     </div>
     <div className="tree-goal">
-      <p className="tree-goal__goal">{`${currentGoal.goalDist}  ${this.props.distUnits}`}</p>
+      <p className="tree-goal__goal">{`${(currentGoal.goalDist * unitConv).toFixed(2)} ${this.props.settings.distUnits}`}</p>
       <img className="tree-goal__tree" src={progressTree} alt="tree" />
     </div>
   </div>
@@ -81,13 +91,14 @@ class Home extends Component {
           <RunTile
             onFinish={() => this.handleFinishRun()}
             key={run._id}
-            goalID={this.props.currGoal._id}
+            goalID={currentGoal._id}
             runID={run._id}
             indx={indx}
             name={run.name}
             date={run.date}
             tPace={run.targetPace}
             dist={run.distance}
+            distUnit={run.distUnit}
             type={run.type}
             completed={run.completed}
           />
@@ -142,10 +153,10 @@ const mapStateToProps = (state) => {
   return {
     auth: state.auth,
     goals: state.goals,
-    distUnits: state.settings.distUnits
+    settings: state.settings,
   };
 };
 
-export default connect(mapStateToProps, {getUserGoals})(Home);
+export default connect(mapStateToProps, {getUserGoals, getUserSettings})(Home);
 
 

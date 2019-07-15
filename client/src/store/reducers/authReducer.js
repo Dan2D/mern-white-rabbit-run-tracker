@@ -7,6 +7,7 @@ import {
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
     REGISTER_FAIL,
+    REGISTER_SETTINGS
 } from '../actions/types';
 
 
@@ -31,8 +32,19 @@ export default function (state = initialState, action){
                 isLoading: false,
                 user: action.payload
             }
-        case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
+            localStorage.setItem('token', action.payload.token);
+            return {
+                ...state,
+                ...action.payload,
+                isAuthenticated: true,
+            }
+        case REGISTER_SETTINGS:
+            return {
+                ...state,
+                isLoading: false
+            }
+        case LOGIN_SUCCESS:
             // Get user and token from payload
             localStorage.setItem('token', action.payload.token);
             return {

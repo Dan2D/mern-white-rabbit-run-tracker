@@ -47,7 +47,7 @@ function Nav(props) {
               </Link>
             </li>
             <li>
-              <Link to="/add/goal">
+              <Link to={{pathname: "/add/goal", state: {type: "goal"}}}>
                 <button className="add-goal">+ Add Goal</button>
               </Link>
             </li>

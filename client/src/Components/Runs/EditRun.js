@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { editRun } from "../../store/actions/runActions";
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
@@ -18,17 +18,26 @@ class EditRun extends Component {
         const goal = this.props.goal.find(goal => goal._id === this.props.location.state.goal);
         const id = this.props.match.params.id;
         const run = goal.runs.find(run => run._id === id);
+        let unitConv = 1;
+        if (this.props.settings.distUnits !== run.distUnit){
+          if (run.distUnit === "mi"){
+            unitConv = 0.62137;
+          }
+          else {unitConv = 1.60934; }
+        }
         const runIndx = goal.runs.indexOf(run);
-        const {name, date, targetPace, distance, type, completed, mood} = run;
+        const {name, date, targetPace, actualPace, distance, type, completed, mood} = run;
         this.setState({
             id,
             name,
             date: new Date(date),
             targetPace,
-            distance,
-            type,
+            actualPace,
+            distance: (distance*unitConv).toFixed(2),
+            distUnit: this.props.settings.distUnits,
+            runtype: type,
             completed,
-            mood,
+            runMood: mood.toString(),
             runIndx
         })
     }
@@ -43,10 +52,12 @@ class EditRun extends Component {
       name: this.state.name,
       date: this.state.date.toISOString().substr(0,10),
       targetPace: this.state.targetPace,
+      actualPace: this.state.actualPace,
       distance: this.state.distance,
+      distUnit: this.state.distUnit,
       type: this.state.runType,
       completed: this.state.completed,
-      mood: this.state.mood,
+      mood: this.state.runMood,
       runIndx: this.state.runIndx
     };
     this.props.editRun(updatedRun);
@@ -70,6 +81,20 @@ class EditRun extends Component {
       "Hills",
       "Intervals"
     ];
+    let finishedStats = <Fragment>
+                          <label htmlFor="pace">Actual Pace (min, sec)</label>
+                          <input className="form-control mb-3" onChange={(e) => this.handleChange(e)} type="text" name="actualPace" value={this.state.actualPace} />
+                          <p>How Did Your Run Feel?</p>
+                          <div className="form-group">
+                            <fieldset className=" d-flex justify-content-between">
+                                <label className="d-flex flex-column">1<input type="radio" name="runMood" value="1" checked={this.state.runMood === "1"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column">2<input type="radio" name="runMood" value="2" checked={this.state.runMood === "2"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column">3<input type="radio" name="runMood" value="3" checked={this.state.runMood === "3"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column">4<input type="radio" name="runMood" value="4" checked={this.state.runMood === "4"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column">5<input type="radio" name="runMood" value="5" checked={this.state.runMood === "5"} onChange={(e) => this.handleChange(e)}/></label>
+                            </fieldset>
+                        </div>
+                      </Fragment>
     return (
       <div className="create-run container">
         <form onSubmit={e => this.handleSubmit(e)}>
@@ -102,17 +127,18 @@ class EditRun extends Component {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="pace">Target Pace (min, sec)</label>
+            <label htmlFor="targetPace">Target Pace (min, sec)</label>
             <p><i>For example 09:45</i></p>
-            <input className="form-control" onChange={this.handleChange} type="text" name="pace" value={this.state.targetPace} />
+            <input className="form-control" onChange={(e) => this.handleChange(e)} type="text" name="targetPace" value={this.state.targetPace} />
           </div>
           <div className="form-group">
-            <label htmlFor="distance">{`Distance (${this.props.distUnits})`}</label>
-            <input className="form-control" onChange={this.handleChange} type="text" name="distance" value={this.state.distance} />
+            <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
+            <input className="form-control" onChange={(e) => this.handleChange(e)} type="text" name="distance" value={this.state.distance} />
           </div>
+          {this.state.completed ? finishedStats : null}
           <div className="form-group">
             <label htmlFor="run-type">Type</label>
-            <select className="form-control" onChange={this.handleChange}  name="runType" id="runType" value={this.state.type}>
+            <select className="form-control" onChange={(e) => this.handleChange(e)}  name="runType" id="runType" value={this.state.type}>
               {runTypes.map(run => {
                 return (
                   <option key={run} value={run}>
@@ -139,7 +165,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         userGoalsID: state.goals._id,
         goal: state.goals.Goals,
-        distUnits: state.goals.distUnits
+        settings: state.settings
     }
 }
 

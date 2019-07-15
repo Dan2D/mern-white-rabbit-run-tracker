@@ -1,10 +1,11 @@
-import React, { Component } from "react";
-import { addRun } from "../../store/actions/runActions";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import AddWarning from './AddWarning';
+import { addRun } from '../../store/actions/runActions';
+import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import "./Runs.css";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import './Runs.css';
 
 
 
@@ -15,13 +16,15 @@ class CreateRun extends Component {
     }
   handleSubmit = e => {
     e.preventDefault();
-    const goalID = this.props.currGoal._id;
+    let goal = this.props.goals.Goals.find(goal => goal.completed === false);
     const newRun = {
-      goalID,
+      userGoalsID: this.props.goals._id,
+      goalID: goal._id,
       name: this.state.name,
       date: this.state.date.toISOString().substr(0,10),
       targetPace: this.state.pace,
       distance: this.state.distance,
+      distUnit: this.props.settings.distUnits,
       type: this.state.runType,
       completed: false,
       mood: 0
@@ -40,7 +43,9 @@ class CreateRun extends Component {
   }
 
   render() {
-    
+    if (!this.props.goals.Goals.find(goal => goal.completed === false)){
+      return <AddWarning type="run" />
+    }
     const runTypes = [
       "Long Distance",
       "Short Distance",
@@ -88,7 +93,7 @@ class CreateRun extends Component {
             
           </div>
           <div className="form-group">
-            <label htmlFor="distance">{`Distance (${this.props.distUnits})`}</label>
+            <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
             <input className="form-control" onChange={this.handleChange} type="text" name="distance" />
           </div>
           <div className="form-group">
@@ -117,10 +122,9 @@ class CreateRun extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.goals.Goals.find(goal => goal.completed === false))
   return {
-      currGoal: state.goals.Goals.find(goal => goal.completed === false),
-      distUnits: state.goals.distUnits
+      goals: state.goals,
+      settings: state.settings
   }
 }
 

@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
-import {updateSettings} from '../../store/actions/settingsActions';
+import {updateUserSettings} from '../../store/actions/settingsActions';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import './Settings.css';
 
-// CAN ADD LATER, NOT IMPORTANT
+
 class Settings extends Component {
     state = {
-        distUnits: this.props.distUnits
+        distUnits: this.props.settings.distUnits
     }
     onChange = (e) => {
         this.setState({distUnits: e.target.name})
@@ -15,7 +15,7 @@ class Settings extends Component {
 
     updateSettings = (e) => {
         e.preventDefault();
-        this.props.updateSettings(this.state.distUnits);
+        this.props.updateUserSettings(this.props.settings._id, this.state.distUnits );
         e.target.parentElement.click();
     }
 
@@ -39,8 +39,8 @@ class Settings extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    distUnits: state.settings.distUnits
+      settings: state.settings
   };
 };
 
-export default connect(mapStateToProps)(Settings)
+export default connect(mapStateToProps, {updateUserSettings})(Settings)

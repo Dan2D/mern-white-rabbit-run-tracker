@@ -47,14 +47,18 @@ class overAllStats extends Component {
     }
 
   render() {
+    let kmConv = 1;
+    if (this.props.distUnits === "km"){
+      kmConv = 1.61;
+    }
     return (
       <div className="overall-stats-container mb-50">
         <h5>Overall Stats</h5>
         <div className="stat-card stat-card__stats-data">
-          <p><strong>Longest Run: </strong>{`${this.state.lngRun} ${this.props.distUnits}`}</p>
+        <p><strong>Longest Run: </strong>{`${(this.state.lngRun*kmConv).toFixed(2)} ${this.props.distUnits}`}</p>
           <p><strong>Fastest Mile: </strong>{`${this.state.fstRun} min / ${this.props.distUnits}`}</p>
-          <p><strong>Completed Runs: </strong>{` ${this.state.compRuns}`}</p>
-          <p><strong>Total Distance: </strong>{`${this.state.ttlDist} ${this.props.distUnits}`}</p>
+          <p><strong>Completed Runs: </strong>{`${this.state.compRuns}`}</p>
+          <p><strong>Total Distance: </strong>{`${(this.state.ttlDist*kmConv).toFixed(2)} ${this.props.distUnits}`}</p>
         </div>
       </div>
     );

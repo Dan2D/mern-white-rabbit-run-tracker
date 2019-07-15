@@ -17,11 +17,19 @@ const runSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    distUnit: {
+        type: String,
+        required: true,
+        default: "mi"
+    },
     type: {
         type: String,
         default: "Long Distance"
     },
-    actualPace: String,
+    actualPace: {
+        type: String,
+        default: 0
+    },
     completed: {
         type: Boolean,
         default: false
@@ -50,6 +58,11 @@ const goalSchema = mongoose.Schema({
         type: Number,
         required: true,
         min: 0
+    },
+    distUnit: {
+        type:String,
+        required: true,
+        default: "mi"
     },
     goalType: {
         type: String,

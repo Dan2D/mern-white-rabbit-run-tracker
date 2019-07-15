@@ -5,16 +5,14 @@ import { connect } from "react-redux";
 import "./Runs.css";
 
 class RunTile extends Component {
-    // state = {
-    //     min: 0,
-    //     sec: 0
-    // }
-    componentDidMount(){
-    //    let min = this.props.pace[0]/60000;
-    //    let sec = this.props.pace[1]/1000
-    //    this.setState({min, sec})
-    }
   render() {
+    let unitConv = 1;
+    if (this.props.settings.distUnits !== this.props.distUnit){
+      if (this.props.distUnit === "mi"){
+        unitConv = 0.62137;
+      }
+      else {unitConv = 1.60934}
+    }
     let idObj = {userGoalsID: this.props.userID, goalID: this.props.goalID, runID: this.props.runID};
     return (
       <div className="run-tile" data-id={this.props.runID}>
@@ -37,9 +35,9 @@ class RunTile extends Component {
         <div className="run-tile__body">
           <div className="body__text">
             <p>Date: {this.props.date.toString().substr(0,10)}</p>
-            <p>Target Pace:{` ${this.props.tPace} min / ${this.props.distUnits}`}</p>
-            {this.props.completed ? <p>Actual Pace: {`${this.props.aPace} min / ${this.props.distUnits}`}</p> : null}
-            <p> Distance:{` ${this.props.dist} ${this.props.distUnits}`}</p>
+            <p>Target Pace:{` ${this.props.tPace} min / ${this.props.settings.distUnits}`}</p>
+            {this.props.completed ? <p>Actual Pace: {`${this.props.aPace} min / ${this.props.settings.distUnits}`}</p> : null}
+            <p> Distance:{` ${(this.props.dist * unitConv).toFixed(2)} ${this.props.settings.distUnits}`}</p>
             <p>Type: {this.props.type}</p>
             {this.props.completed ? <p>Felt Like: {this.props.mood}</p> : null}
           </div>
@@ -61,7 +59,7 @@ class RunTile extends Component {
 const mapStateToProps = state => {
     return {
       userID: state.goals._id,
-        distUnits: state.settings.distUnits
+      settings: state.settings
     }
 }
 

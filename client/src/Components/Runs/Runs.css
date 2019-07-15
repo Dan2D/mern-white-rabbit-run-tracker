@@ -94,7 +94,7 @@ label {
     height: 5vw;
 }
 
-.goal-warning-container {
+.add-warning-container {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -103,7 +103,7 @@ label {
     color: white;
 }
 
-.goal-warning-container img {
+.add-warning-container img {
     width: 50vw;
     height: 50vw;
     margin-bottom: 2vh;

@@ -17,10 +17,6 @@ import Settings from "./Settings/Settings";
 import { Route } from "react-router-dom";
 
 class Content extends Component {
-  componentDidMount() {
-    // this.props.getUserGoals();
-  }
-
   render() {
     const nav = (
       <Fragment>

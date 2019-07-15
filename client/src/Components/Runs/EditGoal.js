@@ -15,13 +15,19 @@ class EditGoal extends Component {
     }
     componentDidMount(){
         const goal = this.props.goals.find(goal => goal._id === this.props.match.params.id);
-        console.log(goal)
+        let unitConv = 1;
+        if (this.props.settings.distUnits !== goal.distUnit){
+          if (goal.distUnit === "mi"){
+            unitConv = 1.60934;
+          }
+          else {unitConv = 0.62137; }
+        }
         const {name, raceDay, targetPace, goalDist, goalType,runs,  completed} = goal;
         this.setState({
             name,
             date: new Date(raceDay),
             targetPace,
-            goalDist,
+            goalDist: (goalDist*unitConv).toFixed(2),
             goalType,
             runs,
             completed
@@ -36,10 +42,12 @@ class EditGoal extends Component {
       raceDay: this.state.date,
       targetPace: this.state.targetPace,
       goalDist: this.state.goalDist,
+      distUnit: this.props.settings.distUnits,
       goalType: this.state.goalType,
       runs: this.state.runs,
       completed: this.state.completed,
     };
+    console.log(updatedGoal)
     this.props.editGoal(updatedGoal);
     e.target.parentElement.click();
 }
@@ -58,6 +66,7 @@ class EditGoal extends Component {
       "10K",
       "Half-Marathon",
       "Marathon",
+      "Distance",
       "Fast Mile",
       "Relay"
     ];
@@ -101,7 +110,7 @@ class EditGoal extends Component {
             
           </div>
           <div className="form-group">
-            <label htmlFor="distance">{`Distance (${this.props.distUnits})`}</label>
+            <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
             <input className="form-control" onChange={this.handleChange} value={this.state.goalDist} type="text" name="goalDist" />
           </div>
           <div className="form-group">
@@ -133,7 +142,7 @@ const mapStateToProps = state => {
   return {
       userGoalsID: state.goals._id,
       goals: state.goals.Goals,
-      distUnits: state.goals.distUnits
+      settings: state.settings
   }
 }
 

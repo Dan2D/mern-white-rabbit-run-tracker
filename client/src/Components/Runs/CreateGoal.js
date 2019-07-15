@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import GoalWarning from './GoalWarning';
+import AddWarning from './AddWarning';
 import { addGoal } from "../../store/actions/runActions";
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
@@ -19,9 +19,10 @@ class CreateRun extends Component {
     const newGoal = {
       userGoalsID: this.props.userGoalsID,
       name: this.state.name,
-      raceDay: this.state.date.toString().substr(0,10),
+      raceDay: this.state.date.toISOString().substr(0,10),
       targetPace: this.state.pace,
       goalDist: this.state.distance,
+      distUnit: this.props.settings.distUnits,
       goalType: this.state.goalType,
       runs: [],
       completed: false,
@@ -48,11 +49,11 @@ class CreateRun extends Component {
       "Fast Mile",
       "Relay"
     ];
-    // if (this.props.currGoal){
-    //     return (
-    //         <GoalWarning/>
-    //     )
-    // }
+    if (this.props.currGoal){
+        return (
+            <AddWarning type="goal"/>
+        )
+    }
     return (
       <div className="create-run container">
         <form onSubmit={e => this.handleSubmit(e)}>
@@ -92,7 +93,7 @@ class CreateRun extends Component {
             
           </div>
           <div className="form-group">
-            <label htmlFor="distance">{`Distance (${this.props.distUnits})`}</label>
+            <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
             <input className="form-control" onChange={this.handleChange} type="text" name="distance" />
           </div>
           <div className="form-group">
@@ -123,8 +124,8 @@ class CreateRun extends Component {
 const mapStateToProps = state => {
   return {
       userGoalsID: state.goals._id,
-      // currGoal: state.goals.Goals.find(goal => goal.completed === false),
-      distUnits: state.goals.distUnits
+      currGoal: state.goals.Goals.find(goal => goal.completed === false),
+      settings: state.settings
   }
 }
 

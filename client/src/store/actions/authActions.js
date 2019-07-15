@@ -9,7 +9,8 @@ import {
     REGISTER_FAIL,
     USER_HOME,
     CLEAR_ERRORS,
-    REGISTER_GOALS
+    REGISTER_GOALS,
+    REGISTER_SETTINGS
 } from '../actions/types';
 import {returnErrors} from './errorActions';
 import axios from 'axios';
@@ -38,6 +39,7 @@ export const loadUser = () =>  (dispatch, getState) => {
 }
 // TODO(GOT REGISTRATION TO CREATE NEW GOAL DOC INSTANCE, LOOK OVER AND CLEAN UP)
 export const register = ({email, username, password}) => (dispatch, getState) => {
+    dispatch({type: USER_LOADING});
     const body = JSON.stringify({email, username, password});
     axios.post("/users", body, config)
     .then(res => {
@@ -45,24 +47,19 @@ export const register = ({email, username, password}) => (dispatch, getState) =>
             type: REGISTER_SUCCESS,
             payload: res.data
         })  
-        return axios.post(`/goals/register/${res.data.user.id}`, body, config)
-        // export const registerGoals = () => (dispatch, getState) => {
-        //     const id = getState().auth.user._id;
-        //     console.log(id)
-        //     const body = JSON.stringify({id});
-        //     axios.post('/goals', body, tokenConfig(getState))
-        //     .then(res => {
-        //         console.log("REGISTER_GOALS")
-        //         dispatch({
-        //             type: REGISTER_GOALS
-        //         })
-        //     })
-        // }
+        return axios.post(`/goals/register/${res.data.user._id}`, body, config)
     })
     .then(res => {
         dispatch({
             type: REGISTER_GOALS,
             payload: res.data
+        })
+        return axios.post(`/settings/register/${res.data._id}`, body, config)
+        .then(res => {
+            dispatch({
+                type: REGISTER_SETTINGS,
+                payload: res.data
+            })
         })
     })
     .catch(err => {

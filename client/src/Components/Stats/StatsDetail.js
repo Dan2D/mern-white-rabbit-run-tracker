@@ -12,21 +12,33 @@ class StatsDetail extends Component {
         }
     }
     componentDidMount(){
+      console.log("COMPONENT MOUNTED")
         const id = this.props.match.params.id;
         let statGoal = this.props.goals.filter(goal => goal._id === id)
         this.setState({statGoal: statGoal[0]})
     }
+    // componentDidUpdate(prevState, prevProps) {
+    //   const id = this.props.match.params.id;
+    //   let statGoal = this.props.goals.filter(goal => goal._id === id);
+    //   if (prevState.run !== this.state.statGoal) {
+    //     this.setState({statGoal})
+    //   }
+    // }
+
     handleDeleteGoal = (e) => {
       this.props.delGoal(this.props.userGoalsID, this.props.match.params.id);
       e.target.parentElement.click();
     }
   render() {
+    const finishGoalBtn = <Link to={`/complete/goal/${this.props.match.params.id}`}>
+                            <button className="btn btn-info goal-nav__btn">Finish Goal>></button>
+                          </Link>;
+    let goal = this.props.goals.find(goal => goal._id === this.props.match.params.id);
+    console.log(goal);
     return (
             <div className="stats-detail-container">
               <div className="goal-nav">
-              <Link to={`/complete/goal/${this.props.match.params.id}`}>
-                <button className="btn btn-info goal-nav__btn">Finish Goal>></button>
-              </Link>
+                {this.state.statGoal.completed ? null : finishGoalBtn}
                 <Link to={`/edit/goal/${this.props.match.params.id}`}>
                   <button className="btn btn-dark goal-nav__btn">Edit</button>
                 </Link>
@@ -34,12 +46,12 @@ class StatsDetail extends Component {
                   <button className="btn btn-dark goal-nav__btn" onClick={(e) => this.handleDeleteGoal(e)}>Delete Goal?</button>
                 </Link>
               </div>
-                <div className="title-blk title-blk--goal d-flex">
-                    <p><strong>{this.state.statGoal.name}</strong></p>
-                    <p>{`Status: ${this.state.statGoal.completed ? "Completed" : "In Progress ..."}`}</p>
+                <div className="title-blk title-blk--goal d-flex mb-3">
+                    <p><strong>{goal.name}</strong></p>
+                    <p>{`Status: ${goal.completed ? "Completed" : "In Progress ..."}`}</p>
                 </div>
                 <div className="stats-detail-data container">
-                {this.state.statGoal.runs.map((run, indx) => {
+                {goal.runs.map((run, indx) => {
                   return (
                     <RunTile
                     key={run._id}
@@ -65,11 +77,10 @@ class StatsDetail extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    
     return {
       userGoalsID: state.goals._id,
-        goals: [...state.goals.Goals],
-        distUnits: state.goals.distUnits
+      goals: [...state.goals.Goals],
+      distUnits: state.settings.distUnits
     }
 }
 
