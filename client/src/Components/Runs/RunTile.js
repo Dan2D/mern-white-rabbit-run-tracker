@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { delRun } from '../../store/actions/runActions';
 import {setUnitConv, paceConvert} from '../Utils/helpers';
+import rating1 from '../../images/rating-1.png'
+import rating2 from '../../images/rating-2.png'
+import rating3 from '../../images/rating-3.png'
+import rating4 from '../../images/rating-4.png'
+import rating5 from '../../images/rating-5.png'
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -9,8 +14,8 @@ import './Runs.css';
 class RunTile extends Component {
   static propTypes = {
     delRun: PropTypes.func.isRequired,
-    setUnitConv: PropTypes.func.isRequired,
-    paceConvert: PropTypes.func.isRequired,
+    setUnitConv: PropTypes.func,
+    paceConvert: PropTypes.func,
     settings: PropTypes.object.isRequired,
     userID: PropTypes.string.isRequired
   }
@@ -44,7 +49,7 @@ class RunTile extends Component {
             {this.props.completed ? <p>Actual Pace: {`${actualPace} min / ${this.props.settings.distUnits}`}</p> : null}
             <p> Distance:{` ${(this.props.dist * distConv).toFixed(2)} ${this.props.settings.distUnits}`}</p>
             <p>Type: {this.props.type}</p>
-            {this.props.completed ? <p>Felt Like: {this.props.mood}</p> : null}
+            {this.props.completed ? <p>Felt Like: <img src={require(`../../images/rating-${this.props.mood}.png`)} alt="ratings face"/></p> : null}
           </div>
           {this.props.completed ? null :
           <Link className="align-self-end" to={{pathname: `/complete/run/${this.props.runID}`,

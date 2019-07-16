@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { editGoal } from "../../store/actions/runActions";
 import {setUnitConv, paceConvert} from "../Utils/helpers";
+import {validateTitle, validatePace, validateDist} from '../Utils/helpers';
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
 import PropTypes from "prop-types";
@@ -13,11 +14,17 @@ import "./Runs.css";
 class EditGoal extends Component {
     state = {
     date: new Date(),
-    goalType: "5K"
+    goalType: "5K",
+    ttlMsg: null,
+    paceMsg: null,
+    distMsg: null,
     }
 
     static propTypes = {
       editGoal: PropTypes.func.isRequired,
+      validateTitle: PropTypes.func.isRequired,
+      validatePace: PropTypes.func.isRequired,
+      validateDist: PropTypes.func.isRequired,
       setUnitConv: PropTypes.func.isRequired,
       paceConvert: PropTypes.func.isRequired,
       userGoalsID: PropTypes.string.isRequired,
@@ -41,6 +48,14 @@ class EditGoal extends Component {
     }
   handleSubmit = e => {
     e.preventDefault();
+    const {name, targetPace, goalDist} = this.state;
+    this.setState({ttlMsg: null, paceMsg: null, distMsg: null});
+    this.setState({ttlMsg: validateTitle(name)})
+    this.setState({paceMsg: validatePace(targetPace)})
+    this.setState({distMsg: validateDist(goalDist)})
+    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(goalDist) !== null){
+      return null;
+    }
     const updatedGoal = {
       userGoalsID: this.props.userGoalsID,
       goalID: this.props.match.params.id,
@@ -89,6 +104,7 @@ class EditGoal extends Component {
               value={this.state.name}
               placeholder="Title"
             />
+            <p className="error-msg">{this.state.ttlMsg}</p>
           </div>
           <div className="form-group">
             <label htmlFor="name" style={{ display: "block" }}>
@@ -108,15 +124,13 @@ class EditGoal extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="pace">Goal Pace (min , sec)</label>
-            <p><i>For example 09:45</i></p>
-            <span>
             <input className="form-control" onChange={this.handleChange} value={this.state.targetPace} type="text" name="targetPace"/>
-            </span>
-            
+            <p className="error-msg">{this.state.paceMsg}</p>
           </div>
           <div className="form-group">
             <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
             <input className="form-control" onChange={this.handleChange} value={this.state.goalDist} type="text" name="goalDist" />
+            <p className="error-msg">{this.state.distMsg}</p>
           </div>
           <div className="form-group">
             <label htmlFor="run-type">Type</label>

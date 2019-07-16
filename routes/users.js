@@ -11,7 +11,13 @@ const JWT_ID = process.env.JWT_ID;
 router.post("/", (req, res) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
-    return res.status(400).json("Please Enter All Fields");
+    return res.status(400).json("Please enter all fields");
+  }
+  if (!(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi).test(email)){
+    return res.status(400).json("Please enter valid email address");
+  }
+  if (!(/^[A-Z0-9\.]{3,12}/gi).test(username)){
+    return res.status(400).json("Please enter valid username");
   }
 
   User.findOne({ email }).then(user => {

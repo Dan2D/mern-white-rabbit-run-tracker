@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import { finishRun } from "../../store/actions/runActions";
+import {validatePace} from '../Utils/helpers';
+import rating1 from '../../images/rating-1.png'
+import rating2 from '../../images/rating-2.png'
+import rating3 from '../../images/rating-3.png'
+import rating4 from '../../images/rating-4.png'
+import rating5 from '../../images/rating-5.png'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
@@ -11,11 +17,13 @@ class FinishRun extends Component {
     state = {
         date: new Date(),
         actualPace: "",
-        runMood: "3"
+        runMood: "3",
+        aPaceMsg: null
     }
 
     static propTypes = {
       finishRun: PropTypes.func.isRequired,
+      validatePace: PropTypes.func.isRequired,
       goals: PropTypes.object.isRequired,
       distUnits: PropTypes.string.isRequired
     }
@@ -39,6 +47,12 @@ class FinishRun extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    const {actualPace} = this.state;
+    this.setState({aPaceMsg: null});
+    this.setState({aPaceMsg: validatePace(actualPace)})
+    if (validatePace(actualPace) !== null ){
+      return null;
+    }
     const finishedRun = {
       userGoalsID: this.props.goals._id,
       goalID: this.props.location.state.goal,
@@ -67,15 +81,16 @@ handleChange = e => {
             <div className="">
             <p>Actual Pace</p>
             <input type="text" required onChange={this.handleChange} name="actualPace" value={this.state.actualPace}/>
+            <p className="error-msg">{this.state.aPaceMsg}</p>
             </div>
             <p>How Did Your Run Feel?</p>
             <div className="form-group">
                 <fieldset className=" d-flex justify-content-between" onChange={(e) => this.handleChange(e)}>
-                    <label className="d-flex flex-column">1<input type="radio" name="runMood" value="1" checked={this.state.runMood === "1"}/></label>
-                    <label className="d-flex flex-column">2<input type="radio" name="runMood" value="2" checked={this.state.runMood === "2"}/></label>
-                    <label className="d-flex flex-column">3<input type="radio" name="runMood" value="3" checked={this.state.runMood === "3"}/></label>
-                    <label className="d-flex flex-column">4<input type="radio" name="runMood" value="4" checked={this.state.runMood === "4"}/></label>
-                    <label className="d-flex flex-column">5<input type="radio" name="runMood" value="5" checked={this.state.runMood === "5"}/></label>
+                    <label className="d-flex flex-column rating-radio"><img src={rating1} alt="mad face"/><input type="radio" name="runMood" value="1" checked={this.state.runMood === "1"}/></label>
+                    <label className="d-flex flex-column rating-radio"><img src={rating2} alt="sad face"/><input type="radio" name="runMood" value="2" checked={this.state.runMood === "2"}/></label>
+                    <label className="d-flex flex-column rating-radio"><img src={rating3} alt="meh face"/><input type="radio" name="runMood" value="3" checked={this.state.runMood === "3"}/></label>
+                    <label className="d-flex flex-column rating-radio"><img src={rating4} alt="happy face"/><input type="radio" name="runMood" value="4" checked={this.state.runMood === "4"}/></label>
+                    <label className="d-flex flex-column rating-radio"><img src={rating5} alt="very happy face"/><input type="radio" name="runMood" value="5" checked={this.state.runMood === "5"}/></label>
                 </fieldset>
             </div>
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AddWarning from './AddWarning';
 import { addRun } from '../../store/actions/runActions';
+import {validateTitle, validatePace, validateDist} from '../Utils/helpers';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 import PropTypes from "prop-types";
@@ -13,23 +14,40 @@ import './Runs.css';
 class CreateRun extends Component {
     state = {
       date: new Date(),
-      runType: 'Long Distance'
+      runType: 'Long Distance',
+      ttlMsg: null,
+      paceMsg: null,
+      distMsg: null
     }
     static propTypes = {
       goal: PropTypes.object.isRequired,
       settings: PropTypes.object.isRequired,
-      addRun: PropTypes.func.isRequired
+      addRun: PropTypes.func.isRequired,
+      validateTitle: PropTypes.func.isRequired,
+      validatePace: PropTypes.func.isRequired,
+      validateDist: PropTypes.func.isRequired,
     }
+
+
+
   handleSubmit = e => {
     e.preventDefault();
     let goal = this.props.goals.Goals.find(goal => goal.completed === false);
+    const {name, pace, distance} = this.state;
+    this.setState({ttlMsg: null, paceMsg: null, distMsg: null});
+    this.setState({ttlMsg: validateTitle(name)})
+    this.setState({paceMsg: validatePace(pace)})
+    this.setState({distMsg: validateDist(distance)})
+    if (validateTitle(name) !== null || validatePace(pace) !== null || validateDist(distance) !== null){
+      return null;
+    }
     const newRun = {
       userGoalsID: this.props.goals._id,
       goalID: goal._id,
-      name: this.state.name,
+      name,
       date: this.state.date.toISOString().substr(0,10),
-      targetPace: this.state.pace,
-      distance: this.state.distance,
+      targetPace: pace,
+      distance,
       distUnits: this.props.settings.distUnits,
       type: this.state.runType,
       completed: false,
@@ -72,6 +90,7 @@ class CreateRun extends Component {
               name="name"
               placeholder="Title"
             />
+            <p className="error-msg">{this.state.ttlMsg}</p>
           </div>
           <div className="form-group">
             <label htmlFor="name" style={{ display: "block" }}>
@@ -90,16 +109,14 @@ class CreateRun extends Component {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="pace">Target Pace (min , sec)</label>
-            <p><i>For example 09:45</i></p>
-            <span>
+            <label htmlFor="pace">Target Pace (mm:ss)</label>
             <input className="form-control" onChange={this.handleChange} type="text" name="pace"/>
-            </span>
-            
+            <p className="error-msg">{this.state.paceMsg}</p>            
           </div>
           <div className="form-group">
             <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
             <input className="form-control" onChange={this.handleChange} type="text" name="distance" />
+            <p className="error-msg">{this.state.distMsg}</p>
           </div>
           <div className="form-group">
             <label htmlFor="run-type">Type</label>

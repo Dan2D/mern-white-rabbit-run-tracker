@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import { finishGoal } from "../../store/actions/runActions";
+import {validatePace} from '../Utils/helpers';
+import rating1 from '../../images/rating-1.png'
+import rating2 from '../../images/rating-2.png'
+import rating3 from '../../images/rating-3.png'
+import rating4 from '../../images/rating-4.png'
+import rating5 from '../../images/rating-5.png'
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -9,7 +15,8 @@ class CreateRun extends Component {
   state = {
     raceDay: new Date(),
     actualPace: "",
-    goalMood: "3"
+    goalMood: "3",
+    aPaceMsg: null
   };
 
   componentDidMount(){
@@ -29,12 +36,19 @@ class CreateRun extends Component {
 }
 static propTypes = {
   finishGoal: PropTypes.func.isRequired,
+  validatePace: PropTypes.func.isRequired,
   goals: PropTypes.object.isRequired,
   distUnits: PropTypes.string.isRequired
 }
 
   handleSubmit = e => {
     e.preventDefault();
+    const {actualPace} = this.state;
+    this.setState({aPaceMsg: null});
+    this.setState({aPaceMsg: validatePace(actualPace)})
+    if (validatePace(actualPace) !== null ){
+      return null;
+    }
     const finishedGoal = {
       goalIndx: this.state.goalIndx,
       userGoalsID: this.props.goals._id,
@@ -72,6 +86,7 @@ static propTypes = {
               name="actualPace"
               value={this.state.actualPace}
             />
+            <p className="error-msg">{this.state.aPaceMsg}</p>
           </div>
           <p>How Did You Feel About Completing Your Goal?</p>
           <div className="form-group">
@@ -79,8 +94,8 @@ static propTypes = {
               className=" d-flex justify-content-between"
               onChange={e => this.handleChange(e)}
             >
-              <label className="d-flex flex-column">
-                1
+             <label className="d-flex flex-column rating-radio">
+               <img src={rating1} alt="mad face"/>
                 <input
                   type="radio"
                   name="goalMood"
@@ -88,8 +103,8 @@ static propTypes = {
                   checked={this.state.goalMood === "1"}
                 />
               </label>
-              <label className="d-flex flex-column">
-                2
+              <label className="d-flex flex-column rating-radio">
+                <img src={rating2} alt="sad face"/>
                 <input
                   type="radio"
                   name="goalMood"
@@ -97,8 +112,8 @@ static propTypes = {
                   checked={this.state.goalMood === "2"}
                 />
               </label>
-              <label className="d-flex flex-column">
-                3
+              <label className="d-flex flex-column rating-radio">
+                <img src={rating3} alt="meh face"/>
                 <input
                   type="radio"
                   name="goalMood"
@@ -106,8 +121,8 @@ static propTypes = {
                   checked={this.state.goalMood === "3"}
                 />
               </label>
-              <label className="d-flex flex-column">
-                4
+              <label className="d-flex flex-column rating-radio">
+                <img src={rating4} alt="happy face"/>
                 <input
                   type="radio"
                   name="goalMood"
@@ -115,8 +130,8 @@ static propTypes = {
                   checked={this.state.goalMood === "4"}
                 />
               </label>
-              <label className="d-flex flex-column">
-                5
+              <label className="d-flex flex-column rating-radio">
+                <img src={rating5} alt="very happy face"/>
                 <input
                   type="radio"
                   name="goalMood"

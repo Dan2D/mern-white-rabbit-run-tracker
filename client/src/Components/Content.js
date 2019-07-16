@@ -20,7 +20,7 @@ import { Route } from "react-router-dom";
 class Content extends Component {
   static propTypes = {
     getUserGoals: PropTypes.func.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired
+    isAuthenticated: PropTypes.bool
   }
   render() {
     const nav = (

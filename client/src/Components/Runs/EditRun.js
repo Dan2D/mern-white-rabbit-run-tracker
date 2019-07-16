@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { editRun } from "../../store/actions/runActions";
 import {setUnitConv, paceConvert} from '../Utils/helpers';
+import {validateTitle, validatePace, validateDist} from '../Utils/helpers';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
@@ -13,11 +14,18 @@ import "./Runs.css";
 class EditRun extends Component {
     state = {
       date: new Date(),
-      runType: 'Long Distance'
+      runType: 'Long Distance',
+      ttlMsg: null,
+      tPaceMsg: null,
+      distMsg: null,
+      aPaceMsg: null
     }
 
     static propTypes = {
       editRun: PropTypes.func.isRequired,
+      validateTitle: PropTypes.func.isRequired,
+      validatePace: PropTypes.func.isRequired,
+      validateDist: PropTypes.func.isRequired,
       setUnitConv: PropTypes.func.isRequired,
       paceConvert: PropTypes.func.isRequired,
       userGoalsID: PropTypes.string.isRequired,
@@ -50,6 +58,15 @@ class EditRun extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    const {name, targetPace, distance, actualPace} = this.state;
+    this.setState({ttlMsg: null, tPaceMsg: null, distMsg: null, aPaceMsg: null});
+    this.setState({ttlMsg: validateTitle(name)});
+    this.setState({tPaceMsg: validatePace(targetPace)});
+    this.setState({aPaceMsg: validatePace(actualPace)});
+    this.setState({distMsg: validateDist(distance)});
+    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(distance) !== null ||validatePace(actualPace) !== null){
+      return null;
+    }
     const updatedRun = {
       userGoalsID: this.props.userGoalsID,
       goalID: this.props.location.state.goal,
@@ -87,8 +104,9 @@ class EditRun extends Component {
       "Intervals"
     ];
     let finishedStats = <Fragment>
-                          <label htmlFor="pace">Actual Pace (min, sec)</label>
+                          <label htmlFor="pace">Actual Pace (mm:ss)</label>
                           <input className="form-control mb-3" onChange={(e) => this.handleChange(e)} type="text" name="actualPace" value={this.state.actualPace} />
+                          <p className="error-msg">{this.state.aPaceMsg}</p>  
                           <p>How Did Your Run Feel?</p>
                           <div className="form-group">
                             <fieldset className=" d-flex justify-content-between">
@@ -114,6 +132,7 @@ class EditRun extends Component {
               placeholder="Title"
               value={this.state.name}
             />
+            <p className="error-msg">{this.state.ttlMsg}</p>  
           </div>
           <div className="form-group">
             <label htmlFor="name" style={{ display: "block" }}>
@@ -132,13 +151,14 @@ class EditRun extends Component {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="targetPace">Target Pace (min, sec)</label>
-            <p><i>For example 09:45</i></p>
+            <label htmlFor="targetPace">Target Pace (mm:ss)</label>
             <input className="form-control" onChange={(e) => this.handleChange(e)} type="text" name="targetPace" value={this.state.targetPace} />
+            <p className="error-msg">{this.state.tPaceMsg}</p>  
           </div>
           <div className="form-group">
             <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
             <input className="form-control" onChange={(e) => this.handleChange(e)} type="text" name="distance" value={this.state.distance} />
+            <p className="error-msg">{this.state.distMsg}</p>  
           </div>
           {this.state.completed ? finishedStats : null}
           <div className="form-group">

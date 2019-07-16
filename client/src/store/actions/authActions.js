@@ -74,7 +74,7 @@ export const userLogin = ({username, password}) => dispatch => {
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
-        })  ;
+        });
     })
     .catch(err => {
         dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));
@@ -85,9 +85,7 @@ export const userLogin = ({username, password}) => dispatch => {
 }
 
 export const logOut = () => {
-    return {
-        type: LOGOUT_SUCCESS
-    }
+    return {type: LOGOUT_SUCCESS}
 }
 
 

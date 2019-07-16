@@ -32,8 +32,8 @@ class Home extends Component {
   }
 
   static propTypes = {
-    setUnitConv: PropTypes.func.isRequired,
-    paceConvert: PropTypes.func.isRequired,
+    setUnitConv: PropTypes.func,
+    paceConvert: PropTypes.func,
     getUserGoals: PropTypes.func.isRequired,
     getUserSettings: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
