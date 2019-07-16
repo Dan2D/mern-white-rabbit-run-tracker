@@ -3,6 +3,7 @@ import { editGoal } from "../../store/actions/runActions";
 import {setUnitConv, paceConvert} from "../Utils/helpers";
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
+import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Runs.css";
@@ -14,10 +15,20 @@ class EditGoal extends Component {
     date: new Date(),
     goalType: "5K"
     }
+
+    static propTypes = {
+      editGoal: PropTypes.func.isRequired,
+      setUnitConv: PropTypes.func.isRequired,
+      paceConvert: PropTypes.func.isRequired,
+      userGoalsID: PropTypes.string.isRequired,
+      goals: PropTypes.object.isRequired,
+      settings: PropTypes.object.isRequired
+    }
+
     componentDidMount(){
         const goal = this.props.goals.find(goal => goal._id === this.props.match.params.id);
-        let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, goal.distUnit);
-        const {name, raceDay, targetPace, goalDist, goalType,runs,  completed} = goal;
+        let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, goal.distUnits);
+        const {name, raceDay, targetPace, goalDist, goalType, runs, completed} = goal;
         this.setState({
             name,
             date: new Date(raceDay),
@@ -37,7 +48,7 @@ class EditGoal extends Component {
       raceDay: this.state.date,
       targetPace: this.state.targetPace,
       goalDist: this.state.goalDist,
-      distUnit: this.props.settings.distUnits,
+      distUnits: this.props.settings.distUnits,
       goalType: this.state.goalType,
       runs: this.state.runs,
       completed: this.state.completed,
@@ -118,10 +129,6 @@ class EditGoal extends Component {
                 );
               })}
             </select>
-          </div>
-          <div className="form-group">
-            ADD GOOGLE MAP LATER
-            {/* https://github.com/fullstackreact/google-maps-react */}
           </div>
           <Link to="/">
             <button type="submit" className="btn btn-primary" onClick={e => this.handleSubmit(e)}>Update Goal</button>

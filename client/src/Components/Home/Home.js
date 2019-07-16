@@ -18,7 +18,7 @@ class Home extends Component {
       raceDay: "",
       goalType: "",
       goalDist: 0,
-      distUnit: this.props.settings.distUnit,
+      distUnits: this.props.settings.distUnits,
       runs: [],
       progress: 0
     },
@@ -26,17 +26,18 @@ class Home extends Component {
   };
   componentDidMount() {
     if (this.props.auth.isAuthenticated && !this.props.auth.isLoading) {
-      console.log(this.props.auth, "MOUNT");
       this.props.getUserGoals(this.props.auth.user._id);
       this.props.getUserSettings(this.props.auth.user._id);
     }
   }
 
   static propTypes = {
+    setUnitConv: PropTypes.func.isRequired,
+    paceConvert: PropTypes.func.isRequired,
     getUserGoals: PropTypes.func.isRequired,
     getUserSettings: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
-    goals: PropTypes.object.isRequired,
+    goals: PropTypes.object,
     settings: PropTypes.object.isRequired
   };
 
@@ -53,7 +54,7 @@ class Home extends Component {
     }
     const currentGoal = this.props.currentGoal ? this.props.currentGoal : this.state.noGoal;
     this.rabbitProgressMove(currentGoal);
-    let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, currentGoal.distUnit);
+    let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, currentGoal.distUnits);
     let targetPace = paceConvert(currentGoal.targetPace, timeConv);
     let newRuns = 0;
     let completedRuns = 0;
@@ -125,7 +126,7 @@ class Home extends Component {
                     date={run.date}
                     tPace={run.targetPace}
                     dist={run.distance}
-                    distUnit={run.distUnit}
+                    distUnits={run.distUnits}
                     type={run.type}
                     completed={run.completed}
                   />
@@ -134,6 +135,7 @@ class Home extends Component {
               if (indx + 1 === currentGoal.runs.length && newRuns === 0) {
                 return <p key={indx}> No Runs Scheduled!</p>;
               }
+              return null;
             })}
             {currentGoal.runs.length === 0 ? <p> No Runs Scheduled!</p> : null}
           </div>
@@ -159,7 +161,7 @@ class Home extends Component {
                     tPace={run.targetPace}
                     aPace={run.actualPace}
                     dist={run.distance}
-                    distUnit={run.distUnit}
+                    distUnits={run.distUnits}
                     type={run.type}
                     completed={run.completed}
                     mood={run.mood}
@@ -169,6 +171,7 @@ class Home extends Component {
               if (indx + 1 === currentGoal.runs.length && completedRuns === 0) {
                 return <p key={indx}>No Runs Completed Yet</p>;
               }
+              return null;
             })}
             {currentGoal.runs.length === 0 ? (
               <p>No Runs Completed Yet</p>

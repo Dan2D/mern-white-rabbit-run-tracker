@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { editRun } from "../../store/actions/runActions";
 import {setUnitConv, paceConvert} from '../Utils/helpers';
+import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
 import DatePicker from "react-datepicker";
@@ -15,12 +16,20 @@ class EditRun extends Component {
       runType: 'Long Distance'
     }
 
+    static propTypes = {
+      editRun: PropTypes.func.isRequired,
+      setUnitConv: PropTypes.func.isRequired,
+      paceConvert: PropTypes.func.isRequired,
+      userGoalsID: PropTypes.string.isRequired,
+      goals: PropTypes.object.isRequired,
+      settings: PropTypes.object.isRequired
+    }
+
     componentDidMount(){
         const goal = this.props.goal.find(goal => goal._id === this.props.location.state.goal);
         const id = this.props.match.params.id;
         const run = goal.runs.find(run => run._id === id);
-        console.log(run)
-        let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, run.distUnit)
+        let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, run.distUnits);
         const runIndx = goal.runs.indexOf(run);
         const {name, date, targetPace, actualPace, distance, type, completed, mood} = run;
         this.setState({
@@ -30,7 +39,7 @@ class EditRun extends Component {
             targetPace: paceConvert(targetPace, timeConv),
             actualPace: paceConvert(actualPace, timeConv),
             distance: (distance*distConv).toFixed(2),
-            distUnit: this.props.settings.distUnits,
+            distUnits: this.props.settings.distUnits,
             runtype: type,
             completed,
             runMood: mood.toString(),
@@ -50,7 +59,7 @@ class EditRun extends Component {
       targetPace: this.state.targetPace,
       actualPace: this.state.actualPace,
       distance: this.state.distance,
-      distUnit: this.state.distUnit,
+      distUnits: this.state.distUnits,
       type: this.state.runType,
       completed: this.state.completed,
       mood: this.state.runMood,
@@ -143,10 +152,6 @@ class EditRun extends Component {
                 );
               })}
             </select>
-          </div>
-          <div className="form-group">
-            ADD GOOGLE MAP LATER
-            {/* https://github.com/fullstackreact/google-maps-react */}
           </div>
           <Link to="/">
             <button type="submit" className="btn btn-primary" onClick={e => this.handleSubmit(e)}>Update Run</button>

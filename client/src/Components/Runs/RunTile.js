@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import { delRun, finishRun } from '../../store/actions/runActions';
+import { delRun } from '../../store/actions/runActions';
 import {setUnitConv, paceConvert} from '../Utils/helpers';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './Runs.css';
 
 class RunTile extends Component {
+  static propTypes = {
+    delRun: PropTypes.func.isRequired,
+    setUnitConv: PropTypes.func.isRequired,
+    paceConvert: PropTypes.func.isRequired,
+    settings: PropTypes.object.isRequired,
+    userID: PropTypes.string.isRequired
+  }
   render() {
-    let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, this.props.distUnit);
+    let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, this.props.distUnits);
     let targetPace = paceConvert(this.props.tPace, timeConv);
     let actualPace = paceConvert(this.props.aPace, timeConv);
     let idObj = {userGoalsID: this.props.userID, goalID: this.props.goalID, runID: this.props.runID};
@@ -62,5 +70,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { delRun, finishRun }
+  { delRun}
 )(RunTile);

@@ -60,4 +60,3 @@ const runReducer = (state = initialState, action) => {
 
 export default runReducer;
 
-console.log("REDUCER CALLED")

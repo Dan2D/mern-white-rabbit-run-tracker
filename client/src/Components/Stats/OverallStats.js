@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {setUnitConv, paceConvert} from '../Utils/helpers';
+import PropTypes from 'prop-types';
 
 class overAllStats extends Component {
   state = {
@@ -8,6 +9,12 @@ class overAllStats extends Component {
     compRuns: 0,
     ttlDist: 0
   };
+
+  static propTypes = {
+    setUnitConv: PropTypes.func.isRequired,
+    paceConvert: PropTypes.func.isRequired
+  }
+
   componentDidMount() {
     return this.getOverallStats(); 
     }
@@ -48,8 +55,7 @@ class overAllStats extends Component {
     }
 
     render() {
-      console.log(this.state)
-      let {timeConv, distConv} = setUnitConv(this.props.settingUnits, this.props.goals[0].distUnit);
+      let {timeConv, distConv} = setUnitConv(this.props.settingUnits, this.props.goals[0].distUnits);
       let fastRun = paceConvert(this.state.fstRun, timeConv);
   
       return (

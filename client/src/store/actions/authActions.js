@@ -7,7 +7,6 @@ import {
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
     REGISTER_FAIL,
-    USER_HOME,
     CLEAR_ERRORS,
     REGISTER_GOALS,
     REGISTER_SETTINGS
@@ -17,11 +16,8 @@ import axios from 'axios';
 
 const config = { headers: { "Content-type": "application/json"}};
 
-
-// Check Token and Load User
 export const loadUser = () =>  (dispatch, getState) => {
     dispatch({type: USER_LOADING});
-    // GET TOKEN FROM auth state, which gets it from local storage
     axios.get("/auth/user", tokenConfig(getState))
     .then(res => {
         dispatch({
@@ -37,7 +33,7 @@ export const loadUser = () =>  (dispatch, getState) => {
         })
     })
 }
-// TODO(GOT REGISTRATION TO CREATE NEW GOAL DOC INSTANCE, LOOK OVER AND CLEAN UP)
+
 export const register = ({email, username, password}) => (dispatch, getState) => {
     dispatch({type: USER_LOADING});
     const body = JSON.stringify({email, username, password});
@@ -94,7 +90,7 @@ export const logOut = () => {
     }
 }
 
-// Configures header if web-token is needed
+
 export const tokenConfig = (getState) => {
     const token = getState().auth.token;
     if (token){

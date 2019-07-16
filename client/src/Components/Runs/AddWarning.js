@@ -2,8 +2,6 @@ import React from "react";
 import warningPic from "../../images/finish-goal.svg";
 
 function AddWarning(props) {
-  // prop condition tells if run or goal
-
   return (
     <div className="add-warning-container">
       <img src={warningPic} alt="bunny in magic hat" />

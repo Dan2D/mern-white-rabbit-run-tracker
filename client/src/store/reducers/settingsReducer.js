@@ -9,7 +9,6 @@ const settingsReducer = (state = initialState, action) => {
         case REGISTER_SETTINGS:
         case GET_SETTINGS:
         case UPDATE_SETTINGS:
-            console.log(action.payload)
             return action.payload;
         default: 
         return state;

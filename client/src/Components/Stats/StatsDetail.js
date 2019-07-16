@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import RunTile from '../Runs/RunTile';
 import {delGoal} from '../../store/actions/runActions';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import './Stats.css'
@@ -11,8 +12,14 @@ class StatsDetail extends Component {
             runs: []
         }
     }
+    static propTypes = {
+      delGoal: PropTypes.func.isRequired,
+      userGoalsID: PropTypes.string.isRequired,
+      goals: PropTypes.array.isRequired,
+      distUnits: PropTypes.string.isRequired
+
+    }
     componentDidMount(){
-      console.log("COMPONENT MOUNTED")
         const id = this.props.match.params.id;
         let statGoal = this.props.goals.filter(goal => goal._id === id)
         this.setState({statGoal: statGoal[0]})
@@ -26,7 +33,6 @@ class StatsDetail extends Component {
                             <button className="btn btn-info goal-nav__btn">Finish Goal>></button>
                           </Link>;
     let goal = this.props.goals.find(goal => goal._id === this.props.match.params.id);
-    console.log(goal);
     return (
             <div className="stats-detail-container">
               <div className="goal-nav">
@@ -55,7 +61,7 @@ class StatsDetail extends Component {
                     tPace={run.targetPace}
                     aPace={run.actualPace}
                     dist={run.distance}
-                    distUnit={run.distUnit}
+                    distUnits={run.distUnits}
                     type={run.type}
                     completed={run.completed}
                     mood={run.mood}

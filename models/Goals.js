@@ -17,7 +17,7 @@ const runSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    distUnit: {
+    distUnits: {
         type: String,
         required: true,
         default: "mi"
@@ -59,7 +59,7 @@ const goalSchema = mongoose.Schema({
         required: true,
         min: 0
     },
-    distUnit: {
+    distUnits: {
         type:String,
         required: true,
         default: "mi"

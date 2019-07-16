@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { finishRun } from "../../store/actions/runActions";
+import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
 import "./Runs.css";
@@ -13,13 +14,18 @@ class FinishRun extends Component {
         runMood: "3"
     }
 
+    static propTypes = {
+      finishRun: PropTypes.func.isRequired,
+      goals: PropTypes.object.isRequired,
+      distUnits: PropTypes.string.isRequired
+    }
+
     componentDidMount(){
         const goal = this.props.goals.Goals.find(goal => goal._id === this.props.location.state.goal);
         const id = this.props.match.params.id;
         const run = goal.runs.find(run => run._id === id);
         const runIndx = goal.runs.indexOf(run);
         const {name, date, targetPace, distance, type} = run;
-        console.log(date)
         this.setState({
             id,
             name,
@@ -41,7 +47,6 @@ class FinishRun extends Component {
       mood: this.state.runMood,
       runIndx: this.state.runIndx
     };
-    console.log(finishedRun);
     this.props.finishRun(finishedRun);
     e.target.parentElement.click();
 }

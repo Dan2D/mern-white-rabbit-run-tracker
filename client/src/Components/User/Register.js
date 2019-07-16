@@ -15,6 +15,7 @@ class Register extends Component {
   }
 
   static propTypes = {
+    register: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired
   }

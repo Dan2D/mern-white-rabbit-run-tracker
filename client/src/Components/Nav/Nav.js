@@ -8,7 +8,7 @@ import './Nav.css';
 
 function Nav(props) {
   const [menuToggle, setMenuToggle] = useState(false);
-  const propTypes = {
+  Nav.propTypes = {
     logOut: PropTypes.func.isRequired
   }
   return (

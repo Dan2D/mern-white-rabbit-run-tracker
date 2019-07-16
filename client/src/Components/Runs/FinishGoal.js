@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { finishGoal } from "../../store/actions/runActions";
+import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Runs.css";
@@ -14,10 +15,8 @@ class CreateRun extends Component {
   componentDidMount(){
     const id = this.props.match.params.id;
     const goal = this.props.goals.Goals.find(goal => goal._id === id);
-    console.log(goal, this.props.goals)
     const goalIndx = this.props.goals.Goals.indexOf(goal);
     const {name, raceDay, targetPace, goalDist, goalType} = goal;
-    console.log(raceDay)
     this.setState({
         id,
         name,
@@ -27,6 +26,11 @@ class CreateRun extends Component {
         goalType,
         goalIndx
     })
+}
+static propTypes = {
+  finishGoal: PropTypes.func.isRequired,
+  goals: PropTypes.object.isRequired,
+  distUnits: PropTypes.string.isRequired
 }
 
   handleSubmit = e => {
@@ -39,7 +43,6 @@ class CreateRun extends Component {
       goalMood: this.state.goalMood,
       completed: true
     };
-    //usergoalsid goalid mood actualpace goalINDX
     this.props.finishGoal(finishedGoal);
     e.target.parentElement.click();
   };
@@ -49,8 +52,6 @@ class CreateRun extends Component {
   };
 
   render() {
-    console.log(this.props.currGoal);
-
     return (
       <div className="create-run container">
         <form onSubmit={e => this.handleSubmit(e)}>

@@ -108,3 +108,7 @@ label {
     height: 50vw;
     margin-bottom: 2vh;
 }
+
+.add-warning-container p {
+    text-align: center;
+}

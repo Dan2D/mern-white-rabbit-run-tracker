@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {setUnitConv, paceConvert} from '../Utils/helpers';
+import PropTypes from 'prop-types';
 
 class CurrStatsCrd extends Component {
   state = {
@@ -9,6 +10,12 @@ class CurrStatsCrd extends Component {
     ttlRuns: 0,
     ttlDist: 0
   };
+
+  static propTypes = {
+    setUnitConv: PropTypes.func.isRequired,
+    paceConvert: PropTypes.func.isRequired
+  }
+
   componentDidMount() {
     const { runs } = this.props.goal;
     let { lngRun, fstRun, compRuns, ttlRuns, ttlDist } = this.state;

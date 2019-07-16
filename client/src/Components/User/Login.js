@@ -15,6 +15,7 @@ class Login extends Component {
   };
 
   static propTypes = {
+    userLogin: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired
   }

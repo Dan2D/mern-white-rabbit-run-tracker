@@ -3,6 +3,7 @@ import AddWarning from './AddWarning';
 import { addRun } from '../../store/actions/runActions';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
+import PropTypes from "prop-types";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Runs.css';
@@ -14,6 +15,11 @@ class CreateRun extends Component {
       date: new Date(),
       runType: 'Long Distance'
     }
+    static propTypes = {
+      goal: PropTypes.object.isRequired,
+      settings: PropTypes.object.isRequired,
+      addRun: PropTypes.func.isRequired
+    }
   handleSubmit = e => {
     e.preventDefault();
     let goal = this.props.goals.Goals.find(goal => goal.completed === false);
@@ -24,12 +30,11 @@ class CreateRun extends Component {
       date: this.state.date.toISOString().substr(0,10),
       targetPace: this.state.pace,
       distance: this.state.distance,
-      distUnit: this.props.settings.distUnits,
+      distUnits: this.props.settings.distUnits,
       type: this.state.runType,
       completed: false,
       mood: 0
     };
-    console.log(newRun,"ADD BTN CLICKED")
     this.props.dispatch(addRun(newRun));
     e.target.parentElement.click();
 }
@@ -107,10 +112,6 @@ class CreateRun extends Component {
                 );
               })}
             </select>
-          </div>
-          <div className="form-group">
-            ADD GOOGLE MAP LATER
-            {/* https://github.com/fullstackreact/google-maps-react */}
           </div>
           <Link to="/">
             <button type="submit" className="btn btn-primary" onClick={e => this.handleSubmit(e)}>Add Run</button>

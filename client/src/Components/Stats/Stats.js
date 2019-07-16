@@ -1,17 +1,22 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from 'prop-types';
 import CurrStatsCrd from "./CurrStatsCrd";
 import GoalCrd from "./GoalCrd";
 import OverAllStats from './OverallStats';
 import './Stats.css';
 
 function Stats(props) {
+  Stats.propTypes = {
+    goals: PropTypes.object.isRequired,
+    distUnits: PropTypes.string.isRequired
+  }
     let currGoal = props.goals.find(goal => goal.completed === false) ? props.goals.find(goal => goal.completed === false) : {runs: []};
     const allGoals = props.goals.map(goal => goal);
   return (
     <div className="stats-container container">
         <div className="stats-goals">
-          <CurrStatsCrd goal={currGoal} goalUnits={currGoal.distUnit} settingUnits={props.distUnits}/>
+          <CurrStatsCrd goal={currGoal} goalUnits={currGoal.distUnits} settingUnits={props.distUnits}/>
           <h5>Goals</h5>
           {allGoals.map(goal => {
               return (

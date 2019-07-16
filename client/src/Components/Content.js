@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { getUserGoals } from "../store/actions/runActions";
 import { connect } from "react-redux";
+import PropTypes from 'prop-types';
 import Login from "./User/Login";
 import Register from "./User/Register";
 import Nav from "./Nav/Nav";
@@ -17,6 +18,10 @@ import Settings from "./Settings/Settings";
 import { Route } from "react-router-dom";
 
 class Content extends Component {
+  static propTypes = {
+    getUserGoals: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool.isRequired
+  }
   render() {
     const nav = (
       <Fragment>
