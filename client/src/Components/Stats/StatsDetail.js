@@ -17,14 +17,6 @@ class StatsDetail extends Component {
         let statGoal = this.props.goals.filter(goal => goal._id === id)
         this.setState({statGoal: statGoal[0]})
     }
-    // componentDidUpdate(prevState, prevProps) {
-    //   const id = this.props.match.params.id;
-    //   let statGoal = this.props.goals.filter(goal => goal._id === id);
-    //   if (prevState.run !== this.state.statGoal) {
-    //     this.setState({statGoal})
-    //   }
-    // }
-
     handleDeleteGoal = (e) => {
       this.props.delGoal(this.props.userGoalsID, this.props.match.params.id);
       e.target.parentElement.click();
@@ -63,6 +55,7 @@ class StatsDetail extends Component {
                     tPace={run.targetPace}
                     aPace={run.actualPace}
                     dist={run.distance}
+                    distUnit={run.distUnit}
                     type={run.type}
                     completed={run.completed}
                     mood={run.mood}

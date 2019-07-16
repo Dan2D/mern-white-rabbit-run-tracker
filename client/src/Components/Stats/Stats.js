@@ -8,20 +8,19 @@ import './Stats.css';
 function Stats(props) {
     let currGoal = props.goals.find(goal => goal.completed === false) ? props.goals.find(goal => goal.completed === false) : {runs: []};
     const allGoals = props.goals.map(goal => goal);
-    let units = props.distUnits;
   return (
     <div className="stats-container container">
         <div className="stats-goals">
-          <CurrStatsCrd goal={currGoal} distUnits={units}/>
+          <CurrStatsCrd goal={currGoal} goalUnits={currGoal.distUnit} settingUnits={props.distUnits}/>
           <h5>Goals</h5>
           {allGoals.map(goal => {
               return (
-                <GoalCrd key={goal._id} id={goal._id} name={goal.name} complete={goal.completed} distUnits={units}/>
+                <GoalCrd key={goal._id} id={goal._id} name={goal.name} complete={goal.completed} distUnits={props.distUnits}/>
               );
           })}
       </div>
       <div className="overall-stats-container">
-          <OverAllStats goals={allGoals} distUnits={props.distUnits} />
+          <OverAllStats goals={allGoals} settingUnits={props.distUnits} />
       </div>
     </div>
   );

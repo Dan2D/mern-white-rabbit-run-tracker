@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { editRun } from "../../store/actions/runActions";
+import {setUnitConv, paceConvert} from '../Utils/helpers';
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
 import DatePicker from "react-datepicker";
@@ -18,22 +19,17 @@ class EditRun extends Component {
         const goal = this.props.goal.find(goal => goal._id === this.props.location.state.goal);
         const id = this.props.match.params.id;
         const run = goal.runs.find(run => run._id === id);
-        let unitConv = 1;
-        if (this.props.settings.distUnits !== run.distUnit){
-          if (run.distUnit === "mi"){
-            unitConv = 0.62137;
-          }
-          else {unitConv = 1.60934; }
-        }
+        console.log(run)
+        let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, run.distUnit)
         const runIndx = goal.runs.indexOf(run);
         const {name, date, targetPace, actualPace, distance, type, completed, mood} = run;
         this.setState({
             id,
             name,
             date: new Date(date),
-            targetPace,
-            actualPace,
-            distance: (distance*unitConv).toFixed(2),
+            targetPace: paceConvert(targetPace, timeConv),
+            actualPace: paceConvert(actualPace, timeConv),
+            distance: (distance*distConv).toFixed(2),
             distUnit: this.props.settings.distUnits,
             runtype: type,
             completed,

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {setUnitConv, paceConvert} from '../Utils/helpers';
 
 class CurrStatsCrd extends Component {
   state = {
@@ -29,7 +30,7 @@ class CurrStatsCrd extends Component {
       }
     });
     if (compRuns === 0){
-      this.setState({fstRun: 0})
+      this.setState({fstRun: 0, ttlRuns})
     }
     else {
       this.setState({
@@ -42,18 +43,16 @@ class CurrStatsCrd extends Component {
   }
 }
   render() {
-    let kmConv = 1;
-    if (this.props.distUnits === "km"){
-      kmConv = 1.61;
-    }
+    let {timeConv, distConv} = setUnitConv(this.props.settingUnits, this.props.goalUnits);
+    let fastRun = paceConvert(this.state.fstRun, timeConv);
     return (
       <div className="curr-stats-container">
         <h5>Current Stats</h5>
         <div className="stat-card stat-card__stats-data">
-          <p><strong>Longest Run: </strong>{`${(this.state.lngRun*kmConv).toFixed(2)} ${this.props.distUnits}`}</p>
-          <p><strong>Fastest Mile: </strong>{`${this.state.fstRun} min / ${this.props.distUnits}`}</p>
+          <p><strong>Longest Run: </strong>{`${(this.state.lngRun * distConv).toFixed(2)} ${this.props.settingUnits}`}</p>
+          <p><strong>Fastest Mile: </strong>{`${fastRun} min / ${this.props.settingUnits}`}</p>
           <p><strong>Completed Runs: </strong>{`${this.state.compRuns} / ${this.state.ttlRuns}`}</p>
-          <p><strong>Total Distance: </strong>{`${(this.state.ttlDist*kmConv).toFixed(2)} ${this.props.distUnits}`}</p>
+          <p><strong>Total Distance: </strong>{`${(this.state.ttlDist * distConv).toFixed(2)} ${this.props.settingUnits}`}</p>
           {this.props.goal.name ? null : <p> No Current Goal Set</p>}
         </div>
       </div>

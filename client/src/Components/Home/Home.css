@@ -34,20 +34,6 @@
 .title-blk--completed-runs {
     background: #58B368;
 }
-/* 
-.upcoming-runs__title-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100vw;
-    padding:5px 15px;
-    margin-bottom: 10px;
-    background: #D9D872;
-}
-
-.upcoming-runs__title-container h5 {
-    height: 15px;
-} */
 
 .title-bar__add-btn {
     width: 7vw;
@@ -67,6 +53,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    z-index: 5;
     left: 15px;
     bottom: 0;
     transform: translateX(var(--rabbit-x));

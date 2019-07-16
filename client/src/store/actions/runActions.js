@@ -133,7 +133,14 @@ export const editRun = (runObj) => (dispatch, getState) =>{
 export const finishRun = (runObj) => (dispatch, getState) => {
     const {userGoalsID, goalID, runID, mood, actualPace, runIndx} = runObj;
     console.log(runObj)
-    const body = JSON.stringify({userGoalsID, goalID, mood, actualPace});
+    const goal = getState().goals.Goals.find(goal => goal._id === goalID);
+    const run = goal.runs[runIndx];
+    let progress = progressCalc(goal.targetPace, goal.goalDist, actualPace, run.distance);
+    if (progress < parseInt(goal.progress)){
+        progress = goal.progress;
+    }
+    console.log(progress, goal.progress, "PROGRESS")
+    const body = JSON.stringify({userGoalsID, goalID, mood, actualPace, progress});
     axios.patch(`/goals/run/complete/${runID}`, body, tokenConfig(getState))
     .then(res => {
         console.log(res.data, "RUN")
@@ -141,7 +148,22 @@ export const finishRun = (runObj) => (dispatch, getState) => {
             type: FINISH_RUN,
             payload: res.data,
             goalID,
-            runIndx
+            runIndx,
+            progress
         })
     })
+}
+
+
+
+export const progressCalc = (goalPace, goalDist, runPace, runDist) => {
+    goalPace = goalPace.split(":");
+    goalPace = parseInt(goalPace[0]*60) + parseInt(goalPace[1]);
+    runPace = runPace.split(":");
+    runPace = parseInt(runPace[0]*60) + parseInt(runPace[1]); 
+    console.log(goalPace, runPace)
+    const distRatio = runDist/goalDist;
+    const paceWeight = 1 - ((runPace - goalPace)/goalPace);
+    const result =  (distRatio * 0.5) + (paceWeight * distRatio * 0.5);
+    return (100*result).toFixed(2);
 }

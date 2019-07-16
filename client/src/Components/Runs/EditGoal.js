@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { editGoal } from "../../store/actions/runActions";
+import {setUnitConv, paceConvert} from "../Utils/helpers";
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
 import DatePicker from "react-datepicker";
@@ -15,19 +16,13 @@ class EditGoal extends Component {
     }
     componentDidMount(){
         const goal = this.props.goals.find(goal => goal._id === this.props.match.params.id);
-        let unitConv = 1;
-        if (this.props.settings.distUnits !== goal.distUnit){
-          if (goal.distUnit === "mi"){
-            unitConv = 1.60934;
-          }
-          else {unitConv = 0.62137; }
-        }
+        let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, goal.distUnit);
         const {name, raceDay, targetPace, goalDist, goalType,runs,  completed} = goal;
         this.setState({
             name,
             date: new Date(raceDay),
-            targetPace,
-            goalDist: (goalDist*unitConv).toFixed(2),
+            targetPace: paceConvert(targetPace, timeConv),
+            goalDist: (goalDist * distConv).toFixed(2),
             goalType,
             runs,
             completed
@@ -47,7 +42,6 @@ class EditGoal extends Component {
       runs: this.state.runs,
       completed: this.state.completed,
     };
-    console.log(updatedGoal)
     this.props.editGoal(updatedGoal);
     e.target.parentElement.click();
 }

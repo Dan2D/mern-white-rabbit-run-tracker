@@ -80,6 +80,10 @@ const goalSchema = mongoose.Schema({
     completed: {
         type: Boolean,
         default: false
+    },
+    progress: {
+        type: String,
+        default: 0,
     }
 })
 

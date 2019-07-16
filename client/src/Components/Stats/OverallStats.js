@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {setUnitConv, paceConvert} from '../Utils/helpers';
 
 class overAllStats extends Component {
   state = {
@@ -46,24 +47,25 @@ class overAllStats extends Component {
         
     }
 
-  render() {
-    let kmConv = 1;
-    if (this.props.distUnits === "km"){
-      kmConv = 1.61;
-    }
-    return (
-      <div className="overall-stats-container mb-50">
-        <h5>Overall Stats</h5>
-        <div className="stat-card stat-card__stats-data">
-        <p><strong>Longest Run: </strong>{`${(this.state.lngRun*kmConv).toFixed(2)} ${this.props.distUnits}`}</p>
-          <p><strong>Fastest Mile: </strong>{`${this.state.fstRun} min / ${this.props.distUnits}`}</p>
-          <p><strong>Completed Runs: </strong>{`${this.state.compRuns}`}</p>
-          <p><strong>Total Distance: </strong>{`${(this.state.ttlDist*kmConv).toFixed(2)} ${this.props.distUnits}`}</p>
+    render() {
+      console.log(this.state)
+      let {timeConv, distConv} = setUnitConv(this.props.settingUnits, this.props.goals[0].distUnit);
+      let fastRun = paceConvert(this.state.fstRun, timeConv);
+  
+      return (
+        <div className="overall-stats-container mb-50">
+          <h5>Overall Stats</h5>
+          <div className="stat-card stat-card__stats-data">
+          <p><strong>Longest Run: </strong>{`${(this.state.lngRun * distConv).toFixed(2)} ${this.props.settingUnits}`}</p>
+            <p><strong>Fastest Mile: </strong>{`${fastRun} min / ${this.props.settingUnits}`}</p>
+            <p><strong>Completed Runs: </strong>{`${this.state.compRuns}`}</p>
+            <p><strong>Total Distance: </strong>{`${(this.state.ttlDist * distConv).toFixed(2)} ${this.props.settingUnits}`}</p>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
-}
+  
 
 
 export default overAllStats;

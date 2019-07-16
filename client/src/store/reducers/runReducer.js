@@ -25,7 +25,9 @@ const runReducer = (state = initialState, action) => {
                 })        
         case FINISH_RUN:
             return produce(state, draft => {
-                draft.Goals.find(goal => goal._id === action.goalID).runs[action.runIndx] = action.payload
+                let goal = draft.Goals.find(goal => goal._id);
+                goal.runs[action.runIndx]= action.payload;
+                goal.progress = action.progress;
             })
          case ADD_GOAL:
             return {
