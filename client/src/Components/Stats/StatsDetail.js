@@ -44,7 +44,7 @@ class StatsDetail extends Component {
                   <button className="btn btn-dark goal-nav__btn" onClick={(e) => this.handleDeleteGoal(e)}>Delete Goal?</button>
                 </Link>
               </div>
-                <div className="title-blk title-blk--goal d-flex mb-3">
+                <div className="stats-title-blk stats-title-blk--goal d-flex mb-3">
                     <p><strong>{goal.name}</strong></p>
                     <p>{`Status: ${goal.completed ? "Completed" : "In Progress ..."}`}</p>
                 </div>

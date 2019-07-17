@@ -46,11 +46,6 @@ function Nav(props) {
                 <button className="log-out" onClick={props.logOut}>Log Out</button>
               </Link>
             </li>
-            <li>
-              <Link to={{pathname: "/add/goal", state: {type: "goal"}}}>
-                <button className="add-goal">+ Add Goal</button>
-              </Link>
-            </li>
           </ul>
         </div>
       </div>

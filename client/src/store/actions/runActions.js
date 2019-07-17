@@ -1,4 +1,6 @@
 import {
+  GOALS_LOADING,
+  GOALS_LOADED,
   GET_GOALS,
   ADD_GOAL,
   DEL_GOAL,
@@ -14,13 +16,15 @@ import { tokenConfig } from "./authActions";
 const config = { headers: { "Content-type": "application/json" } };
 
 export const getUserGoals = userGoalsID => (dispatch, getState) => {
+  // dispatch({type: GOALS_LOADING});
   axios
     .get(`/goals/${userGoalsID}`, tokenConfig(getState))
     .then(res => {
       dispatch({
         type: GET_GOALS,
         payload: res.data
-      });
+      })
+      // return dispatch({type: GOALS_LOADED})
     })
     .catch(err => console.log(`ERROR: ${err}`));
 };

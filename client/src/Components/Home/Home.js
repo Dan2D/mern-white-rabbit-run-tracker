@@ -60,7 +60,12 @@ class Home extends Component {
     let completedRuns = 0;
     return (
       <div className="home">
-        <h5 className="ml-2">Progress</h5>
+        <div className="title-blk title-blk--progress d-flex justify-start align-center">
+        <h5 className="title-blk__prog-title m-2">Progress</h5>
+        <Link to={{pathname: "/add/goal", state: {type: "goal"}}}>
+                <button className="add-goal m-2">+Goal</button>
+          </Link>
+        </div>
         <div className="goal-container container">
           <h6>
             <strong>Goal: </strong>
@@ -85,6 +90,7 @@ class Home extends Component {
             }`}
           </h6>
           <div className="visual-progress">
+           <p className="start-pos">|</p>
             <div className="rabbit-percent">
               <p>{`${currentGoal.progress}%`}</p>
               <p>&#9660;</p>

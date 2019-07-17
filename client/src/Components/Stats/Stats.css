@@ -6,7 +6,7 @@
     color: white;
 }
 
-.title-blk {
+.stats-title-blk {
     justify-content: space-between;
     align-items:center;
     color: white;
@@ -20,7 +20,7 @@
     font-weight: 300;
 }
 
-.title-blk--goal {
+.stats-title-blk--goal {
     background: #D9D872;
 }
 

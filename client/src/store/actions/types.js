@@ -13,6 +13,7 @@ export const REGISTER_SETTINGS = 'REGISTER_SETTINGS';
 export const GET_SETTINGS = 'GET_SETTINGS';
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 export const GOALS_LOADING = 'GOALS_LOADING';
+export const GOALS_LOADED = 'GOALS_LOADED';
 export const USER_LOADING = 'USER_LOADING';
 export const USER_LOADED = 'USER_LOADED';
 export const AUTH_ERROR = 'AUTH_ERROR';

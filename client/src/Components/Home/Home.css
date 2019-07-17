@@ -1,12 +1,32 @@
 :root {
     --rabbit-x: 0;
 }
+
+button {
+    color: white;
+}
+
 .home {
     color: white;
 }
 
 .goal-container {
     position: relative;
+}
+
+.title-blk--progress {
+    background: #D9D872;
+}
+
+.title-blk__prog-title {
+    line-height: 1.5;
+}
+
+button.add-goal {
+    font-size: 15px;
+    padding: 5px;
+    background: #009975;
+    border-radius: 5px;
 }
 
 .upcoming-runs {
@@ -46,6 +66,12 @@
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
+}
+
+.start-pos {
+    position: absolute;
+    left: 15px;
+    bottom: -3vh;
 }
 
 .rabbit-percent {

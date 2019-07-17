@@ -13,8 +13,10 @@ import "./Runs.css";
 
 class CreateGoal extends Component {
     state = {
-      date: new Date(),
-    goalType: "5K",
+    name: "",
+    date: new Date(),
+    targetPace: "",
+    goalType: "",
     ttlMsg: null,
     paceMsg: null,
     distMsg: null
@@ -32,20 +34,20 @@ class CreateGoal extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const {name, pace, distance} = this.state;
+    const {name, targetPace, goalDist} = this.state;
     this.setState({ttlMsg: null, paceMsg: null, distMsg: null});
     this.setState({ttlMsg: validateTitle(name)})
-    this.setState({paceMsg: validatePace(pace)})
-    this.setState({distMsg: validateDist(distance)})
-    if (validateTitle(name) !== null || validatePace(pace) !== null || validateDist(distance) !== null){
+    this.setState({paceMsg: validatePace(targetPace)})
+    this.setState({distMsg: validateDist(goalDist)})
+    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(goalDist) !== null){
       return null;
     }
     const newGoal = {
       userGoalsID: this.props.userGoalsID,
       name: this.state.name,
       raceDay: this.state.date.toISOString().substr(0,10),
-      targetPace: this.state.pace,
-      goalDist: this.state.distance,
+      targetPace: this.state.targetPace,
+      goalDist: this.state.goalDist,
       distUnits: this.props.settings.distUnits,
       goalType: this.state.goalType,
       runs: [],
@@ -55,8 +57,37 @@ class CreateGoal extends Component {
     e.target.parentElement.click();
 }
 
-  handleChange = e => {
+  handleChange = (e) => {
       this.setState({[e.target.name]: e.target.value})
+      if (e.target.name === "goalType"){
+        switch(e.target.value){
+          case "5K":
+            if (this.props.settings.distUnits === "km"){
+              return this.setState({goalDist: 5.0})
+            }
+            return this.setState({goalDist: 3.10})
+          case "10K":
+              if (this.props.settings.distUnits === "km"){
+                return this.setState({goalDist: 10.0})
+              }
+              return this.setState({goalDist: 6.21})
+          case "Half-Marathon":
+              if (this.props.settings.distUnits === "km"){
+                return this.setState({goalDist: 21.10})
+              }
+              return this.setState({goalDist: 13.11})
+          case "Marathon":
+              if (this.props.settings.distUnits === "km"){
+                return this.setState({goalDist: 42.20})
+              }
+              return this.setState({goalDist: 26.22})
+          case "Distance":
+          case "Fast Mile":
+          case "Relay":
+          default:
+            return null;
+        }
+      }
   };
 
   handleDateChange = (date) => {
@@ -65,10 +96,12 @@ class CreateGoal extends Component {
 
   render() {
     const goalTypes = [
+      "Select an Option",
       "5K",
       "10K",
       "Half-Marathon",
       "Marathon",
+      "Distance",
       "Fast Mile",
       "Relay"
     ];
@@ -79,14 +112,14 @@ class CreateGoal extends Component {
     }
     return (
       <div className="create-run container">
-        <form onSubmit={e => this.handleSubmit(e)}>
+        <form onSubmit={(e) => this.handleSubmit(e)}>
           <div className="form-group">
             <label htmlFor="name">Goal</label>
             <input
               className="form-control"
               type="text"
               required
-              onChange={this.handleChange}
+              onChange={(e) => this.handleChange(e)}
               name="name"
               placeholder="Title"
             />
@@ -102,30 +135,29 @@ class CreateGoal extends Component {
               onChange={this.handleDateChange}
               minDate={new Date()}
               peekNextMonth
-              onFocus={e => (e.target.readOnly = true)}
+              onFocus={(e) => (e.target.readOnly = true)}
               showMonthDropdown
               showYearDropdown
               dropdownMode="select"
             />
           </div>
           <div className="form-group">
-            <label htmlFor="pace">Goal Pace (min , sec)</label>
-            <p><i>For example 09:45</i></p>
-            <span>
-            <input className="form-control" onChange={this.handleChange} type="text" name="pace"/>
-            <p className="error-msg">{this.state.paceMsg}</p>
-            </span>
-            
+            <label htmlFor="pace">Goal Pace (mm:ss)</label>
+            <input className="form-control" onChange={this.handleChange} type="text" name="targetPace"/>
+            <p className="error-msg">{this.state.paceMsg}</p>            
           </div>
           <div className="form-group">
             <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
-            <input className="form-control" onChange={this.handleChange} type="text" name="distance" />
+            <input className="form-control" onChange={this.handleChange} type="text" name="goalDist" value={this.state.goalDist}/>
             <p className="error-msg">{this.state.distMsg}</p>
           </div>
           <div className="form-group">
-            <label htmlFor="run-type">Type</label>
+            <label htmlFor="goal-type">Type</label>
             <select className="form-control" onChange={this.handleChange} value={this.state.goalType} name="goalType" id="goalType">
               {goalTypes.map(goal => {
+                if (goal === "Select an Option"){
+                  return (<option key={goal} value="">{goal}</option>)
+                }
                 return (
                   <option key={goal} value={goal}>
                     {goal}
@@ -135,7 +167,7 @@ class CreateGoal extends Component {
             </select>
           </div>
           <Link to="/">
-            <button type="submit" className="btn btn-primary" onClick={e => this.handleSubmit(e)}>Add Goal</button>
+            <button type="submit" className="btn btn-primary" onClick={(e) => this.handleSubmit(e)}>Add Goal</button>
           </Link>
         </form>
       </div>

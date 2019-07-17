@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { getUserGoals } from "../store/actions/runActions";
 import { connect } from "react-redux";
+import Spinner from 'react-spinkit';
 import PropTypes from 'prop-types';
 import Login from "./User/Login";
 import Register from "./User/Register";
@@ -20,7 +21,7 @@ import { Route } from "react-router-dom";
 class Content extends Component {
   static propTypes = {
     getUserGoals: PropTypes.func.isRequired,
-    isAuthenticated: PropTypes.bool
+    auth: PropTypes.object
   }
   render() {
     const nav = (
@@ -29,9 +30,12 @@ class Content extends Component {
         <div style={{ height: "10vh"}} />
       </Fragment>
     );
+    if (this.props.auth.isLoading){
+      return <Spinner name="double-bounce"/>
+    }
     return (
       <div className="content-container">
-        {this.props.isAuthenticated ? nav : null}
+        {this.props.auth.isAuthenticated ? nav : null}
         <Route path="/" exact component={Home} />
         <Route path="/login" exact component={Login} />
         <Route path="/register" component={Register} />
@@ -51,7 +55,7 @@ class Content extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.auth.isAuthenticated
+    auth: state.auth
   };
 };
 

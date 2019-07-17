@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import { delRun } from '../../store/actions/runActions';
 import {setUnitConv, paceConvert} from '../Utils/helpers';
-import rating1 from '../../images/rating-1.png'
-import rating2 from '../../images/rating-2.png'
-import rating3 from '../../images/rating-3.png'
-import rating4 from '../../images/rating-4.png'
-import rating5 from '../../images/rating-5.png'
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';

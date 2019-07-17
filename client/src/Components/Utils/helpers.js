@@ -31,9 +31,9 @@ return targetPace;
 
   export const validateTitle = (title) => {
     if (!(/.{1,30}$/).test(title)){
-       return "Title must be less than 30 characters"
+       return "Title must be between 1 and 30 characters"
     }
-    if (!(/^[\w\s#$^+=!*()@%&]{1,30}$/).test(title)){
+    if (!(/^[\w\s#$^+=!*()@%&]{2,30}$/).test(title)){
       return "Title can only contain alphanumeric and special characters (#$^+=!*()@%&)";
     }
     return null;
