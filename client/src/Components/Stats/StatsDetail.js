@@ -49,7 +49,7 @@ class StatsDetail extends Component {
               mood={this.state.statGoal.mood}
               progress={this.state.statGoal.progress}
               completed={this.state.statGoal.completed}
-              distUnits={this.state.statGoal.distUnits}
+              goalDistUnits={this.state.statGoal.distUnits}
               />
               <div className="goal-nav">
                 {this.state.statGoal.completed ? null : finishGoalBtn}
@@ -77,7 +77,7 @@ class StatsDetail extends Component {
                     tPace={run.targetPace}
                     aPace={run.actualPace}
                     dist={run.runDist}
-                    goalDistUnits={run.distUnits}
+                    distUnits={run.distUnits}
                     type={run.runType}
                     completed={run.completed}
                     mood={run.mood}

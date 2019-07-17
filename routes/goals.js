@@ -165,14 +165,14 @@ router.patch("/runs/:runID", auth, (req, res) => {
 
 // COMPLETE RUN
 router.patch("/run/complete/:runID", auth, (req, res) => {
-  const {userGoalsID, goalID, mood, actualPace, progress} = req.body;
+  const {userGoalsID, goalID, mood, actualPace, distUnits, progress} = req.body;
   console.log(req.body)
   Goal.findById(userGoalsID)
   .then(goalList => {
     let goal = goalList.Goals.id(goalID)
     let run = goal.runs.id(req.params.runID);
     goal.set({progress: progress})
-    run.set({completed: true, mood, actualPace})
+    run.set({completed: true, mood, actualPace, distUnits})
     goalList.save()
     .then(() => res.json(run))
   })

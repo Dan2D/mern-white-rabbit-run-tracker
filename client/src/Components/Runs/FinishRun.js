@@ -33,14 +33,16 @@ class FinishRun extends Component {
         const id = this.props.match.params.id;
         const run = goal.runs.find(run => run._id === id);
         const runIndx = goal.runs.indexOf(run);
-        const {name, date, targetPace, distance, type} = run;
+        const {name, date, targetPace, runDist, runType, distUnits} = run;
         this.setState({
             id,
             name,
             date: new Date(date),
             targetPace,
-            distance,
-            type,
+            runDist,
+            runType,
+            distUnits,
+            goalUnits: goal.distUnits,
             runIndx
         })
     }
@@ -59,6 +61,9 @@ class FinishRun extends Component {
       runID: this.state.id,
       actualPace: this.state.actualPace,
       mood: this.state.runMood,
+      runDist: this.state.runDist,
+      distUnits: this.state.distUnits,
+      goalUnits: this.state.goalUnits,
       runIndx: this.state.runIndx
     };
     this.props.finishRun(finishedRun);
@@ -76,7 +81,7 @@ handleChange = e => {
             <p>Run: {this.state.name}</p>
             <p>Date: {this.state.date.toString().substr(0,15)}</p>
             <p>Target Pace:{` ${this.state.targetPace} min / ${this.props.distUnits}`}</p>
-            <p> Distance:{` ${this.state.distance} ${this.props.distUnits}`}</p>
+            <p> Distance:{` ${this.state.runDist} ${this.props.distUnits}`}</p>
             <p>Type: {this.state.type}</p>
             <div className="">
             <p>Actual Pace</p>

@@ -74,7 +74,7 @@ class Home extends Component {
             raceDay={currentGoal.raceDay}
             tPace={currentGoal.targetPace}
             goalDist={currentGoal.goalDist}
-            goalDistUnits={currentGoal.goalDist}
+            goalDistUnits={currentGoal.distUnits}
             />
           <div className="visual-progress">
            <p className="start-pos">|</p>

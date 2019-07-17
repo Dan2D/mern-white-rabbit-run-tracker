@@ -1,21 +1,18 @@
 
 export const   setUnitConv = (settingUnits, dataUnits) => {
-  console.log(settingUnits, dataUnits)
     let distConv = 1;
     let timeConv = 1;
     if (settingUnits !== dataUnits) {
-      if (settingUnits === "km") {
+      if (settingUnits === "km" && dataUnits === "mi") {
         distConv = 1.60934;
         timeConv = 0.62137;
       }
-      if (settingUnits === "mi"){
+      if (settingUnits === "mi" && dataUnits === "km"){
         distConv = 0.62137;
         timeConv = 1.60934;
       }
-      console.log(timeConv, distConv, "CONVERTED")
       return {timeConv, distConv};
     }
-    console.log(timeConv, distConv, "SAME")
     return {timeConv, distConv};
   }
 
