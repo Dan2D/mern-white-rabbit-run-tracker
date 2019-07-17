@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { getUserGoals } from "../../store/actions/runActions";
 import { getUserSettings } from "../../store/actions/settingsActions";
 import {setUnitConv, paceConvert} from '../Utils/helpers';
+import GoalTile from '../Runs/GoalTile';
 import PropTypes from "prop-types";
 import RunTile from "../Runs/RunTile";
 import progressRbbt from "../../images/progress-rabbit.png";
@@ -54,41 +55,27 @@ class Home extends Component {
     }
     const currentGoal = this.props.currentGoal ? this.props.currentGoal : this.state.noGoal;
     this.rabbitProgressMove(currentGoal);
-    let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, currentGoal.distUnits);
-    let targetPace = paceConvert(currentGoal.targetPace, timeConv);
+    let {distConv} = setUnitConv(this.props.settings.distUnits, currentGoal.distUnits);
     let newRuns = 0;
     let completedRuns = 0;
+    const addBtn = <Link to={{pathname: "/add/goal", state: {type: "goal"}}}>
+                    <button className="add-goal m-2">+Goal</button>
+                  </Link>;
     return (
       <div className="home">
         <div className="title-blk title-blk--progress d-flex justify-start align-center">
         <h5 className="title-blk__prog-title m-2">Progress</h5>
-        <Link to={{pathname: "/add/goal", state: {type: "goal"}}}>
-                <button className="add-goal m-2">+Goal</button>
-          </Link>
+          {currentGoal === this.state.noGoal ? addBtn : null}
         </div>
         <div className="goal-container container">
-          <h6>
-            <strong>Goal: </strong>
-            {`${currentGoal.name}`}
-          </h6>
-          <h6>
-            <strong>Goal Type: </strong>
-            {`${currentGoal.goalType}`}
-          </h6>
-          <h6>
-            <strong>Goal Date: </strong>
-            {`${currentGoal.raceDay.substr(0, 10)}`}
-          </h6>
-          <h6>
-            <strong>Target Pace: </strong>
-            {`${targetPace} min / ${this.props.settings.distUnits}`}
-          </h6>
-          <h6>
-            <strong>Goal Distance: </strong>
-            {`${(currentGoal.goalDist*distConv).toFixed(2)} ${
-              this.props.settings.distUnits
-            }`}
-          </h6>
+          <GoalTile
+            name={currentGoal.name}
+            goalType={currentGoal.goalType}
+            raceDay={currentGoal.raceDay}
+            tPace={currentGoal.targetPace}
+            goalDist={currentGoal.goalDist}
+            goalDistUnits={currentGoal.goalDist}
+            />
           <div className="visual-progress">
            <p className="start-pos">|</p>
             <div className="rabbit-percent">
@@ -131,9 +118,9 @@ class Home extends Component {
                     name={run.name}
                     date={run.date}
                     tPace={run.targetPace}
-                    dist={run.distance}
+                    dist={run.runDist}
                     distUnits={run.distUnits}
-                    type={run.type}
+                    type={run.runType}
                     completed={run.completed}
                   />
                 );
@@ -166,9 +153,9 @@ class Home extends Component {
                     date={run.date}
                     tPace={run.targetPace}
                     aPace={run.actualPace}
-                    dist={run.distance}
+                    dist={run.runDist}
                     distUnits={run.distUnits}
-                    type={run.type}
+                    type={run.runType}
                     completed={run.completed}
                     mood={run.mood}
                   />

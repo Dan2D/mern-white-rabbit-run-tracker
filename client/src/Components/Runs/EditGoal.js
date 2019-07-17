@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { editGoal } from "../../store/actions/runActions";
 import {setUnitConv, paceConvert} from "../Utils/helpers";
 import {validateTitle, validatePace, validateDist} from '../Utils/helpers';
@@ -13,10 +13,15 @@ import "./Runs.css";
 
 class EditGoal extends Component {
     state = {
+    name: "",
     date: new Date(),
-    goalType: "5K",
+    targetPace: "",
+    actualPace: "",
+    goalDist: "",
+    goalType: "",
     ttlMsg: null,
-    paceMsg: null,
+    tPaceMsg: null,
+    aPaceMsg: null,
     distMsg: null,
     }
 
@@ -35,12 +40,14 @@ class EditGoal extends Component {
     componentDidMount(){
         const goal = this.props.goals.find(goal => goal._id === this.props.match.params.id);
         let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, goal.distUnits);
-        const {name, raceDay, targetPace, goalDist, goalType, runs, completed} = goal;
+        const {name, raceDay, targetPace, goalDist, goalType, runs, completed, actualPace, mood} = goal;
         this.setState({
             name,
             date: new Date(raceDay),
             targetPace: paceConvert(targetPace, timeConv),
             goalDist: (goalDist * distConv).toFixed(2),
+            actualPace: paceConvert(actualPace, timeConv),
+            goalMood: mood.toString(), 
             goalType,
             runs,
             completed
@@ -48,12 +55,13 @@ class EditGoal extends Component {
     }
   handleSubmit = e => {
     e.preventDefault();
-    const {name, targetPace, goalDist} = this.state;
-    this.setState({ttlMsg: null, paceMsg: null, distMsg: null});
+    const {name, targetPace, actualPace, goalDist} = this.state;
+    this.setState({ttlMsg: null, paceMsg: null, aPaceMsg: null, distMsg: null});
     this.setState({ttlMsg: validateTitle(name)})
-    this.setState({paceMsg: validatePace(targetPace)})
+    this.setState({tPaceMsg: validatePace(targetPace)})
+    this.setState({aPaceMsg: validatePace(actualPace)})
     this.setState({distMsg: validateDist(goalDist)})
-    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(goalDist) !== null){
+    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validatePace(actualPace) !== null || validateDist(goalDist) !== null){
       return null;
     }
     const updatedGoal = {
@@ -62,6 +70,8 @@ class EditGoal extends Component {
       name: this.state.name,
       raceDay: this.state.date,
       targetPace: this.state.targetPace,
+      actualPace: this.state.actualPace,
+      mood: this.state.goalMood,
       goalDist: this.state.goalDist,
       distUnits: this.props.settings.distUnits,
       goalType: this.state.goalType,
@@ -82,6 +92,7 @@ class EditGoal extends Component {
 
   render() {
     const goalTypes = [
+      "Select an Option",
       "5K",
       "10K",
       "Half-Marathon",
@@ -90,6 +101,21 @@ class EditGoal extends Component {
       "Fast Mile",
       "Relay"
     ];
+    let finishedStats = <Fragment>
+                          <label htmlFor="pace">Actual Pace (mm:ss)</label>
+                          <input className="form-control mb-3" onChange={(e) => this.handleChange(e)} type="text" name="actualPace" value={this.state.actualPace} />
+                          <p className="error-msg">{this.state.aPaceMsg}</p>  
+                          <p>How Did Your Run Feel?</p>
+                          <div className="form-group">
+                            <fieldset className=" d-flex justify-content-between">
+                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-1.png')} alt="mad face"/><input type="radio" name="goalMood" value="1" checked={this.state.goalMood === "1"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-2.png')} alt="sad face"/><input type="radio" name="goalMood" value="2" checked={this.state.goalMood === "2"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-3.png')} alt="meh face"/><input type="radio" name="goalMood" value="3" checked={this.state.goalMood === "3"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-4.png')} alt="happy face"/><input type="radio" name="goalMood" value="4" checked={this.state.goalMood === "4"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-5.png')} alt="very happy face"/><input type="radio" name="goalMood" value="5" checked={this.state.goalMood === "5"} onChange={(e) => this.handleChange(e)}/></label>
+                            </fieldset>
+                        </div>
+                      </Fragment>
     return (
       <div className="create-run container">
         <form onSubmit={e => this.handleSubmit(e)}>
@@ -133,6 +159,7 @@ class EditGoal extends Component {
             <p className="error-msg">{this.state.distMsg}</p>
           </div>
           <div className="form-group">
+            {this.state.completed ? finishedStats : null}
             <label htmlFor="run-type">Type</label>
             <select className="form-control" onChange={this.handleChange} value={this.state.goalType} name="goalType" id="goalType">
               {goalTypes.map(goal => {

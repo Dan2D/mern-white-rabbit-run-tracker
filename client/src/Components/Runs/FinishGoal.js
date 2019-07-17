@@ -54,7 +54,7 @@ static propTypes = {
       userGoalsID: this.props.goals._id,
       goalID: this.state.id,
       actualPace: this.state.actualPace,
-      goalMood: this.state.goalMood,
+      mood: this.state.goalMood,
       completed: true
     };
     this.props.finishGoal(finishedGoal);

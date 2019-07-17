@@ -13,7 +13,11 @@ import "./Runs.css";
 
 class EditRun extends Component {
     state = {
+      name: "",
       date: new Date(),
+      targetPace: "",
+      actualPace: "",
+      runDist: "",
       runType: 'Long Distance',
       ttlMsg: null,
       tPaceMsg: null,
@@ -39,16 +43,16 @@ class EditRun extends Component {
         const run = goal.runs.find(run => run._id === id);
         let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, run.distUnits);
         const runIndx = goal.runs.indexOf(run);
-        const {name, date, targetPace, actualPace, distance, type, completed, mood} = run;
+        const {name, date, targetPace, actualPace, runDist, runType, completed, mood} = run;
         this.setState({
             id,
             name,
             date: new Date(date),
             targetPace: paceConvert(targetPace, timeConv),
             actualPace: paceConvert(actualPace, timeConv),
-            distance: (distance*distConv).toFixed(2),
+            runDist: (runDist*distConv).toFixed(2),
             distUnits: this.props.settings.distUnits,
-            runtype: type,
+            runType,
             completed,
             runMood: mood.toString(),
             runIndx
@@ -58,13 +62,13 @@ class EditRun extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const {name, targetPace, distance, actualPace} = this.state;
+    const {name, targetPace, runDist, actualPace} = this.state;
     this.setState({ttlMsg: null, tPaceMsg: null, distMsg: null, aPaceMsg: null});
     this.setState({ttlMsg: validateTitle(name)});
     this.setState({tPaceMsg: validatePace(targetPace)});
     this.setState({aPaceMsg: validatePace(actualPace)});
-    this.setState({distMsg: validateDist(distance)});
-    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(distance) !== null ||validatePace(actualPace) !== null){
+    this.setState({distMsg: validateDist(runDist)});
+    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(runDist) !== null ||validatePace(actualPace) !== null){
       return null;
     }
     const updatedRun = {
@@ -75,9 +79,9 @@ class EditRun extends Component {
       date: this.state.date.toISOString().substr(0,10),
       targetPace: this.state.targetPace,
       actualPace: this.state.actualPace,
-      distance: this.state.distance,
+      runDist: this.state.runDist,
       distUnits: this.state.distUnits,
-      type: this.state.runType,
+      runType: this.state.runType,
       completed: this.state.completed,
       mood: this.state.runMood,
       runIndx: this.state.runIndx
@@ -110,11 +114,11 @@ class EditRun extends Component {
                           <p>How Did Your Run Feel?</p>
                           <div className="form-group">
                             <fieldset className=" d-flex justify-content-between">
-                                <label className="d-flex flex-column">1<input type="radio" name="runMood" value="1" checked={this.state.runMood === "1"} onChange={(e) => this.handleChange(e)}/></label>
-                                <label className="d-flex flex-column">2<input type="radio" name="runMood" value="2" checked={this.state.runMood === "2"} onChange={(e) => this.handleChange(e)}/></label>
-                                <label className="d-flex flex-column">3<input type="radio" name="runMood" value="3" checked={this.state.runMood === "3"} onChange={(e) => this.handleChange(e)}/></label>
-                                <label className="d-flex flex-column">4<input type="radio" name="runMood" value="4" checked={this.state.runMood === "4"} onChange={(e) => this.handleChange(e)}/></label>
-                                <label className="d-flex flex-column">5<input type="radio" name="runMood" value="5" checked={this.state.runMood === "5"} onChange={(e) => this.handleChange(e)}/></label>
+                            <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-1.png')} alt="mad face"/><input type="radio" name="runMood" value="1" checked={this.state.runMood === "1"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-2.png')} alt="sad face"/><input type="radio" name="runMood" value="2" checked={this.state.runMood === "2"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-3.png')} alt="meh face"/><input type="radio" name="runMood" value="3" checked={this.state.runMood === "3"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-4.png')} alt="happy face"/><input type="radio" name="runMood" value="4" checked={this.state.runMood === "4"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-5.png')} alt="very happy face"/><input type="radio" name="runMood" value="5" checked={this.state.runMood === "5"} onChange={(e) => this.handleChange(e)}/></label>
                             </fieldset>
                         </div>
                       </Fragment>
@@ -157,13 +161,13 @@ class EditRun extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
-            <input className="form-control" onChange={(e) => this.handleChange(e)} type="text" name="distance" value={this.state.distance} />
+            <input className="form-control" onChange={(e) => this.handleChange(e)} type="text" name="runDist" value={this.state.runDist} />
             <p className="error-msg">{this.state.distMsg}</p>  
           </div>
           {this.state.completed ? finishedStats : null}
           <div className="form-group">
             <label htmlFor="run-type">Type</label>
-            <select className="form-control" onChange={(e) => this.handleChange(e)}  name="runType" id="runType" value={this.state.type}>
+            <select className="form-control" onChange={(e) => this.handleChange(e)}  name="runType" id="runType" value={this.state.runType}>
               {runTypes.map(run => {
                 return (
                   <option key={run} value={run}>

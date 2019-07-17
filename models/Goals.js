@@ -13,7 +13,7 @@ const runSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    distance: {
+    runDist: {
         type: Number,
         required: true
     },
@@ -22,7 +22,7 @@ const runSchema = mongoose.Schema({
         required: true,
         default: "mi"
     },
-    type: {
+    runType: {
         type: String,
         default: "Long Distance"
     },

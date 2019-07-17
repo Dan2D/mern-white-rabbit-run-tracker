@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import RunTile from '../Runs/RunTile';
+import GoalTile from '../Runs/GoalTile';
 import {delGoal} from '../../store/actions/runActions';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -9,6 +10,8 @@ import './Stats.css'
 class StatsDetail extends Component {
     state = {
         statGoal: {
+          name: "",
+            raceDay: "",
             runs: []
         }
     }
@@ -29,12 +32,25 @@ class StatsDetail extends Component {
       e.target.parentElement.click();
     }
   render() {
+    console.log(this.state.statGoal)
     const finishGoalBtn = <Link to={`/complete/goal/${this.props.match.params.id}`}>
                             <button className="btn btn-info goal-nav__btn">Finish Goal>></button>
                           </Link>;
     let goal = this.props.goals.find(goal => goal._id === this.props.match.params.id);
     return (
             <div className="stats-detail-container">
+              <GoalTile
+              name={this.state.statGoal.name}
+              goalType={this.state.statGoal.goalType}
+              raceDay={this.state.statGoal.raceDay}
+              tPace={this.state.statGoal.targetPace}
+              goalDist={this.state.statGoal.goalDist}
+              aPace={this.state.statGoal.actualPace}
+              mood={this.state.statGoal.mood}
+              progress={this.state.statGoal.progress}
+              completed={this.state.statGoal.completed}
+              distUnits={this.state.statGoal.distUnits}
+              />
               <div className="goal-nav">
                 {this.state.statGoal.completed ? null : finishGoalBtn}
                 <Link to={`/edit/goal/${this.props.match.params.id}`}>
@@ -60,9 +76,9 @@ class StatsDetail extends Component {
                     date={run.date}
                     tPace={run.targetPace}
                     aPace={run.actualPace}
-                    dist={run.distance}
-                    distUnits={run.distUnits}
-                    type={run.type}
+                    dist={run.runDist}
+                    goalDistUnits={run.distUnits}
+                    type={run.runType}
                     completed={run.completed}
                     mood={run.mood}
                     />

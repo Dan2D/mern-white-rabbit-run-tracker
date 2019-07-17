@@ -11,8 +11,8 @@ class overAllStats extends Component {
   };
 
   static propTypes = {
-    setUnitConv: PropTypes.func.isRequired,
-    paceConvert: PropTypes.func.isRequired
+    setUnitConv: PropTypes.func,
+    paceConvert: PropTypes.func
   }
 
   componentDidMount() {
@@ -28,9 +28,9 @@ class overAllStats extends Component {
                     let pace = run.actualPace.split(":");
                     pace = pace[0]*60 + pace[1];
                     compRuns++;
-                    ttlDist+= run.distance
-                    if (run.distance >lngRun){
-                        lngRun = run.distance;
+                    ttlDist+= run.runDist
+                    if (run.runDist >lngRun){
+                        lngRun = run.runDist;
                     }
                     if (pace < fstRun){
                         fstRun = pace;

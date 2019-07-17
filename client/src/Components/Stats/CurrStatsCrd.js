@@ -26,9 +26,9 @@ class CurrStatsCrd extends Component {
         let pace = run.actualPace.split(":");
         pace = parseInt(pace[0] * 60) + parseInt(pace[1]);
         compRuns++;
-        ttlDist += run.distance;
-        if (run.distance > lngRun) {
-          lngRun = run.distance;
+        ttlDist += run.runDist;
+        if (run.runDist > lngRun) {
+          lngRun = run.runDist;
         }
         if (pace < fstRun) {
           fstRun = pace;

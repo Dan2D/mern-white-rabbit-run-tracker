@@ -1,19 +1,21 @@
 
-export const   setUnitConv = (settingsUnits, dataUnits) => {
+export const   setUnitConv = (settingUnits, dataUnits) => {
+  console.log(settingUnits, dataUnits)
     let distConv = 1;
     let timeConv = 1;
-    if (settingsUnits !== dataUnits) {
-      // Going from mi to km
-      if (settingsUnits === "km") {
+    if (settingUnits !== dataUnits) {
+      if (settingUnits === "km") {
         distConv = 1.60934;
         timeConv = 0.62137;
-        // From km to mi
-      } else {
+      }
+      if (settingUnits === "mi"){
         distConv = 0.62137;
         timeConv = 1.60934;
       }
+      console.log(timeConv, distConv, "CONVERTED")
       return {timeConv, distConv};
     }
+    console.log(timeConv, distConv, "SAME")
     return {timeConv, distConv};
   }
 
@@ -33,7 +35,7 @@ return targetPace;
     if (!(/.{1,30}$/).test(title)){
        return "Title must be between 1 and 30 characters"
     }
-    if (!(/^[\w\s#$^+=!*()@%&]{2,30}$/).test(title)){
+    if (!(/^[\w\s#$^+=!*()@%&]{1,30}$/).test(title)){
       return "Title can only contain alphanumeric and special characters (#$^+=!*()@%&)";
     }
     return null;
@@ -47,7 +49,7 @@ return targetPace;
   }
 
   export const validateDist = (dist) => {
-    if (!(/^[\d/.]{1,4}$/).test(dist)){
+    if (!(/^[\d/.]{1,5}$/).test(dist)){
       console.log(dist, "DIST")
       return "Please enter a valid distance"
     }

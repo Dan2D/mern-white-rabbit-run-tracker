@@ -12,6 +12,7 @@ import {
   FINISH_RUN
 } from "./types";
 import axios from "axios";
+import {returnErrors} from './errorActions';
 import { tokenConfig } from "./authActions";
 const config = { headers: { "Content-type": "application/json" } };
 
@@ -36,7 +37,7 @@ export const addGoal = goalObj => dispatch => {
     raceDay,
     targetPace,
     goalDist,
-    distUnit,
+    distUnits,
     goalType
   } = goalObj;
   const body = JSON.stringify({
@@ -45,7 +46,7 @@ export const addGoal = goalObj => dispatch => {
     raceDay,
     targetPace,
     goalDist,
-    distUnit,
+    distUnits,
     goalType
   });
   axios.post("/goals/add", body, config).then(res => {
@@ -73,7 +74,7 @@ export const editGoal = goalObj => dispatch => {
     raceDay,
     targetPace,
     goalDist,
-    distUnit,
+    distUnits,
     goalType
   } = goalObj;
   const body = JSON.stringify({
@@ -82,7 +83,7 @@ export const editGoal = goalObj => dispatch => {
     raceDay,
     targetPace,
     goalDist,
-    distUnit,
+    distUnits,
     goalType
   });
   axios.patch(`/goals/goal/${goalID}`, body, config).then(res => {
@@ -114,9 +115,9 @@ export const addRun = runObj => (dispatch, getState) => {
     name,
     targetPace,
     date,
-    distance,
-    distUnit,
-    type
+    runDist,
+    distUnits,
+    runType
   } = runObj;
   const body = JSON.stringify({
     userGoalsID,
@@ -124,17 +125,21 @@ export const addRun = runObj => (dispatch, getState) => {
     name,
     targetPace,
     date,
-    distance,
-    distUnit,
-    type
+    runDist,
+    distUnits,
+    runType
   });
   axios.post("/goals/addrun", body, tokenConfig(getState)).then(res => {
+    console.log(res.data, "RES DATA")
     dispatch({
       type: ADD_RUN,
       payload: res.data,
       goalID
-    });
-  });
+    })
+  })
+  .catch(err => {
+    dispatch(returnErrors(err.response.data, err.response.status));
+  })
 };
 
 export const delRun = idObj => (dispatch, getState) => {
@@ -162,8 +167,8 @@ export const editRun = runObj => (dispatch, getState) => {
     targetPace,
     actualPace,
     date,
-    distance,
-    type,
+    runDist,
+    runType,
     completed,
     mood,
     runIndx
@@ -175,8 +180,8 @@ export const editRun = runObj => (dispatch, getState) => {
     targetPace,
     actualPace,
     date,
-    distance,
-    type,
+    runDist,
+    runType,
     completed,
     mood
   });
@@ -198,7 +203,7 @@ export const finishRun = runObj => (dispatch, getState) => {
     goal.targetPace,
     goal.goalDist,
     actualPace,
-    run.distance
+    run.runDist
   );
   if (progress < parseInt(goal.progress)) {
     progress = goal.progress;
