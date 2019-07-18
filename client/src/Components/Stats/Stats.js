@@ -1,37 +1,49 @@
 import React from "react";
 import { connect } from "react-redux";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import CurrStatsCrd from "./CurrStatsCrd";
 import GoalCrd from "./GoalCrd";
-import OverAllStats from './OverallStats';
-import './Stats.css';
+import OverAllStats from "./OverallStats";
+import "./Stats.css";
 
 function Stats(props) {
   Stats.propTypes = {
     goals: PropTypes.object.isRequired,
     distUnits: PropTypes.string.isRequired
-  }
-    let currGoal = props.goals.find(goal => goal.completed === false) ? props.goals.find(goal => goal.completed === false) : {runs: []};
-    const allGoals = props.goals.map(goal => goal);
+  };
+  let currGoal = props.goals.find((goal) => goal.completed === false)
+    ? props.goals.find((goal) => goal.completed === false)
+    : { runs: [] };
+  const allGoals = props.goals.map((goal) => goal);
   return (
     <div className="stats-container">
-        <div className="stats-goals container">
-          <CurrStatsCrd goal={currGoal} goalUnits={currGoal.distUnits} settingUnits={props.distUnits}/>
-          <h5>Goals</h5>
-          {allGoals.map(goal => {
-              return (
-                <GoalCrd key={goal._id} id={goal._id} name={goal.name} complete={goal.completed} distUnits={props.distUnits}/>
-              );
-          })}
+      <div className="clouds-bg" />
+      <div className="stats-goals">
+        <CurrStatsCrd goal={currGoal} goalUnits={currGoal.distUnits} settingUnits={props.distUnits} />
+        <h5>Goals</h5>
+        {allGoals.map((goal) => {
+          return (
+            <GoalCrd
+              key={goal._id}
+              id={goal._id}
+              name={goal.name}
+              complete={goal.completed}
+              distUnits={props.distUnits}
+            />
+          );
+        })}
       </div>
-      <div className="overall-stats-container">
+      <div>
+        <img className="stats-rabbit" src={require("../../images/sign.png")} alt="Rabbit"/>
+        <div className="overall-stats-container">
           <OverAllStats goals={allGoals} settingUnits={props.distUnits} />
+        </div>
       </div>
     </div>
   );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     goals: state.goals.Goals,
     distUnits: state.settings.distUnits

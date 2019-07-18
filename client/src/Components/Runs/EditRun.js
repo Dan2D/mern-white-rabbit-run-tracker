@@ -108,7 +108,7 @@ class EditRun extends Component {
       "Intervals"
     ];
     let finishedStats = <Fragment>
-                          <label htmlFor="pace">Actual Pace (mm:ss)</label>
+                          <label htmlFor="pace"><strong>Actual Pace</strong> (mm:ss)</label>
                           <input className="form-control mb-3" onChange={(e) => this.handleChange(e)} type="text" name="actualPace" value={this.state.actualPace} />
                           <p className="error-msg">{this.state.aPaceMsg}</p>  
                           <p>How Did Your Run Feel?</p>

@@ -5,7 +5,7 @@ import carrot from "../../images/carrot.png";
 class GoalCrd extends Component {
   render() {
     const complete = (
-      <div className="goal-complete d-flex">
+      <div className="goal-complete d-flex align-items-center">
         <p>Complete</p>
         <img src={carrot} alt="carrot" />
       </div>

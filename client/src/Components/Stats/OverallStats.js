@@ -50,16 +50,14 @@ class overAllStats extends Component {
             compRuns,
             ttlDist
         })
-        }
-        
+      }   
     }
-
     render() {
       let {timeConv, distConv} = setUnitConv(this.props.settingUnits, this.props.goals[0].distUnits);
       let fastRun = paceConvert(this.state.fstRun, timeConv);
   
       return (
-        <div className="overall-stats-tile container mb-50">
+        <div className="overall-stats-tile mb-3">
           <h5>Overall Stats</h5>
           <div className="stat-card stat-card__stats-data">
           <p><strong>Longest Run: </strong>{`${(this.state.lngRun * distConv).toFixed(2)} ${this.props.settingUnits}`}</p>

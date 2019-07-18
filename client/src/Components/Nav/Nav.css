@@ -1,11 +1,15 @@
+
+.navBar-container {
+    background: #454D66;
+    width: 100vw;
+}
+
 .navBar {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     position: relative;
     height: 10vh;
-    width: 100vw;
-    background: #454D66;
   }
 
   .navBar-title {
@@ -19,10 +23,11 @@
 
   .navBar-title__title {
       margin-bottom: 0;
+      font-size: 2rem;
   }
 
   .navBar-title__logo{
-    width: 15vw;
+    width: 40px;
   }
 
   .navBar button {
@@ -35,6 +40,7 @@
       top: 100%;
       padding: 0.5rem 0.5rem 0.5rem 0;
       background: #454D66;
+      z-index: 5;
   }
   
   .navBar__menu ul {
@@ -59,6 +65,7 @@ button.log-out{
   .navBar__menu.open {
     right: 0;
     transition: right 500ms ease-out;
+    z-index: 5;
   }
 
   .navBar__menu.closed {
@@ -66,3 +73,40 @@ button.log-out{
       transition: right 500ms ease-in;
   }
 
+  @media only screen and (min-device-width : 600px) {
+    .my-container {
+        max-width: auto;
+        padding-left: 25px;
+        padding-right: 25px;
+        margin: 0 auto;
+    }
+
+
+    .navBar-title__title {
+        font-size: 3rem;
+    }
+     
+    .navBar-title__logo{
+        width: 60px;
+      }
+
+   
+   
+   }
+
+@media only screen and (min-device-width : 768px) {
+    .navBar{
+        max-width:768px;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    
+}
+
+@media only screen and (min-width: 1200px) {
+    .navBar{
+        min-width: 920px;
+    } 
+}

@@ -1,4 +1,17 @@
+.clouds-bg {
+    position: absolute;
+    height: 30vh;
+    background-image: url('../../images/cloud-bg.png');
+    width: 80%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 0;
+    margin-top: 25px;
+    right: 10px;
+}
+
 .stats-container {
+    position: relative;
     height: 90vh;
     display:flex;
     flex-direction: column;
@@ -13,6 +26,14 @@
     background-size: contain;
     min-height: 100vh;
     max-height: auto;
+}
+
+.stats-goals {
+    z-index: 1;
+}
+
+.stats-detail-container button {
+    border-radius: 5px;
 }
 
 .stats-detail-container p {
@@ -47,7 +68,63 @@
     margin: 2px 5px;
 }
 
+.stats-rabbit {
+    min-width: 50px;
+    width: 10vw;
+    vertical-align: bottom;
+}
+
 .overall-stats-container {
-    height: 30vh;
+    display: flex;
+    align-items: flex-end;
+    height: 25vh;
     background-image: url('../../images/underground-bg.png');
+}
+
+.stats-goals, .overall-stats-tile {
+    width:100%;
+    padding: 0 5vh;
+}
+
+@media only screen and (min-device-width : 600px) {
+
+    .stats-container {
+        max-width: 768px;
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        background: skyblue;
+    }
+
+    .stats-container p {
+        font-size: 1rem;
+    }
+
+    .stats-goals, .overall-stats-tile {
+        width:100%;
+        padding: 0 10vh;
+    }
+
+    .goal-complete img {
+        min-width: 25px;
+        min-height: 25px;
+        width: 3vw;
+        height: 3vw;
+    }
+
+}
+
+@media only screen and (min-device-width : 768px) {
+
+    .title-bar__btn {
+        width: 25px;
+        height: 25px;
+        font-size: 2.5rem;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .stats-container {
+        max-width: 920px;
+    }
 }

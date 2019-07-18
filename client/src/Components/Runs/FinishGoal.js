@@ -77,9 +77,10 @@ static propTypes = {
           </p>
           <p><strong>Distance: </strong>{` ${this.state.goalDist} ${this.props.distUnits}`}</p>
           <p><strong>Type: </strong>{this.state.goalType}</p>
-          <div className="">
+          <div>
             <p><strong>Actual Pace</strong> (mm:ss)</p>
             <input
+              className="form-control"
               type="text"
               required
               onChange={this.handleChange}

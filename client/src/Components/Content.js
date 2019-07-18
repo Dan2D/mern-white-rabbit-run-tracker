@@ -23,11 +23,13 @@ class Content extends Component {
     getUserGoals: PropTypes.func.isRequired,
     auth: PropTypes.object
   }
+  componentDidMount() {
+    window.scrollTo(0,0);
+  }
   render() {
     const nav = (
       <Fragment>
         <Nav />
-        <div style={{ height: "10vh"}} />
       </Fragment>
     );
     if (this.props.auth.isLoading){

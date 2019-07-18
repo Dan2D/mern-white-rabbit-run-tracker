@@ -15,7 +15,7 @@ function UpcomingRuns(props) {
             </h5>
             {props.goal.name === "No Current Goals Set" ? null : addRunBtn}
           </div>
-          <div className="upcoming-runs__tiles container">
+          <div className="upcoming-runs__tiles my-container">
             {props.goal.runs.map((run, indx) => {
               if (!run.completed) {
                 newRuns++;

@@ -12,7 +12,7 @@ function Nav(props) {
     logOut: PropTypes.func.isRequired
   }
   return (
-    <div className="navBar-container fixed-top">
+    <div className="navBar-container absolute-top">
       <div className="navBar">
         <div className="navBar-title">
           <h2 className="navBar-title__title">White Rabbit</h2>

@@ -3,8 +3,8 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUserGoals } from "../../store/actions/runActions";
 import { getUserSettings } from "../../store/actions/settingsActions";
-import {setUnitConv} from '../Utils/helpers';
-import GoalTile from '../Runs/GoalTile';
+import { setUnitConv } from "../Utils/helpers";
+import GoalTile from "../Runs/GoalTile";
 import PropTypes from "prop-types";
 import UpcomingRuns from "../Runs/UpcomingRuns";
 import CompletedRuns from "../Runs/CompletedRuns";
@@ -43,35 +43,37 @@ class Home extends Component {
     settings: PropTypes.object.isRequired
   };
 
-  rabbitProgressMove = (currentGoal) => {
+  rabbitProgressMove = (currentGoal, progressEl) => {
+    let width = 0;
+    if (progressEl) {
+      width = progressEl.offsetWidth;
+    }
     document.documentElement.style.setProperty(
       "--rabbit-x",
-      (parseFloat(currentGoal.progress) / 100) * 70 + "vw"
+      (parseFloat(currentGoal.progress) / 100) * (width - 100) + "px"
     );
-  }
+  };
 
   render() {
     if (this.props.auth.isAuthenticated === null) {
       return <Redirect to="/login" />;
     }
     const currentGoal = this.props.currentGoal ? this.props.currentGoal : this.state.noGoal;
-    this.rabbitProgressMove(currentGoal);
-    let {distConv} = setUnitConv(this.props.settings.distUnits, currentGoal.distUnits);
-    let newRuns = 0;
-    let completedRuns = 0;
-    const addGoalBtn = <Link to={{pathname: "/add/goal", state: {type: "goal"}}}>
-                        <button className="add-goal m-2">+Goal</button>
-                      </Link>;
-    const addRunBtn = <Link className="d-flex" to="/add/run">
-                        <button className="title-bar__add-run">+Run</button>
-                      </Link>;
+    let progressEl = document.querySelector(".visual-progress");
+    this.rabbitProgressMove(currentGoal, progressEl);
+    let { distConv } = setUnitConv(this.props.settings.distUnits, currentGoal.distUnits);
+    const addGoalBtn = (
+      <Link to={{ pathname: "/add/goal", state: { type: "goal" } }}>
+        <button className="add-goal m-2">+Goal</button>
+      </Link>
+    );
     return (
       <div className="home">
         <div className="title-blk title-blk--progress d-flex justify-start align-center">
-        <h5 className="title-blk__prog-title">Progress</h5>
+          <h5 className="title-blk__prog-title">Progress</h5>
           {currentGoal === this.state.noGoal ? addGoalBtn : null}
         </div>
-        <div className="goal-container container">
+        <div className="goal-container my-container">
           <GoalTile
             name={currentGoal.name}
             goalID={currentGoal._id}
@@ -81,37 +83,33 @@ class Home extends Component {
             goalDist={currentGoal.goalDist}
             goalDistUnits={currentGoal.distUnits}
             completed={false}
-            />
+          />
           <div className="visual-progress">
-           <p className="start-pos">|</p>
+            <p className="start-pos">|</p>
             <div className="rabbit-percent">
-              <p>{`${currentGoal.progress}%`}</p>
+              <p className="rabbit-percent__percent">{`${currentGoal.progress}%`}</p>
               <p>&#9660;</p>
-              <img
-                className="rabbit-percent__rabbit"
-                src={progressRbbt}
-                alt="white rabbit"
-              />
+              <img className="rabbit-percent__rabbit" src={progressRbbt} alt="white rabbit" />
             </div>
             <div className="tree-goal">
-              <p className="tree-goal__goal">{`${(
-                currentGoal.goalDist * distConv
-              ).toFixed(2)} ${this.props.settings.distUnits}`}</p>
+              <p className="tree-goal__goal">
+                {`${(currentGoal.goalDist * distConv).toFixed(2)} ${this.props.settings.distUnits}`}
+              </p>
               <img className="tree-goal__tree" src={progressTree} alt="tree" />
             </div>
           </div>
         </div>
-        <UpcomingRuns goal={currentGoal}/>
+        <UpcomingRuns goal={currentGoal} />
         <CompletedRuns goal={currentGoal} userID={this.props.auth.user._id} />
-        </div>
+      </div>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     auth: state.auth,
-    currentGoal: state.goals.Goals.find(goal => goal.completed === false),
+    currentGoal: state.goals.Goals.find((goal) => goal.completed === false),
     settings: state.settings
   };
 };
