@@ -123,10 +123,10 @@ class EditRun extends Component {
                         </div>
                       </Fragment>
     return (
-      <div className="create-run container">
+      <div className="format-run container">
         <form onSubmit={e => this.handleSubmit(e)}>
           <div className="form-group">
-            <label htmlFor="name">Run</label>
+            <label htmlFor="name"><strong>Run</strong></label>
             <input
               className="form-control"
               type="text"
@@ -140,7 +140,7 @@ class EditRun extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="name" style={{ display: "block" }}>
-              Date
+            <strong>Date</strong>
             </label>
             <DatePicker
               className="form-control date-picker"
@@ -155,18 +155,18 @@ class EditRun extends Component {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="targetPace">Target Pace (mm:ss)</label>
+            <label htmlFor="targetPace"><strong>Target Pace</strong> (mm:ss)</label>
             <input className="form-control" onChange={(e) => this.handleChange(e)} type="text" name="targetPace" value={this.state.targetPace} />
             <p className="error-msg">{this.state.tPaceMsg}</p>  
           </div>
           <div className="form-group">
-            <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
+            <label htmlFor="distance"><strong>Distance </strong>({this.props.settings.distUnits})</label>
             <input className="form-control" onChange={(e) => this.handleChange(e)} type="text" name="runDist" value={this.state.runDist} />
             <p className="error-msg">{this.state.distMsg}</p>  
           </div>
           {this.state.completed ? finishedStats : null}
           <div className="form-group">
-            <label htmlFor="run-type">Type</label>
+            <label htmlFor="run-type"><strong>Type</strong></label>
             <select className="form-control" onChange={(e) => this.handleChange(e)}  name="runType" id="runType" value={this.state.runType}>
               {runTypes.map(run => {
                 return (

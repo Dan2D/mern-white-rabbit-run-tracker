@@ -39,5 +39,6 @@ hr {
   height: 100vh;
   width: 100vw;
   overflow: auto;
-  background: linear-gradient(rgb(252, 192, 63),  rgb(95, 13, 13))
+  background: #8e6558;
+  /* linear-gradient(rgb(252, 192, 63),  rgb(95, 13, 13)) */
 }

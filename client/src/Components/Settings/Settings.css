@@ -1,3 +1,9 @@
+.settings-container {
+    background: #454D66;
+    color: white;
+    height: 100vh;
+}
+
 .distUnit-radio {
-    margin: 0 5px;
+    margin: 0 10px;
 }

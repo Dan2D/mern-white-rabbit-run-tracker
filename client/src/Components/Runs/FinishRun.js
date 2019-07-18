@@ -76,15 +76,15 @@ handleChange = e => {
 
   render() {
     return (
-      <div className="create-run container">
+      <div className="format-run container">
         <form onSubmit={e => this.handleSubmit(e)}>
-            <p>Run: {this.state.name}</p>
-            <p>Date: {this.state.date.toString().substr(0,15)}</p>
-            <p>Target Pace:{` ${this.state.targetPace} min / ${this.props.distUnits}`}</p>
-            <p> Distance:{` ${this.state.runDist} ${this.props.distUnits}`}</p>
-            <p>Type: {this.state.type}</p>
+            <p><strong>Run: </strong>{this.state.name}</p>
+            <p><strong>Date: </strong>{this.state.date.toString().substr(0,15)}</p>
+            <p><strong>Target Pace: </strong>{` ${this.state.targetPace} min / ${this.props.distUnits}`}</p>
+            <p><strong>Distance: </strong>{` ${this.state.runDist} ${this.props.distUnits}`}</p>
+            <p><strong>Type: </strong>{this.state.runType}</p>
             <div className="">
-            <p>Actual Pace</p>
+            <p><strong>Actual Pace</strong> (mm:ss)</p>
             <input type="text" required onChange={this.handleChange} name="actualPace" value={this.state.actualPace}/>
             <p className="error-msg">{this.state.aPaceMsg}</p>
             </div>

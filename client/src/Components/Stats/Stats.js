@@ -14,8 +14,8 @@ function Stats(props) {
     let currGoal = props.goals.find(goal => goal.completed === false) ? props.goals.find(goal => goal.completed === false) : {runs: []};
     const allGoals = props.goals.map(goal => goal);
   return (
-    <div className="stats-container container">
-        <div className="stats-goals">
+    <div className="stats-container">
+        <div className="stats-goals container">
           <CurrStatsCrd goal={currGoal} goalUnits={currGoal.distUnits} settingUnits={props.distUnits}/>
           <h5>Goals</h5>
           {allGoals.map(goal => {

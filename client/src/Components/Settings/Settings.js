@@ -21,11 +21,12 @@ class Settings extends Component {
 
     render(){
         return (
-            <div className="settings-container container">
+            <div className="settings-container">
+                <div className="container">
                 <h5>Settings</h5>
-                <div>
+                <div className="d-flex">
                     <span>Distance Units: </span>
-                    <fieldset onChange={(e) => this.onChange(e)}>
+                    <fieldset className="ml-3" onChange={(e) => this.onChange(e)}>
                         <label htmlFor="mi"><input className="distUnit-radio" type="radio" name="mi" value="true" checked={this.state.distUnits === "mi"}/>mi</label>
                         <label htmlFor="km"><input className="distUnit-radio" type="radio" name="km" value="true" checked={this.state.distUnits === "km"}/>km</label>
                     </fieldset>
@@ -33,6 +34,7 @@ class Settings extends Component {
                 <Link to="/">
                     <button className="btn btn-primary" onClick={(e) => this.updateSettings(e)}>Update Settings</button>
                 </Link>
+                </div>
             </div>
         )
     }

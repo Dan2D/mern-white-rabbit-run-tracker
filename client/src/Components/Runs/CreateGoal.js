@@ -111,7 +111,7 @@ class CreateGoal extends Component {
         )
     }
     return (
-      <div className="create-run container">
+      <div className="format-goal container">
         <form onSubmit={(e) => this.handleSubmit(e)}>
           <div className="form-group">
             <label htmlFor="name">Goal</label>

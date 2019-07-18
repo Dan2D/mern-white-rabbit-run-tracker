@@ -2,12 +2,14 @@
     --rabbit-x: 0;
 }
 
-button {
+.home {
     color: white;
 }
 
-.home {
-    color: white;
+.home button {
+    border-radius: 5px;
+    padding: 3px 5px;
+    margin: 3px;
 }
 
 .goal-container {
@@ -15,32 +17,34 @@ button {
 }
 
 .title-blk--progress {
-    background: #D9D872;
+    background: #009975;
+    /* color: #D9D872; */
 }
 
 .title-blk__prog-title {
     line-height: 1.5;
+    padding: 0;
+    margin: 0;
 }
 
 button.add-goal {
     font-size: 15px;
-    padding: 5px;
-    background: #009975;
-    border-radius: 5px;
+    color: #009975;
+    background: #D9D872;
 }
 
 .upcoming-runs {
     position: relative;
 }
+
 .title-blk {
     width: 100vw;
     padding:5px 15px;
-    margin-bottom: 10px;
 }
 
 .title-blk__title {
     margin:0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 300;
 }
 
@@ -48,18 +52,17 @@ button.add-goal {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #009975;
-}
-
-.title-blk--completed-runs {
     background: #58B368;
 }
 
-.title-bar__add-btn {
-    width: 7vw;
-    height: 7vw;
-    background: url('../../images/add-button.png');
-    background-size: cover;
+.title-blk--completed-runs {
+    background: #D9D872;
+}
+
+.title-bar__add-run {
+    background: #D9D872;
+    color: #009975;
+    padding: 0 5px;
 }
 
 .visual-progress{
@@ -112,4 +115,14 @@ button.add-goal {
 .tree-goal__tree {
     height: 25vw;
     width: 25vw;
+}
+
+.goal-container {
+    background-image: url('../../images/forest-bg.png');
+    background-size: cover;
+    padding-top: 10px;
+}
+
+.completed-runs__tiles {
+    padding: 2vh 0;
 }

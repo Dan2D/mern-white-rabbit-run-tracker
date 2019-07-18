@@ -20,8 +20,8 @@ class RunTile extends Component {
     let actualPace = paceConvert(this.props.aPace, timeConv);
     let idObj = {userGoalsID: this.props.userID, goalID: this.props.goalID, runID: this.props.runID};
     return (
-      <div className="run-tile" data-id={this.props.runID}>
-        <div className="run-tile__title-bar">
+      <div className="tile-blk" data-id={this.props.runID}>
+        <div className="tile-blk__title-bar tile-blk__title-bar--run">
           <h5>{this.props.name}</h5>
           <div className="title-bar__tile-btns">
             <Link to={{pathname: `/edit/run/${this.props.runID}`,
@@ -37,7 +37,7 @@ class RunTile extends Component {
           </div>
         </div>
         <hr />
-        <div className="run-tile__body">
+        <div className="tile-blk__body">
           <div className="body__text">
             <p>Date: {this.props.date.toString().substr(0,10)}</p>
             <p>Target Pace:{` ${targetPace} min / ${this.props.settings.distUnits}`}</p>
@@ -49,8 +49,8 @@ class RunTile extends Component {
           {this.props.completed ? null :
           <Link className="align-self-end" to={{pathname: `/complete/run/${this.props.runID}`,
                      state: {goal: this.props.goalID}}}>
-             <button className="body__complete-btn m-3 btn btn-info">
-                Finish>>
+             <button className="body__complete-btn btn btn-info">
+                Finish Run>>
             </button>
           </Link>
         }

@@ -211,19 +211,22 @@ export const finishRun = runObj => (dispatch, getState) => {
       run.runDist * distConv
     );
     if (progress < parseInt(goal.progress)) {
-      return progress = goal.progress;
+      progress = goal.progress;
     }
   }
   else {
-    let progress = progressCalc(
+    progress = progressCalc(
       goal.targetPace,
       goal.goalDist,
       actualPace,
       run.runDist 
     );
     if (progress < parseInt(goal.progress)) {
-      return progress = goal.progress;
+      progress = goal.progress
     }
+  }
+  if (progress > 100){
+    progress = 100;
   }
   const body = JSON.stringify({
     userGoalsID,

@@ -67,18 +67,18 @@ static propTypes = {
 
   render() {
     return (
-      <div className="create-run container">
+      <div className="format-run container">
         <form onSubmit={e => this.handleSubmit(e)}>
-          <p>Goal: {this.state.name}</p>
-          <p>Date: {this.state.raceDay.toString().substr(0, 15)}</p>
+          <p><strong>Goal: </strong>{this.state.name}</p>
+          <p><strong>Date: </strong>{this.state.raceDay.toString().substr(0, 15)}</p>
           <p>
-            Target Pace:
+           <strong>Target Pace: </strong>
             {` ${this.state.targetPace} min / ${this.props.distUnits}`}
           </p>
-          <p> Distance:{` ${this.state.goalDist} ${this.props.distUnits}`}</p>
-          <p>Type: {this.state.goalType}</p>
+          <p><strong>Distance: </strong>{` ${this.state.goalDist} ${this.props.distUnits}`}</p>
+          <p><strong>Type: </strong>{this.state.goalType}</p>
           <div className="">
-            <p>Actual Pace</p>
+            <p><strong>Actual Pace</strong> (mm:ss)</p>
             <input
               type="text"
               required

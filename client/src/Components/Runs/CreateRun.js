@@ -81,7 +81,7 @@ class CreateRun extends Component {
       "Intervals"
     ];
     return (
-      <div className="create-run container">
+      <div className="format-run container">
         <form onSubmit={e => this.handleSubmit(e)}>
           <div className="form-group">
             <label htmlFor="name">Run</label>

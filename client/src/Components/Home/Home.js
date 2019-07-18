@@ -3,10 +3,11 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUserGoals } from "../../store/actions/runActions";
 import { getUserSettings } from "../../store/actions/settingsActions";
-import {setUnitConv, paceConvert} from '../Utils/helpers';
+import {setUnitConv} from '../Utils/helpers';
 import GoalTile from '../Runs/GoalTile';
 import PropTypes from "prop-types";
-import RunTile from "../Runs/RunTile";
+import UpcomingRuns from "../Runs/UpcomingRuns";
+import CompletedRuns from "../Runs/CompletedRuns";
 import progressRbbt from "../../images/progress-rabbit.png";
 import progressTree from "../../images/progress-tree.png";
 import "./Home.css";
@@ -58,23 +59,28 @@ class Home extends Component {
     let {distConv} = setUnitConv(this.props.settings.distUnits, currentGoal.distUnits);
     let newRuns = 0;
     let completedRuns = 0;
-    const addBtn = <Link to={{pathname: "/add/goal", state: {type: "goal"}}}>
-                    <button className="add-goal m-2">+Goal</button>
-                  </Link>;
+    const addGoalBtn = <Link to={{pathname: "/add/goal", state: {type: "goal"}}}>
+                        <button className="add-goal m-2">+Goal</button>
+                      </Link>;
+    const addRunBtn = <Link className="d-flex" to="/add/run">
+                        <button className="title-bar__add-run">+Run</button>
+                      </Link>;
     return (
       <div className="home">
         <div className="title-blk title-blk--progress d-flex justify-start align-center">
-        <h5 className="title-blk__prog-title m-2">Progress</h5>
-          {currentGoal === this.state.noGoal ? addBtn : null}
+        <h5 className="title-blk__prog-title">Progress</h5>
+          {currentGoal === this.state.noGoal ? addGoalBtn : null}
         </div>
         <div className="goal-container container">
           <GoalTile
             name={currentGoal.name}
+            goalID={currentGoal._id}
             goalType={currentGoal.goalType}
             raceDay={currentGoal.raceDay}
             tPace={currentGoal.targetPace}
             goalDist={currentGoal.goalDist}
             goalDistUnits={currentGoal.distUnits}
+            completed={false}
             />
           <div className="visual-progress">
            <p className="start-pos">|</p>
@@ -95,83 +101,9 @@ class Home extends Component {
             </div>
           </div>
         </div>
-        <div className="upcoming-runs">
-          <div className="title-blk title-blk--upcoming-runs">
-            <h5 className="title-blk__title">
-              <strong>{currentGoal.name}</strong>: Upcoming Runs
-            </h5>
-            <Link className="d-flex" to="/add/run">
-              <button className="title-bar__add-btn" />
-            </Link>
-          </div>
-          <div className="upcoming-runs__tiles container">
-            {currentGoal.runs.map((run, indx) => {
-              if (!run.completed) {
-                newRuns++;
-                return (
-                  <RunTile
-                    onFinish={() => this.handleFinishRun()}
-                    key={run._id}
-                    goalID={currentGoal._id}
-                    runID={run._id}
-                    indx={indx}
-                    name={run.name}
-                    date={run.date}
-                    tPace={run.targetPace}
-                    dist={run.runDist}
-                    distUnits={run.distUnits}
-                    type={run.runType}
-                    completed={run.completed}
-                  />
-                );
-              }
-              if (indx + 1 === currentGoal.runs.length && newRuns === 0) {
-                return <p key={indx}> No Runs Scheduled!</p>;
-              }
-              return null;
-            })}
-            {currentGoal.runs.length === 0 ? <p> No Runs Scheduled!</p> : null}
-          </div>
+        <UpcomingRuns goal={currentGoal}/>
+        <CompletedRuns goal={currentGoal} userID={this.props.auth.user._id} />
         </div>
-        <div className="completed-runs">
-          <div className="title-blk title-blk--completed-runs">
-            <h5 className="title-blk__title">
-              <strong>{currentGoal.name}</strong>: Completed Runs
-            </h5>
-          </div>
-          <div className="completed-runs__tiles container">
-            {currentGoal.runs.map((run, indx) => {
-              if (run.completed) {
-                completedRuns++;
-                return (
-                  <RunTile
-                    key={run._id}
-                    userID={this.props.userID}
-                    goalID={currentGoal._id}
-                    runID={run._id}
-                    name={run.name}
-                    date={run.date}
-                    tPace={run.targetPace}
-                    aPace={run.actualPace}
-                    dist={run.runDist}
-                    distUnits={run.distUnits}
-                    type={run.runType}
-                    completed={run.completed}
-                    mood={run.mood}
-                  />
-                );
-              }
-              if (indx + 1 === currentGoal.runs.length && completedRuns === 0) {
-                return <p key={indx}>No Runs Completed Yet</p>;
-              }
-              return null;
-            })}
-            {currentGoal.runs.length === 0 ? (
-              <p>No Runs Completed Yet</p>
-            ) : null}
-          </div>
-        </div>
-      </div>
     );
   }
 }
