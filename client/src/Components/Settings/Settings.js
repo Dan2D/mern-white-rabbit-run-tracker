@@ -22,18 +22,20 @@ class Settings extends Component {
     render(){
         return (
             <div className="settings-container">
-                <div className="container">
-                <h5>Settings</h5>
-                <div className="d-flex">
-                    <span>Distance Units: </span>
-                    <fieldset className="ml-3" onChange={(e) => this.onChange(e)}>
-                        <label htmlFor="mi"><input className="distUnit-radio" type="radio" name="mi" value="true" checked={this.state.distUnits === "mi"}/>mi</label>
-                        <label htmlFor="km"><input className="distUnit-radio" type="radio" name="km" value="true" checked={this.state.distUnits === "km"}/>km</label>
-                    </fieldset>
+                <div className="title-blk title-blk--ssettings d-flex justify-start align-center">
+                    <h5 className="title-blk__title--settings"><strong>Settings</strong></h5>
                 </div>
-                <Link to="/">
-                    <button className="btn btn-primary" onClick={(e) => this.updateSettings(e)}>Update Settings</button>
-                </Link>
+                <div className="settings container">
+                    <div className="d-flex">
+                        <span>Distance Units: </span>
+                        <fieldset className="ml-3" onChange={(e) => this.onChange(e)}>
+                            <label htmlFor="mi"><input className="distUnit-radio" type="radio" name="mi" value="true" checked={this.state.distUnits === "mi"}/>mi</label>
+                            <label htmlFor="km"><input className="distUnit-radio" type="radio" name="km" value="true" checked={this.state.distUnits === "km"}/>km</label>
+                        </fieldset>
+                    </div>
+                    <Link to="/">
+                        <button className="btn btn-primary" onClick={(e) => this.updateSettings(e)}>Update Settings</button>
+                    </Link>
                 </div>
             </div>
         )

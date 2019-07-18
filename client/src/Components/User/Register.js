@@ -24,6 +24,7 @@ class Register extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    this.setState()
     const {error} = this.props;
     if (prevProps.error !== error){
       if (error.id === 'REGISTER_FAIL'){

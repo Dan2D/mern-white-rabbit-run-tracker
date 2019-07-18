@@ -69,7 +69,7 @@ class CreateRun extends Component {
       <div className="format-run container">
         <form onSubmit={(e) => this.handleSubmit(e)}>
           <div className="form-group">
-            <label htmlFor="name">Run</label>
+            <label htmlFor="name"><strong>Run</strong></label>
             <input
               className="form-control"
               type="text"
@@ -82,7 +82,7 @@ class CreateRun extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="name" style={{ display: "block" }}>
-              Date
+              <strong>Date</strong>
             </label>
             <DatePicker
               className="form-control date-picker"
@@ -97,17 +97,17 @@ class CreateRun extends Component {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="pace">Target Pace (mm:ss)</label>
+            <label htmlFor="pace"><strong>Target Pace</strong> (mm:ss)</label>
             <input className="form-control" onChange={this.handleChange} type="text" name="targetPace" />
             <p className="error-msg">{this.state.paceMsg}</p>
           </div>
           <div className="form-group">
-            <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
+            <label htmlFor="distance"><strong>Distance </strong>{this.props.settings.distUnits}</label>
             <input className="form-control" onChange={this.handleChange} type="text" name="runDist" />
             <p className="error-msg">{this.state.distMsg}</p>
           </div>
           <div className="form-group">
-            <label htmlFor="run-type">Type</label>
+            <label htmlFor="run-type"><strong>Type</strong></label>
             <select
               className="form-control"
               onChange={this.handleChange}

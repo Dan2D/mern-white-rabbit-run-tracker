@@ -54,7 +54,6 @@ class CurrStatsCrd extends Component {
     let fastRun = paceConvert(this.state.fstRun, timeConv);
     return (
       <div className="curr-stats-container">
-        <h5>Current Stats</h5>
         <div className="stat-card stat-card__stats-data">
           <p><strong>Longest Run: </strong>{`${(this.state.lngRun * distConv).toFixed(2)} ${this.props.settingUnits}`}</p>
           <p><strong>Fastest Mile: </strong>{`${fastRun} min / ${this.props.settingUnits}`}</p>

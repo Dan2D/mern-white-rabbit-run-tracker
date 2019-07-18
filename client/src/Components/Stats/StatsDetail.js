@@ -34,14 +34,14 @@ class StatsDetail extends Component {
     let goal = this.props.goals.find((goal) => goal._id === this.props.match.params.id);
     return (
       <div className="stats-detail-container">
-        <div className="stats-title-blk stats-title-blk--goal d-flex mb-3">
-          <p>
+        <div className="title-blk title-blk--stats d-flex justify-content-between mb-3">
+          <h5>
             <strong>Goal</strong>
-          </p>
-          <p>
+          </h5>
+          <h5>
             <strong>Status: </strong>
             {goal.completed ? "Completed" : "In Progress ..."}
-          </p>
+          </h5>
         </div>
         <div className="container">
           <GoalTile

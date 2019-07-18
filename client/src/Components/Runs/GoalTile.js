@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 class GoalTile extends Component {
 
   handleDeleteGoal = (e) => {
+    console.log(this.props.userGoalsID, this.props.goalID)
     this.props.delGoal(this.props.userGoalsID, this.props.goalID);
     e.target.parentElement.click();
   }
@@ -21,8 +22,8 @@ class GoalTile extends Component {
     const finishGoalBtn = <Link to={`/complete/goal/${this.props.goalID}`}>
                             <button className="btn btn-info goal-nav__btn">Finish Goal>></button>
                           </Link>;
-    if (this.props.name === "No Current Goal Set"){
-      return <p>Set a New Goal To Start!</p>
+    if (this.props.goalType === "None"){
+      return <p className="noGoal-msg">Set a New Goal To Start!</p>
     }
     return (
       <div className="tile-blk tile-blk--goal">
@@ -86,7 +87,7 @@ class GoalTile extends Component {
 
 const mapStateToProps = state => {
   return {
-    userGoalsID: state.auth._id,
+    userGoalsID: state.auth.user._id,
     distUnits: state.settings.distUnits
   }
 }

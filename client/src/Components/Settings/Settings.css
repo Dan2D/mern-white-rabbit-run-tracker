@@ -4,6 +4,31 @@
     height: 100vh;
 }
 
+.settings div,
+.settings a {
+    margin: 10px 0;
+}
+
+.title-blk--ssettings {
+background: #363B48;
+}
+
 .distUnit-radio {
     margin: 0 10px;
+}
+
+@media only screen and (min-device-width : 600px) {
+
+    .settings-container {
+        max-width: 768px;
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .settings-container {
+        max-width: 920px;
+    }
 }

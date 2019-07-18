@@ -53,7 +53,7 @@ class EditGoal extends Component {
             completed
         })
     }
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const {name, targetPace, actualPace, goalDist} = this.state;
     this.setState({ttlMsg: null, paceMsg: null, aPaceMsg: null, distMsg: null});
@@ -61,7 +61,10 @@ class EditGoal extends Component {
     this.setState({tPaceMsg: validatePace(targetPace)})
     this.setState({aPaceMsg: validatePace(actualPace)})
     this.setState({distMsg: validateDist(goalDist)})
-    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validatePace(actualPace) !== null || validateDist(goalDist) !== null){
+    if (this.state.completed && validatePace(actualPace) !== null ){
+      return null;
+    }
+    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(goalDist) !== null){
       return null;
     }
     const updatedGoal = {
@@ -82,7 +85,7 @@ class EditGoal extends Component {
     e.target.parentElement.click();
 }
 
-  handleChange = e => {
+  handleChange = (e) => {
       this.setState({[e.target.name]: e.target.value})
   };
 
@@ -172,7 +175,7 @@ class EditGoal extends Component {
             </select>
           </div>
           <Link to="/">
-            <button type="submit" className="btn btn-primary" onClick={e => this.handleSubmit(e)}>Update Goal</button>
+            <button type="submit" className="btn btn-primary" onClick={(e) => this.handleSubmit(e)}>Update Goal</button>
           </Link>
         </form>
       </div>

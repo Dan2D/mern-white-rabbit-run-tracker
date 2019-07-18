@@ -11,9 +11,9 @@ function UpcomingRuns(props) {
         <div className="upcoming-runs">
           <div className="title-blk title-blk--upcoming-runs">
             <h5 className="title-blk__title">
-              <strong>{props.goal.name}</strong>: Upcoming Runs
+              Upcoming Runs
             </h5>
-            {props.goal.name === "No Current Goals Set" ? null : addRunBtn}
+            {props.goal.goalType === "None" ? null : addRunBtn}
           </div>
           <div className="upcoming-runs__tiles my-container">
             {props.goal.runs.map((run, indx) => {
@@ -21,7 +21,6 @@ function UpcomingRuns(props) {
                 newRuns++;
                 return (
                   <RunTile
-                    onFinish={() => this.handleFinishRun()}
                     key={run._id}
                     goalID={props.goal._id}
                     runID={run._id}

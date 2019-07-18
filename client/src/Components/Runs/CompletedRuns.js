@@ -7,7 +7,7 @@ function CompletedRuns(props) {
         <div className="completed-runs">
           <div className="title-blk title-blk--completed-runs d-flex">
             <h5 className="title-blk__title">
-              <strong>{props.goal.name}</strong>: Completed Runs
+             Completed Runs
             </h5>
           </div>
           <div className="completed-runs__tiles my-container">

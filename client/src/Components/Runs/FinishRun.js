@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { finishRun } from "../../store/actions/runActions";
-import {validatePace} from '../Utils/helpers';
+import {setUnitConv, paceConvert, validatePace} from '../Utils/helpers';
 import rating1 from '../../images/rating-1.png'
 import rating2 from '../../images/rating-2.png'
 import rating3 from '../../images/rating-3.png'
@@ -47,19 +47,22 @@ class FinishRun extends Component {
         })
     }
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
-    const {actualPace} = this.state;
+    let {actualPace} = this.state;
     this.setState({aPaceMsg: null});
     this.setState({aPaceMsg: validatePace(actualPace)})
     if (validatePace(actualPace) !== null ){
       return null;
     }
+    const { timeConv} = setUnitConv(this.state.distUnits, this.props.settingUnits);
+    actualPace = paceConvert(actualPace, timeConv);
+    debugger;
     const finishedRun = {
       userGoalsID: this.props.goals._id,
       goalID: this.props.location.state.goal,
       runID: this.state.id,
-      actualPace: this.state.actualPace,
+      actualPace: actualPace,
       mood: this.state.runMood,
       runDist: this.state.runDist,
       distUnits: this.state.distUnits,
@@ -75,17 +78,19 @@ handleChange = e => {
 }
 
   render() {
+    const { timeConv, distConv } = setUnitConv(this.props.settingUnits, this.state.distUnits);
+    const targetPace = paceConvert(this.state.targetPace, timeConv);
     return (
       <div className="format-run container">
         <form onSubmit={e => this.handleSubmit(e)}>
             <p><strong>Run: </strong>{this.state.name}</p>
             <p><strong>Date: </strong>{this.state.date.toString().substr(0,15)}</p>
-            <p><strong>Target Pace: </strong>{` ${this.state.targetPace} min / ${this.props.distUnits}`}</p>
-            <p><strong>Distance: </strong>{` ${this.state.runDist} ${this.props.distUnits}`}</p>
+            <p><strong>Target Pace: </strong>{` ${targetPace} min / ${this.props.settingUnits}`}</p>
+            <p><strong>Distance: </strong>{` ${(this.state.runDist * distConv).toFixed(2)} ${this.props.settingUnits}`}</p>
             <p><strong>Type: </strong>{this.state.runType}</p>
             <div className="">
             <p><strong>Actual Pace</strong> (mm:ss)</p>
-            <input type="text" required onChange={this.handleChange} name="actualPace" value={this.state.actualPace}/>
+            <input type="text" required onChange={(e) => this.handleChange(e)} name="actualPace" value={this.state.actualPace}/>
             <p className="error-msg">{this.state.aPaceMsg}</p>
             </div>
             <p>How Did Your Run Feel?</p>
@@ -111,7 +116,7 @@ handleChange = e => {
 const mapStateToProps = (state, ownProps) => {
     return {
         goals: state.goals,
-        distUnits: state.settings.distUnits
+        settingUnits: state.settings.distUnits
     }
 }
 

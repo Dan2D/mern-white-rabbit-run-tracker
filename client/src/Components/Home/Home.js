@@ -18,7 +18,7 @@ class Home extends Component {
       name: "No Current Goal Set",
       targetPace: "0:00",
       raceDay: "",
-      goalType: "",
+      goalType: "None",
       goalDist: 0,
       distUnits: this.props.settings.distUnits,
       runs: [],
@@ -30,7 +30,9 @@ class Home extends Component {
     if (this.props.auth.isAuthenticated && !this.props.auth.isLoading) {
       this.props.getUserGoals(this.props.auth.user._id);
       this.props.getUserSettings(this.props.auth.user._id);
+      document.querySelector('a[data-ref="home"]').click();
     }
+
   }
 
   static propTypes = {
@@ -69,8 +71,8 @@ class Home extends Component {
     );
     return (
       <div className="home">
-        <div className="title-blk title-blk--progress d-flex justify-start align-center">
-          <h5 className="title-blk__prog-title">Progress</h5>
+        <div className="title-blk title-blk--progress d-flex justify-content-between align-center">
+          <h5 className="title-blk__prog-title"><strong>Progress</strong></h5>
           {currentGoal === this.state.noGoal ? addGoalBtn : null}
         </div>
         <div className="goal-container my-container">

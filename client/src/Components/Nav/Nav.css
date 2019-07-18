@@ -1,3 +1,6 @@
+::root{
+    --nav-link-color: white;
+}
 
 .navBar-container {
     background: #454D66;
@@ -52,6 +55,12 @@
       text-decoration: none;
   }
 
+  .navBar__menu--spread a.link-active {
+      border-radius: 10px 10px 0 0;
+      padding: 5px;
+      background: var(--nav-link-color);
+  }
+
 button.log-out{
       font-size: 1rem;
       padding: 0;
@@ -99,9 +108,27 @@ button.log-out{
         max-width:768px;
         margin: 0 auto;
     }
+    .navBar__menu--spread {
+        width: 350px;
+    }
+    .navBar__menu--spread ul {
+        display:flex;
+        justify-content: space-between;
+    }
+
+    .navBar__menu--spread a, button {
+        color: white;
+    }
+
+    .navBar__menu--spread a:hover,
+    .navBar__menu--spread button:hover {
+        text-decoration: none;
+        color: #d9d872;
+    }
 }
 
 @media only screen and (min-width: 992px) {
+
     
 }
 

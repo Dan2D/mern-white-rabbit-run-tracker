@@ -96,7 +96,7 @@ class CreateGoal extends Component {
       <div className="format-goal container">
         <form onSubmit={(e) => this.handleSubmit(e)}>
           <div className="form-group">
-            <label htmlFor="name">Goal</label>
+            <label htmlFor="name"><strong>Goal</strong></label>
             <input
               className="form-control"
               type="text"
@@ -109,7 +109,7 @@ class CreateGoal extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="name" style={{ display: "block" }}>
-              Goal Date
+              <strong>Goal Date</strong>
             </label>
             <DatePicker
               className="form-control date-picker"
@@ -124,12 +124,12 @@ class CreateGoal extends Component {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="pace">Goal Pace (mm:ss)</label>
+            <label htmlFor="pace"><strong>Goal Pace</strong> (mm:ss)</label>
             <input className="form-control" onChange={this.handleChange} type="text" name="targetPace" />
             <p className="error-msg">{this.state.paceMsg}</p>
           </div>
           <div className="form-group">
-            <label htmlFor="distance">{`Distance (${this.props.settings.distUnits})`}</label>
+            <label htmlFor="distance"><strong>Distance </strong>({this.props.settings.distUnits})</label>
             <input
               className="form-control"
               onChange={this.handleChange}
@@ -140,7 +140,7 @@ class CreateGoal extends Component {
             <p className="error-msg">{this.state.distMsg}</p>
           </div>
           <div className="form-group">
-            <label htmlFor="goal-type">Type</label>
+            <label htmlFor="goal-type"><strong>Type</strong></label>
             <select
               className="form-control"
               onChange={this.handleChange}

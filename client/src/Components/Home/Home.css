@@ -3,7 +3,8 @@
 }
 
 .rabbit-percent__percent,
-.tree-goal__goal {
+.tree-goal__goal,
+.noGoal-msg {
     font-weight: 300;
     background: rgba(0,0,0,0.5);
     border-radius: 5px;
@@ -11,16 +12,14 @@
 
 .home {
     color: white;
+    background: #8e6558;
+    min-height: 100vh;
 }
 
 .home button {
     border-radius: 5px;
     padding: 3px 5px;
     margin: 3px;
-}
-
-.goal-container {
-    position: relative;
 }
 
 .title-blk--progress {
@@ -47,7 +46,13 @@ button.add-goal {
 .title-blk {
     width: 100vw;
     padding:5px 15px;
+    z-index: 1;
 }
+
+.title-blk h5 {
+    font-weight: 300;
+};
+
 
 .title-blk__title {
     margin:0;
@@ -72,6 +77,21 @@ button.add-goal {
     padding: 0 5px;
 }
 
+.goal-container {
+    position: relative;
+    background-image: url('../../images/forest-bg.png');
+    background-size: cover;
+    padding-top: 10px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 30vh;
+}
+
+.noGoal-msg {
+    text-align: center;
+}
+
 .visual-progress{
     display: flex;
     justify-content: flex-end;
@@ -90,9 +110,8 @@ button.add-goal {
     flex-direction: column;
     align-items: center;
     z-index: 5;
-    left: 15px;
+    left: var(--rabbit-x);
     bottom: 0;
-    transform: translateX(var(--rabbit-x));
 }
 
 .rabbit-percent p {
@@ -125,12 +144,6 @@ button.add-goal {
     height: 25vw;
     width: 25vw;
     vertical-align: bottom;
-}
-
-.goal-container {
-    background-image: url('../../images/forest-bg.png');
-    background-size: cover;
-    padding-top: 10px;
 }
 
 .completed-runs__tiles {

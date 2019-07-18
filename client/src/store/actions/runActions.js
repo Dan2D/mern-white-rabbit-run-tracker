@@ -160,6 +160,7 @@ export const delRun = idObj => (dispatch, getState) => {
 };
 
 export const editRun = runObj => (dispatch, getState) => {
+  console.log("EDIT RUN", runObj)
   const {
     userGoalsID,
     goalID,

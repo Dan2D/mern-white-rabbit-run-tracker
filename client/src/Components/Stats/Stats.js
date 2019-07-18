@@ -18,20 +18,25 @@ function Stats(props) {
   return (
     <div className="stats-container">
       <div className="clouds-bg" />
-      <div className="stats-goals">
-        <CurrStatsCrd goal={currGoal} goalUnits={currGoal.distUnits} settingUnits={props.distUnits} />
-        <h5>Goals</h5>
-        {allGoals.map((goal) => {
-          return (
-            <GoalCrd
-              key={goal._id}
-              id={goal._id}
-              name={goal.name}
-              complete={goal.completed}
-              distUnits={props.distUnits}
-            />
-          );
-        })}
+      <div className="stats">
+        <div className="title-blk title-blk--stats d-flex justify-start align-center">
+            <h5 className="title-blk__title--stats"><strong>Current Stats</strong></h5>
+          </div>
+        <div className="stats-goals">
+          <CurrStatsCrd goal={currGoal} goalUnits={currGoal.distUnits} settingUnits={props.distUnits} />
+          <h5>Goals</h5>
+          {allGoals.map((goal) => {
+            return (
+              <GoalCrd
+                key={goal._id}
+                id={goal._id}
+                name={goal.name}
+                complete={goal.completed}
+                distUnits={props.distUnits}
+              />
+            );
+          })}
+        </div>
       </div>
       <div>
         <img className="stats-rabbit" src={require("../../images/sign.png")} alt="Rabbit"/>
