@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import { getUserGoals } from "../store/actions/runActions";
 import { connect } from "react-redux";
 import Spinner from 'react-spinkit';
@@ -17,7 +18,7 @@ import Stats from "./Stats/Stats";
 import StatsDetail from "./Stats/StatsDetail";
 import Settings from "./Settings/Settings";
 import smoothscroll from 'smoothscroll-polyfill';
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 class Content extends Component {
   static propTypes = {
@@ -40,18 +41,30 @@ class Content extends Component {
     return (
       <div className="content-container">
         {this.props.auth.isAuthenticated ? nav : null}
-        <Route path="/" exact component={Home} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/add/goal" exact component={CreateGoal} />
-        <Route path="/edit/goal/:id" component={EditGoal} />
-        <Route path="/complete/goal/:id" component={FinishGoal} />
-        <Route path="/add/run" exact component={CreateRun} />
-        <Route path="/edit/run/:id" component={EditRun} />
-        <Route path="/complete/run/:id" component={FinishRun} />
-        <Route path="/stats" exact component={Stats} />
-        <Route path="/stats/:id" exact component={StatsDetail} />
-        <Route path="/settings" exact component={Settings} />
+        <Route render={({location}) => (
+           <TransitionGroup>
+           <CSSTransition
+           key={location.pathname}
+           timeout={2000}
+           classNames="push"
+           >
+             <Switch location={location}>
+               <Route path="/" exact component={Home} />
+               <Route path="/login" exact component={Login} />
+               <Route path="/register" component={Register} />
+               <Route path="/add/goal" exact component={CreateGoal} />
+               <Route path="/edit/goal/:id" component={EditGoal} />
+               <Route path="/complete/goal/:id" component={FinishGoal} />
+               <Route path="/add/run" exact component={CreateRun} />
+               <Route path="/edit/run/:id" component={EditRun} />
+               <Route path="/complete/run/:id" component={FinishRun} />
+               <Route path="/stats" exact component={Stats} />
+               <Route path="/stats/:id" exact component={StatsDetail} />
+               <Route path="/settings" exact component={Settings} />
+             </Switch>
+           </CSSTransition>
+         </TransitionGroup>
+        )}/>
       </div>
     );
   }

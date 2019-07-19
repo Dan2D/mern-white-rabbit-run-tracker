@@ -22,9 +22,14 @@ time, mark, audio, video {
 }
 
 html, body {
+  overflow-y: scroll;
+}
+
+html, body {
   height: 100%;
   overflow:auto;
   z-index: 2;
+  background: #929dbf;
 }
 
 
@@ -73,4 +78,72 @@ hr {
   width: 100vw; */
   overflow-x: hidden;
   background: #929dbf;
+}
+
+.home, .stats-container, .settings-container, .stats-detail-container,
+.format-goal, .format-run {
+  position: absolute;
+  top: 10vh;
+  left: 0;
+  right: 0;
+}
+
+.slide-enter {
+  z-index: 0;
+  top: 100%;
+}
+
+.slide-enter-active {
+  top: 10vh;
+  transition: top 1500ms ease-in-out;
+}
+
+.slide-exit {
+  top: 10vh;
+  z-index: 0;
+}
+
+.slide-exit-active {
+  z-index: 0;
+  top: -100%;
+  transition: top 1500ms ease-in-out;
+}
+
+
+.push-enter {
+  z-index: 1;
+  top: 100%;
+  transform: scale(0.05, 0.1);
+  filter: brightness(0) invert(100%) sepia() saturate(10000%) hue-rotate(4deg);
+  border-radius: 80% 80% 100% 100% / 50% 50% 150% 150%;
+}
+
+.push-enter div,
+.push-enter button {
+  opacity:0
+}
+
+.push-enter-active {
+  top:10vh;
+  transform: scale(1);
+  border-radius: 0;
+  filter: none;
+  transition: top 0.5s cubic-bezier(.2,1.31,1,1.41), transform 0.5s ease-out 0.5s, filter 0s linear 0.5s, border-radius 0.5s ease-out 0.5s;
+}
+
+.push-enter-active div,
+.push-enter-active button {
+opacity: 1;
+transition: opacity 500ms ease 1000ms;
+}
+
+.push-exit {
+  opacity: 1;
+  z-index: 0;
+}
+
+.push-exit-active {
+  z-index: 0;
+  opacity: 0;
+  transition:  opacity 500ms ease 500ms;
 }

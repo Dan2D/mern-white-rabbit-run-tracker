@@ -4,7 +4,6 @@
 
 .navBar-container {
     background: #454D66;
-    width: 100vw;
 }
 
 .navBar {
@@ -13,6 +12,9 @@
     align-items: flex-end;
     position: relative;
     height: 10vh;
+    overflow: hidden;
+    z-index: 2;
+    background: #454D66;
   }
 
   .navBar-title {
@@ -146,6 +148,6 @@ button.log-out{
 
 @media only screen and (min-width: 1200px) {
     .navBar{
-        min-width: 920px;
+        max-width: 920px;
     } 
 }
