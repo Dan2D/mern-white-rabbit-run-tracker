@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { editRun } from "../../store/actions/runActions";
-import {setUnitConv, paceConvert} from '../Utils/helpers';
-import {validateTitle, validatePace, validateDist} from '../Utils/helpers';
+import {setUnitConv, paceConvert, validateTitle, validatePace, validateDist} from '../Utils/helpers';
 import PropTypes from 'prop-types';
+import smoothscroll from 'smoothscroll-polyfill';
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
 import DatePicker from "react-datepicker";
@@ -26,32 +26,38 @@ class EditRun extends Component {
     }
 
     static propTypes = {
-      editRun: PropTypes.func.isRequired,
-      validateTitle: PropTypes.func.isRequired,
-      validatePace: PropTypes.func.isRequired,
-      validateDist: PropTypes.func.isRequired,
-      setUnitConv: PropTypes.func.isRequired,
-      paceConvert: PropTypes.func.isRequired,
-      userGoalsID: PropTypes.string.isRequired,
-      goals: PropTypes.object.isRequired,
-      settings: PropTypes.object.isRequired
+      editRun: PropTypes.func,
+      validateTitle: PropTypes.func,
+      validatePace: PropTypes.func,
+      validateDist: PropTypes.func,
+      setUnitConv: PropTypes.func,
+      paceConvert: PropTypes.func,
+      userGoalsID: PropTypes.string,
+      goals: PropTypes.object,
+      settings: PropTypes.object
     }
 
     componentDidMount(){
+        smoothscroll.polyfill();
+        document.querySelector("body").scrollTo(0,0);
         const goal = this.props.goal.find(goal => goal._id === this.props.location.state.goal);
         const id = this.props.match.params.id;
         const run = goal.runs.find(run => run._id === id);
-        let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, run.distUnits);
+        let {timeConv, distConv} = setUnitConv(run.distUnits, this.props.settings.distUnits);
         const runIndx = goal.runs.indexOf(run);
-        const {name, date, targetPace, actualPace, runDist, runType, completed, mood} = run;
+        let {name, date, targetPace, actualPace, runDist, runType, distUnits, completed, mood} = run;
+        if (timeConv !== distConv) {
+          targetPace = paceConvert(targetPace, timeConv);
+          actualPace = paceConvert(actualPace, timeConv);
+        }
         this.setState({
             id,
             name,
             date: new Date(date),
-            targetPace: paceConvert(targetPace, timeConv),
-            actualPace: paceConvert(actualPace, timeConv),
+            targetPace,
+            actualPace,
             runDist: (runDist*distConv).toFixed(2),
-            distUnits: this.props.settings.distUnits,
+            distUnits,
             runType,
             completed,
             runMood: mood.toString(),
@@ -62,14 +68,22 @@ class EditRun extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const {name, targetPace, runDist, actualPace} = this.state;
+    let {name, targetPace, runDist, actualPace} = this.state;
     this.setState({ttlMsg: null, tPaceMsg: null, distMsg: null, aPaceMsg: null});
     this.setState({ttlMsg: validateTitle(name)});
     this.setState({tPaceMsg: validatePace(targetPace)});
     this.setState({aPaceMsg: validatePace(actualPace)});
     this.setState({distMsg: validateDist(runDist)});
-    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(runDist) !== null ||validatePace(actualPace) !== null){
+    if (this.state.completed && validatePace(actualPace) !== null){
       return null;
+    }
+    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(runDist) !== null){
+      return null;
+    }
+    let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, this.state.distUnits);
+    if (timeConv !== distConv) {
+      targetPace = paceConvert(targetPace, timeConv);
+      actualPace = paceConvert(actualPace, timeConv);
     }
     const updatedRun = {
       userGoalsID: this.props.userGoalsID,
@@ -77,10 +91,9 @@ class EditRun extends Component {
       id: this.state.id,
       name: this.state.name,
       date: this.state.date.toISOString().substr(0,10),
-      targetPace: this.state.targetPace,
-      actualPace: this.state.actualPace,
-      runDist: this.state.runDist,
-      distUnits: this.state.distUnits,
+      targetPace,
+      actualPace,
+      runDist: this.state.runDist * distConv,
       runType: this.state.runType,
       completed: this.state.completed,
       mood: this.state.runMood,

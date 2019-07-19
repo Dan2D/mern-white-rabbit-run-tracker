@@ -8,8 +8,8 @@ import "./Stats.css";
 
 function Stats(props) {
   Stats.propTypes = {
-    goals: PropTypes.object.isRequired,
-    distUnits: PropTypes.string.isRequired
+    goals: PropTypes.array,
+    distUnits: PropTypes.string
   };
   let currGoal = props.goals.find((goal) => goal.completed === false)
     ? props.goals.find((goal) => goal.completed === false)

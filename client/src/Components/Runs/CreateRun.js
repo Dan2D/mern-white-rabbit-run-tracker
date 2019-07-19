@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { addRun } from "../../store/actions/runActions";
-import { validateTitle, validatePace, validateDist } from "../Utils/helpers";
+import { validateTitle, validatePace, validateDist, setUnitConv, paceConvert } from "../Utils/helpers";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import smoothscroll from 'smoothscroll-polyfill';
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -17,21 +18,29 @@ class CreateRun extends Component {
     runType: "Long Distance",
     ttlMsg: null,
     paceMsg: null,
-    distMsg: null
+    distMsg: null,
+    goalID: "",
+    distUnits: ""
   };
   static propTypes = {
-    goal: PropTypes.object.isRequired,
+    goals: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired,
-    addRun: PropTypes.func.isRequired,
+    addRun: PropTypes.func,
     validateTitle: PropTypes.func,
     validatePace: PropTypes.func,
     validateDist: PropTypes.func
   };
 
+  componentDidMount(){
+    smoothscroll.polyfill();
+    document.querySelector("body").scrollTo(0,0);
+    let goal = this.props.goals.Goals.find(goal => goal.completed !== true);
+    this.setState({distUnits: goal.distUnits, goalID: goal._id});
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
-    let goal = this.props.goals.Goals.find((goal) => goal.completed === false);
-    const { name, targetPace, runDist } = this.state;
+    let { name, targetPace, runDist } = this.state;
     this.setState({ ttlMsg: null, paceMsg: null, distMsg: null });
     this.setState({ ttlMsg: validateTitle(name) });
     this.setState({ paceMsg: validatePace(targetPace) });
@@ -39,17 +48,22 @@ class CreateRun extends Component {
     if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(runDist) !== null) {
       return null;
     }
+    let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, this.state.distUnits);
+    if (timeConv !== distConv){
+      targetPace = paceConvert(targetPace, timeConv);
+    }
+    console.log(distConv, this.state.distUnits)
     const newRun = {
       userGoalsID: this.props.goals._id,
-      goalID: goal._id,
+      goalID: this.state.goalID,
       name,
       date: this.state.date.toISOString().substr(0, 10),
       targetPace,
-      runDist,
-      distUnits: this.props.settings.distUnits,
+      runDist: runDist * distConv,
+      distUnits: this.state.distUnits,
       runType: this.state.runType,
       completed: false,
-      mood: 0
+      mood: 3
     };
     this.props.dispatch(addRun(newRun));
     e.target.parentElement.click();

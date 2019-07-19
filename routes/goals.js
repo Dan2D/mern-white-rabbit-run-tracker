@@ -77,20 +77,21 @@ router.delete("/:userGoalsID/goal/:goalID", (req, res) => {
 
 // Update Goal (WORKING)
 router.patch("/goal/:goalID", (req, res) => {
+
   const {
     userGoalsID,
     name,
     targetPace,
     goalDist,
-    distUnits,
     raceDay,
     goalType,
+    newProgress
   } = req.body;
   console.log(req.body)
   Goal.findById(userGoalsID)
   .then(goalList => {
       let goal = goalList.Goals.id(req.params.goalID);
-      goal.set({ name, targetPace, goalDist, distUnits, raceDay, goalType})
+      goal.set({ name, targetPace, goalDist, raceDay, goalType, progress: newProgress})
       goalList.save()
       .then(goalList => res.json(goalList.Goals.id(req.params.goalID)))
   })
@@ -147,7 +148,6 @@ router.patch("/runs/:runID", auth, (req, res) => {
     name,
     targetPace,
     runDist,
-    distUnits,
     date,
     actualPace,
     runType,
@@ -156,7 +156,7 @@ router.patch("/runs/:runID", auth, (req, res) => {
   Goal.findById(userGoalsID)
   .then(goalList => {
       let run = goalList.Goals.id(goalID).runs.id(req.params.runID)
-      run.set({ name, targetPace, runDist, distUnits, date, runType, actualPace, mood })
+      run.set({ name, targetPace, runDist, date, runType, actualPace, mood })
       goalList.save()
       .then(goalList => res.json(goalList.Goals.id(goalID).runs.id(req.params.runID)))
   })
@@ -165,14 +165,14 @@ router.patch("/runs/:runID", auth, (req, res) => {
 
 // COMPLETE RUN
 router.patch("/run/complete/:runID", auth, (req, res) => {
-  const {userGoalsID, goalID, mood, actualPace, distUnits, progress} = req.body;
+  const {userGoalsID, goalID, mood, actualPace, progress} = req.body;
   console.log(req.body)
   Goal.findById(userGoalsID)
   .then(goalList => {
     let goal = goalList.Goals.id(goalID)
     let run = goal.runs.id(req.params.runID);
     goal.set({progress: progress})
-    run.set({completed: true, mood, actualPace, distUnits})
+    run.set({completed: true, mood, actualPace})
     goalList.save()
     .then(() => res.json(run))
   })

@@ -16,6 +16,7 @@ import FinishRun from "./Runs/FinishRun";
 import Stats from "./Stats/Stats";
 import StatsDetail from "./Stats/StatsDetail";
 import Settings from "./Settings/Settings";
+import smoothscroll from 'smoothscroll-polyfill';
 import { Route } from "react-router-dom";
 
 class Content extends Component {
@@ -24,7 +25,8 @@ class Content extends Component {
     auth: PropTypes.object
   }
   componentDidMount() {
-    window.scrollTo(0,0);
+    smoothscroll.polyfill();
+    document.querySelector("body").scrollTo(0,0);
   }
   render() {
     const nav = (

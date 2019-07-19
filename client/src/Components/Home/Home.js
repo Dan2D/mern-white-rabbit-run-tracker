@@ -30,7 +30,7 @@ class Home extends Component {
     if (this.props.auth.isAuthenticated && !this.props.auth.isLoading) {
       this.props.getUserGoals(this.props.auth.user._id);
       this.props.getUserSettings(this.props.auth.user._id);
-      document.querySelector('a[data-ref="home"]').click();
+      // document.querySelector('a[data-ref="home"]').click();
     }
 
   }
@@ -63,7 +63,7 @@ class Home extends Component {
     const currentGoal = this.props.currentGoal ? this.props.currentGoal : this.state.noGoal;
     let progressEl = document.querySelector(".visual-progress");
     this.rabbitProgressMove(currentGoal, progressEl);
-    let { distConv } = setUnitConv(this.props.settings.distUnits, currentGoal.distUnits);
+    let { distConv } = setUnitConv(currentGoal.distUnits, this.props.settings.distUnits);
     const addGoalBtn = (
       <Link to={{ pathname: "/add/goal", state: { type: "goal" } }}>
         <button className="add-goal m-2">+Goal</button>
@@ -71,7 +71,7 @@ class Home extends Component {
     );
     return (
       <div className="home">
-        <div className="title-blk title-blk--progress d-flex justify-content-between align-center">
+        <div className="title-blk title-blk--progress d-flex justify-content-between align-items-center">
           <h5 className="title-blk__prog-title"><strong>Progress</strong></h5>
           {currentGoal === this.state.noGoal ? addGoalBtn : null}
         </div>
@@ -83,7 +83,7 @@ class Home extends Component {
             raceDay={currentGoal.raceDay}
             tPace={currentGoal.targetPace}
             goalDist={currentGoal.goalDist}
-            goalDistUnits={currentGoal.distUnits}
+            distUnits={currentGoal.distUnits}
             completed={false}
           />
           <div className="visual-progress">

@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import { finishGoal } from "../../store/actions/runActions";
-import {validatePace} from '../Utils/helpers';
-import rating1 from '../../images/rating-1.png'
-import rating2 from '../../images/rating-2.png'
-import rating3 from '../../images/rating-3.png'
-import rating4 from '../../images/rating-4.png'
-import rating5 from '../../images/rating-5.png'
+import {setUnitConv, paceConvert, validatePace} from '../Utils/helpers';
 import PropTypes from 'prop-types';
+import smoothscroll from 'smoothscroll-polyfill';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Runs.css";
 
-class CreateRun extends Component {
+class FinishGoal extends Component {
   state = {
     raceDay: new Date(),
     actualPace: "",
@@ -20,40 +16,51 @@ class CreateRun extends Component {
   };
 
   componentDidMount(){
+    smoothscroll.polyfill();
+    document.querySelector("body").scrollTo(0,0);
     const id = this.props.match.params.id;
     const goal = this.props.goals.Goals.find(goal => goal._id === id);
     const goalIndx = this.props.goals.Goals.indexOf(goal);
-    const {name, raceDay, targetPace, goalDist, goalType} = goal;
+    let {name, raceDay, targetPace, goalDist, goalType} = goal;
+    let {timeConv, distConv} = setUnitConv(goal.distUnits, this.props.settingUnits);
+    if (timeConv !== distConv) {
+      targetPace = paceConvert(targetPace, timeConv);
+    }
     this.setState({
         id,
         name,
         raceDay: new Date(raceDay),
         targetPace,
-        goalDist,
+        goalDist: (goalDist * distConv).toFixed(2),
+        distUnits: goal.distUnits,
         goalType,
         goalIndx
     })
 }
 static propTypes = {
-  finishGoal: PropTypes.func.isRequired,
-  validatePace: PropTypes.func.isRequired,
-  goals: PropTypes.object.isRequired,
-  distUnits: PropTypes.string.isRequired
+  finishGoal: PropTypes.func,
+  validatePace: PropTypes.func,
+  goals: PropTypes.object,
+  settingUnits: PropTypes.string
 }
 
   handleSubmit = e => {
     e.preventDefault();
-    const {actualPace} = this.state;
+    let {actualPace} = this.state;
     this.setState({aPaceMsg: null});
     this.setState({aPaceMsg: validatePace(actualPace)})
     if (validatePace(actualPace) !== null ){
       return null;
     }
+    let {timeConv, distConv} = setUnitConv(this.props.settingUnits, this.state.distUnits);
+    if (timeConv !== distConv) {
+      actualPace = paceConvert(actualPace, timeConv);
+    }
     const finishedGoal = {
       goalIndx: this.state.goalIndx,
       userGoalsID: this.props.goals._id,
       goalID: this.state.id,
-      actualPace: this.state.actualPace,
+      actualPace: actualPace,
       mood: this.state.goalMood,
       completed: true
     };
@@ -73,9 +80,9 @@ static propTypes = {
           <p><strong>Date: </strong>{this.state.raceDay.toString().substr(0, 15)}</p>
           <p>
            <strong>Target Pace: </strong>
-            {` ${this.state.targetPace} min / ${this.props.distUnits}`}
+            {` ${this.state.targetPace} min / ${this.props.settingUnits}`}
           </p>
-          <p><strong>Distance: </strong>{` ${this.state.goalDist} ${this.props.distUnits}`}</p>
+          <p><strong>Distance: </strong>{` ${this.state.goalDist} ${this.props.settingUnits}`}</p>
           <p><strong>Type: </strong>{this.state.goalType}</p>
           <div>
             <p><strong>Actual Pace</strong> (mm:ss)</p>
@@ -96,7 +103,7 @@ static propTypes = {
               onChange={e => this.handleChange(e)}
             >
              <label className="d-flex flex-column rating-radio">
-               <img src={rating1} alt="mad face"/>
+               <img src={require("../../images/rating-1.png")} alt="mad face"/>
                 <input
                   type="radio"
                   name="goalMood"
@@ -105,7 +112,7 @@ static propTypes = {
                 />
               </label>
               <label className="d-flex flex-column rating-radio">
-                <img src={rating2} alt="sad face"/>
+                <img src={require("../../images/rating-2.png")} alt="sad face"/>
                 <input
                   type="radio"
                   name="goalMood"
@@ -114,7 +121,7 @@ static propTypes = {
                 />
               </label>
               <label className="d-flex flex-column rating-radio">
-                <img src={rating3} alt="meh face"/>
+                <img src={require("../../images/rating-3.png")} alt="meh face"/>
                 <input
                   type="radio"
                   name="goalMood"
@@ -123,7 +130,7 @@ static propTypes = {
                 />
               </label>
               <label className="d-flex flex-column rating-radio">
-                <img src={rating4} alt="happy face"/>
+                <img src={require("../../images/rating-4.png")} alt="happy face"/>
                 <input
                   type="radio"
                   name="goalMood"
@@ -132,7 +139,7 @@ static propTypes = {
                 />
               </label>
               <label className="d-flex flex-column rating-radio">
-                <img src={rating5} alt="very happy face"/>
+                <img src={require("../../images/rating-5.png")} alt="very happy face"/>
                 <input
                   type="radio"
                   name="goalMood"
@@ -161,11 +168,11 @@ static propTypes = {
 const mapStateToProps = state => {
   return {
     goals: state.goals,
-    distUnits: state.settings.distUnits
+    settingUnits: state.settings.distUnits
   };
 };
 
 export default connect(
   mapStateToProps,
   { finishGoal }
-)(CreateRun);
+)(FinishGoal);

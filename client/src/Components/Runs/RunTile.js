@@ -15,9 +15,14 @@ class RunTile extends Component {
     userID: PropTypes.string.isRequired
   };
   render() {
-    let { timeConv, distConv } = setUnitConv(this.props.settings.distUnits, this.props.distUnits);
-    let targetPace = paceConvert(this.props.tPace, timeConv);
-    let actualPace = paceConvert(this.props.aPace, timeConv);
+    let targetPace = this.props.tPace;
+    let actualPace = this.props.aPace;
+    let { timeConv, distConv } = setUnitConv(this.props.distUnits, this.props.settings.distUnits);
+    if (timeConv !== distConv){
+      targetPace = paceConvert(this.props.tPace, timeConv);
+      actualPace = paceConvert(this.props.aPace, timeConv);
+    }
+    
     let idObj = { userGoalsID: this.props.userID, goalID: this.props.goalID, runID: this.props.runID };
     return (
       <div className="tile-blk" data-id={this.props.runID}>

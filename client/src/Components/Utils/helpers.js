@@ -1,13 +1,13 @@
 
-export const   setUnitConv = (settingUnits, dataUnits) => {
+export const   setUnitConv = (startUnits, FinalUnits) => {
     let distConv = 1;
     let timeConv = 1;
-    if (settingUnits !== dataUnits) {
-      if (dataUnits === "mi" && settingUnits === "km") {
+    if (startUnits !== FinalUnits) {
+      if (startUnits === "mi" && FinalUnits === "km") {
         distConv = 1.60934;
         timeConv = 0.62137;
       }
-      if (dataUnits === "km" &&  settingUnits === "mi" ){
+      if (startUnits === "km" &&  FinalUnits === "mi" ){
         distConv = 0.62137;
         timeConv = 1.60934;
       }

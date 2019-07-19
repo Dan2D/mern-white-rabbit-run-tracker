@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { logOut } from "../../store/actions/authActions";
 import PropTypes from "prop-types";
@@ -8,12 +8,10 @@ import "./Nav.css";
 
 function Nav(props) {
   const [menuToggle, setMenuToggle] = useState(false);
-  const [menuBtn, setMenuBtn] = useState("home");
   Nav.propTypes = {
     logOut: PropTypes.func.isRequired
   };
   useEffect(() => {
-
     window.addEventListener("resize", handleResize);
     handleResize();
   }, []);
@@ -26,16 +24,8 @@ function Nav(props) {
     if (window.innerWidth > 768 && document.querySelector(".navBar__menu")) {
       document.querySelector(".navBar button").style.display = "none";
       document.querySelector(".navBar__menu").className = "navBar__menu--spread";
-      document.querySelector('a[data-ref="home"]').click();
     }
   };
-
-  const handleMenuClick = (e) => {
-    setMenuBtn(e.target.name);
-    let color = e.target.name === "home" ? "#009975" : e.target.name === "stats" ? "#58b368" : "#363B48";
-    document.documentElement.style.setProperty("--nav-link-color", color);
-  };
-
   return (
     <div className="navBar-container absolute-top">
       <div className="navBar">
@@ -49,26 +39,26 @@ function Nav(props) {
         <div className={menuToggle ? "navBar__menu open" : "navBar__menu closed"}>
           <ul>
             <li>
-              <Link to="/" name="home" data-ref="home" onClick={(e) => handleMenuClick(e)} className={menuBtn === "home" ? "link-active" : null}>
+              <NavLink to="/" exact name="home" activeClassName="link-active link-home">
                 Home
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/stats" name="stats" data-ref="stats" onClick={(e) => handleMenuClick(e)} className={menuBtn === "stats" ? "link-active" : null}>
+              <NavLink to="/stats" name="stats" activeClassName="link-active link-stats">
                 Stats
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/settings" name="settings" data-ref="settings" onClick={(e) => handleMenuClick(e)} className={menuBtn === "settings" ? "link-active" : null}>
+              <NavLink to="/settings" name="settings" activeClassName="link-active link-settings">
                 Settings
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/login">
+              <NavLink to="/login">
                 <button className="link log-out" onClick={props.logOut}>
                   Log Out
                 </button>
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>

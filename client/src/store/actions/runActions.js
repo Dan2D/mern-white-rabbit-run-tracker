@@ -12,7 +12,6 @@ import {
   FINISH_RUN
 } from "./types";
 import axios from "axios";
-import {setUnitConv, paceConvert} from '../../Components/Utils/helpers';
 import {returnErrors} from './errorActions';
 import { tokenConfig } from "./authActions";
 const config = { headers: { "Content-type": "application/json" } };
@@ -67,7 +66,7 @@ export const delGoal = (userGoalsID, goalID) => dispatch => {
   });
 };
 
-export const editGoal = goalObj => dispatch => {
+export const editGoal = goalObj => (dispatch, getState) => {
   const {
     userGoalsID,
     goalID,
@@ -75,18 +74,23 @@ export const editGoal = goalObj => dispatch => {
     raceDay,
     targetPace,
     goalDist,
-    distUnits,
     goalType
   } = goalObj;
+  let goal = getState().goals.Goals.find(goal => goal._id === goalID);
+  // let oldDist = goal.goalDist;
+  // let oldPace = goal.targetPace;
+  // let newProgress = ((goalDist/oldDist) * 0.5) + ((targetPace/oldPace) * (goalDist/oldDist) * 0.5);
+  // console.log(oldDist, oldPace, newProgress)
   const body = JSON.stringify({
     userGoalsID,
     name,
     raceDay,
     targetPace,
     goalDist,
-    distUnits,
-    goalType
+    goalType,
+    // newProgress
   });
+  console.log(body)
   axios.patch(`/goals/goal/${goalID}`, body, config).then(res => {
     dispatch({
       type: EDIT_GOAL,
@@ -120,6 +124,7 @@ export const addRun = runObj => (dispatch, getState) => {
     distUnits,
     runType
   } = runObj;
+  console.log(runObj)
   const body = JSON.stringify({
     userGoalsID,
     goalID,
@@ -198,41 +203,22 @@ export const editRun = runObj => (dispatch, getState) => {
 };
 
 export const finishRun = runObj => (dispatch, getState) => {
-  let { userGoalsID, goalID, runID, mood, actualPace, distUnits, runIndx } = runObj;
-  const goal = getState().goals.Goals.find(goal => goal._id === goalID);
-  const run = goal.runs[runIndx];
-  let progress = goal.progress;
-  if (goal.distUnits !== distUnits){
-    let {timeConv, distConv} = setUnitConv(goal.distUnits, distUnits);
-    let runPace = paceConvert(actualPace, timeConv);
-    progress = progressCalc(
-      goal.targetPace,
-      goal.goalDist,
-      runPace,
-      run.runDist * distConv
-    );
-    if (progress < parseInt(goal.progress)) {
-      progress = goal.progress;
-    }
-  }
-  else {
-    progress = progressCalc(
-      goal.targetPace,
-      goal.goalDist,
+  let { userGoalsID, goalID, runID, runDist, mood, actualPace, runIndx, gTargetPace, goalDist, gProgress } = runObj;
+    let progress = progressCalc(
+      gTargetPace,
+      goalDist,
       actualPace,
-      run.runDist 
+      runDist 
     );
-    if (progress < parseInt(goal.progress)) {
-      progress = goal.progress
+    if (progress < parseInt(gProgress)) {
+      progress = gProgress
     }
-  }
   if (progress > 100){
     progress = 100;
   }
   const body = JSON.stringify({
     userGoalsID,
     goalID,
-    distUnits,
     mood,
     actualPace,
     progress

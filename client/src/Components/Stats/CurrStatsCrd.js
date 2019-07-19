@@ -12,8 +12,8 @@ class CurrStatsCrd extends Component {
   };
 
   static propTypes = {
-    setUnitConv: PropTypes.func.isRequired,
-    paceConvert: PropTypes.func.isRequired
+    setUnitConv: PropTypes.func,
+    paceConvert: PropTypes.func
   }
 
   componentDidMount() {

@@ -57,16 +57,28 @@
 
   .navBar__menu--spread a.link-active {
       border-radius: 10px 10px 0 0;
-      padding: 5px;
-      background: var(--nav-link-color);
+      padding: 5px;      
   }
+
+  .navBar__menu--spread a.link-active.link-home {
+      background: #009975;
+  }
+
+  .navBar__menu--spread a.link-active.link-stats {
+    background: #58b368;
+}
+
+.navBar__menu--spread a.link-active.link-settings {
+    background: #363B48;
+}
 
 button.log-out{
       font-size: 1rem;
       padding: 0;
   }
 
-  .navBar__menu a:hover {
+  .navBar__menu a:hover,
+  .navBar__menu button:hover {
       color: slategrey;
       text-decoration: none;
   }
@@ -123,7 +135,7 @@ button.log-out{
     .navBar__menu--spread a:hover,
     .navBar__menu--spread button:hover {
         text-decoration: none;
-        color: #d9d872;
+        color: #d8a3ff;
     }
 }
 

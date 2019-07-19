@@ -1,15 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { editGoal } from "../../store/actions/runActions";
-import {setUnitConv, paceConvert} from "../Utils/helpers";
-import {validateTitle, validatePace, validateDist} from '../Utils/helpers';
+import {setUnitConv, paceConvert, validateTitle, validatePace, validateDist} from '../Utils/helpers';
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
+import smoothscroll from 'smoothscroll-polyfill';
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Runs.css";
-
-
 
 class EditGoal extends Component {
     state = {
@@ -26,36 +24,43 @@ class EditGoal extends Component {
     }
 
     static propTypes = {
-      editGoal: PropTypes.func.isRequired,
-      validateTitle: PropTypes.func.isRequired,
-      validatePace: PropTypes.func.isRequired,
-      validateDist: PropTypes.func.isRequired,
-      setUnitConv: PropTypes.func.isRequired,
-      paceConvert: PropTypes.func.isRequired,
-      userGoalsID: PropTypes.string.isRequired,
-      goals: PropTypes.object.isRequired,
-      settings: PropTypes.object.isRequired
+      editGoal: PropTypes.func,
+      validateTitle: PropTypes.func,
+      validatePace: PropTypes.func,
+      validateDist: PropTypes.func,
+      setUnitConv: PropTypes.func,
+      paceConvert: PropTypes.func,
+      userGoalsID: PropTypes.string,
+      goals: PropTypes.array,
+      settings: PropTypes.object
     }
 
     componentDidMount(){
+        smoothscroll.polyfill();
+        document.querySelector("body").scrollTo(0,0);
         const goal = this.props.goals.find(goal => goal._id === this.props.match.params.id);
-        let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, goal.distUnits);
-        const {name, raceDay, targetPace, goalDist, goalType, runs, completed, actualPace, mood} = goal;
+        let {name, raceDay, targetPace, goalDist, goalType, completed, actualPace, mood} = goal;
+        let {timeConv, distConv} = setUnitConv(goal.distUnits, this.props.settings.distUnits);
+        if (timeConv !== distConv){
+          targetPace = paceConvert(targetPace, timeConv);
+          actualPace = paceConvert(actualPace, timeConv);
+        }
+        
         this.setState({
             name,
             date: new Date(raceDay),
-            targetPace: paceConvert(targetPace, timeConv),
+            targetPace,
             goalDist: (goalDist * distConv).toFixed(2),
-            actualPace: paceConvert(actualPace, timeConv),
+            actualPace,
             goalMood: mood.toString(), 
             goalType,
-            runs,
-            completed
+            completed,
+            gDistUnits: goal.distUnits
         })
     }
   handleSubmit = (e) => {
     e.preventDefault();
-    const {name, targetPace, actualPace, goalDist} = this.state;
+    let {name, targetPace, actualPace, goalDist} = this.state;
     this.setState({ttlMsg: null, paceMsg: null, aPaceMsg: null, distMsg: null});
     this.setState({ttlMsg: validateTitle(name)})
     this.setState({tPaceMsg: validatePace(targetPace)})
@@ -67,20 +72,23 @@ class EditGoal extends Component {
     if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(goalDist) !== null){
       return null;
     }
+    let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, this.state.gDistUnits);
+        if (timeConv !== distConv){
+          targetPace = paceConvert(targetPace, timeConv);
+          actualPace = paceConvert(actualPace, timeConv);
+        }
     const updatedGoal = {
       userGoalsID: this.props.userGoalsID,
       goalID: this.props.match.params.id,
       name: this.state.name,
       raceDay: this.state.date,
-      targetPace: this.state.targetPace,
-      actualPace: this.state.actualPace,
+      targetPace,
+      actualPace,
       mood: this.state.goalMood,
-      goalDist: this.state.goalDist,
-      distUnits: this.props.settings.distUnits,
+      goalDist: this.state.goalDist * distConv,
       goalType: this.state.goalType,
-      runs: this.state.runs,
-      completed: this.state.completed,
     };
+    console.log(updatedGoal)
     this.props.editGoal(updatedGoal);
     e.target.parentElement.click();
 }

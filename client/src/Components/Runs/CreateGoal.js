@@ -3,6 +3,7 @@ import { addGoal } from "../../store/actions/runActions";
 import { validateTitle, validatePace, validateDist } from "../Utils/helpers";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import smoothscroll from 'smoothscroll-polyfill';
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -91,6 +92,9 @@ class CreateGoal extends Component {
   };
 
   render() {
+    smoothscroll.polyfill();
+    document.querySelector("body").scrollTo(0,0);
+    console.log(this.props)
     const goalTypes = ["Select an Option", "5K", "10K", "Half-Marathon", "Marathon", "Distance", "Fast Mile", "Relay"];
     return (
       <div className="format-goal container">

@@ -7,18 +7,18 @@ import {connect} from 'react-redux';
 class GoalTile extends Component {
 
   handleDeleteGoal = (e) => {
-    console.log(this.props.userGoalsID, this.props.goalID)
     this.props.delGoal(this.props.userGoalsID, this.props.goalID);
     e.target.parentElement.click();
   }
 
   render() {
-    let { timeConv, distConv } = setUnitConv(
-      this.props.distUnits,
-      this.props.goalDistUnits
-    );
-    let targetPace = paceConvert(this.props.tPace, timeConv);
-    let actualPace = paceConvert(this.props.aPace, timeConv);
+    let targetPace = this.props.tPace;
+    let actualPace = this.props.Pace;
+    let { timeConv, distConv } = setUnitConv(this.props.distUnits, this.props.settingUnits);
+    if (timeConv !== distConv){
+      targetPace = paceConvert(this.props.tPace, timeConv);
+      actualPace = paceConvert(this.props.aPace, timeConv);
+    }
     const finishGoalBtn = <Link to={`/complete/goal/${this.props.goalID}`}>
                             <button className="btn btn-info goal-nav__btn">Finish Goal>></button>
                           </Link>;
@@ -54,17 +54,17 @@ class GoalTile extends Component {
             </h6>
             <h6>
               <strong>Target Pace: </strong>
-              {`${targetPace} min / ${this.props.distUnits}`}
+              {`${targetPace} min / ${this.props.settingUnits}`}
             </h6>
             {this.props.completed ? (
               <h6>
                 <strong>Actual Pace: </strong>{" "}
-                {`${actualPace} min / ${this.props.distUnits}`}
+                {`${actualPace} min / ${this.props.settingUnits}`}
               </h6>
             ) : null}
             <h6>
               <strong>Goal Distance: </strong>
-              {`${(this.props.goalDist * distConv).toFixed(2)} ${this.props.distUnits}`}
+              {`${(this.props.goalDist * distConv).toFixed(2)} ${this.props.settingUnits}`}
             </h6>
             {this.props.completed ? (
               <h6>
@@ -88,7 +88,7 @@ class GoalTile extends Component {
 const mapStateToProps = state => {
   return {
     userGoalsID: state.auth.user._id,
-    distUnits: state.settings.distUnits
+    settingUnits: state.settings.distUnits
   }
 }
 
