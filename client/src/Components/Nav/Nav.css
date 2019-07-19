@@ -12,7 +12,6 @@
     align-items: flex-end;
     position: relative;
     height: 10vh;
-    overflow: hidden;
     z-index: 2;
     background: #454D66;
   }

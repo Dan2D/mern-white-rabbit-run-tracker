@@ -76,7 +76,7 @@ hr {
 .content-container {
   /* height: 100vh;
   width: 100vw; */
-  overflow-x: hidden;
+  /* overflow-y: hidden; */
   background: #929dbf;
 }
 
@@ -86,6 +86,7 @@ hr {
   top: 10vh;
   left: 0;
   right: 0;
+  z-index: 0;
 }
 
 .slide-enter {
