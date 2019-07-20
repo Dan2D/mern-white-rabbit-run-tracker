@@ -66,7 +66,7 @@ const goalSchema = mongoose.Schema({
     },
     goalType: {
         type: String,
-        default: "5K"
+        default: "Distance"
     },
     runs: [runSchema],
     actualPace: {
