@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {updateUserSettings} from '../../store/actions/settingsActions';
+import smoothscroll from 'smoothscroll-polyfill';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import './Settings.css';
@@ -20,6 +21,8 @@ class Settings extends Component {
     }
 
     render(){
+        smoothscroll.polyfill();
+        window.scrollTo(0,0);
         return (
             <div className="settings-container">
                 <div className="title-blk title-blk--ssettings d-flex justify-start align-center">

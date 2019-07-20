@@ -33,7 +33,7 @@ class CreateRun extends Component {
 
   componentDidMount(){
     smoothscroll.polyfill();
-    document.querySelector("body").scrollTo(0,0);
+    window.scrollTo(0,0);
     let goal = this.props.goals.Goals.find(goal => goal.completed !== true);
     this.setState({distUnits: goal.distUnits, goalID: goal._id});
   }
@@ -52,7 +52,6 @@ class CreateRun extends Component {
     if (timeConv !== distConv){
       targetPace = paceConvert(targetPace, timeConv);
     }
-    console.log(distConv, this.state.distUnits)
     const newRun = {
       userGoalsID: this.props.goals._id,
       goalID: this.state.goalID,
@@ -78,10 +77,12 @@ class CreateRun extends Component {
   };
 
   render() {
+    smoothscroll.polyfill();
+    window.scrollTo(0,0);
     const runTypes = ["Long Distance", "Short Distance", "Speed Run", "Trail Run", "Hills", "Intervals"];
     return (
-      <div className="format-run container">
-        <form onSubmit={(e) => this.handleSubmit(e)}>
+      <div className="format-run">
+        <form className="container" onSubmit={(e) => this.handleSubmit(e)}>
           <div className="form-group">
             <label htmlFor="name"><strong>Run</strong></label>
             <input

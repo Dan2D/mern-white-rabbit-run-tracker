@@ -39,7 +39,7 @@ class EditRun extends Component {
 
     componentDidMount(){
         smoothscroll.polyfill();
-        document.querySelector("body").scrollTo(0,0);
+        window.scrollTo(0,0);
         const goal = this.props.goal.find(goal => goal._id === this.props.location.state.goal);
         const id = this.props.match.params.id;
         const run = goal.runs.find(run => run._id === id);
@@ -112,6 +112,8 @@ class EditRun extends Component {
   }
 
   render() {
+    smoothscroll.polyfill();
+    window.scrollTo(0,0);
     const runTypes = [
       "Long Distance",
       "Short Distance",
@@ -136,8 +138,8 @@ class EditRun extends Component {
                         </div>
                       </Fragment>
     return (
-      <div className="format-run container">
-        <form onSubmit={e => this.handleSubmit(e)}>
+      <div className="format-run">
+        <form className="container" onSubmit={e => this.handleSubmit(e)}>
           <div className="form-group">
             <label htmlFor="name"><strong>Run</strong></label>
             <input

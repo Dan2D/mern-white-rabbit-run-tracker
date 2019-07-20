@@ -89,6 +89,15 @@ hr {
   z-index: 0;
 }
 
+.userLog-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  overflow:hidden;
+}
+
 .fade-enter {
   z-index: 1;
   opacity: 0;
@@ -96,7 +105,7 @@ hr {
 
 .fade-enter-active {
   opacity: 1;
-  transition: opacity 500ms linear;
+  transition: opacity 500ms ease-out;
 }
 
 .fade-exit {
@@ -106,7 +115,7 @@ hr {
 
 .fade-exit-active {
   opacity: 0;
-  transition: opacity 50ms linear;
+  transition: opacity 500ms ease-out;
 }
 
 .push-enter {

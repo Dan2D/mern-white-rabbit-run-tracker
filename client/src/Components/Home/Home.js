@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { getUserGoals } from "../../store/actions/runActions";
 import { getUserSettings } from "../../store/actions/settingsActions";
 import { setUnitConv } from "../Utils/helpers";
+import smoothscroll from 'smoothscroll-polyfill';
 import GoalTile from "../Runs/GoalTile";
 import PropTypes from "prop-types";
 import UpcomingRuns from "../Runs/UpcomingRuns";
@@ -27,19 +28,12 @@ class Home extends Component {
     modal: false
   };
   componentDidMount() {
+    smoothscroll.polyfill();
+    window.scrollTo(0,0);
     if (this.props.auth.isAuthenticated && !this.props.auth.isLoading && !this.props.goals._id) {
       this.props.getUserGoals(this.props.auth.user._id);
       this.props.getUserSettings(this.props.auth.user._id);
     }
-  }
-
-      componentDidUpdate(prevProps, nextProps){
-      // if (prevProps.goals !== nextProps.goals){
-      //   this.props.getUserGoals(this.props.auth.user._id);
-      // }
-      // if (prevProps.settings !== nextProps.settings){
-      //   this.props.getUserSettings(this.props.auth.user._id);
-      // }
   }
 
   static propTypes = {
@@ -64,6 +58,8 @@ class Home extends Component {
   };
 
   render() {
+    smoothscroll.polyfill();
+    window.scrollTo(0,0);
     if (this.props.auth.isAuthenticated === null) {
       return <Redirect to="/login" />;
     }

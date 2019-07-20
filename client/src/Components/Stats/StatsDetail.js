@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import GoalTile from "../Runs/GoalTile";
 import UpcomingRuns from "../Runs/UpcomingRuns";
 import CompletedRuns from "../Runs/CompletedRuns";
+import smoothscroll from 'smoothscroll-polyfill';
 import { delGoal } from "../../store/actions/runActions";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -22,6 +23,9 @@ class StatsDetail extends Component {
     distUnits: PropTypes.string.isRequired
   };
   componentDidMount() {
+    smoothscroll.polyfill();
+    window.scrollTo(0,0);
+    setInterval(() => { document.documentElement.style.setProperty("--nav-link-color", "#58b368");}, 100)
     const id = this.props.match.params.id;
     let statGoal = this.props.goals.filter((goal) => goal._id === id);
     this.setState({ statGoal: statGoal[0] });
@@ -31,6 +35,8 @@ class StatsDetail extends Component {
     e.target.parentElement.click();
   };
   render() {
+    smoothscroll.polyfill();
+    window.scrollTo(0,0);
     let goal = this.props.goals.find((goal) => goal._id === this.props.match.params.id);
     return (
       <div className="stats-detail-container">

@@ -17,7 +17,7 @@ class FinishGoal extends Component {
 
   componentDidMount(){
     smoothscroll.polyfill();
-    document.querySelector("body").scrollTo(0,0);
+    window.scrollTo(0,0);
     const id = this.props.match.params.id;
     const goal = this.props.goals.Goals.find(goal => goal._id === id);
     const goalIndx = this.props.goals.Goals.indexOf(goal);
@@ -73,9 +73,11 @@ static propTypes = {
   };
 
   render() {
+    smoothscroll.polyfill();
+    window.scrollTo(0,0);
     return (
-      <div className="format-run container">
-        <form onSubmit={e => this.handleSubmit(e)}>
+      <div className="format-run">
+        <form className="container" onSubmit={e => this.handleSubmit(e)}>
           <p><strong>Goal: </strong>{this.state.name}</p>
           <p><strong>Date: </strong>{this.state.raceDay.toString().substr(0, 15)}</p>
           <p>

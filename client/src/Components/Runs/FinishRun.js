@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { finishRun } from "../../store/actions/runActions";
 import { setUnitConv, paceConvert, validatePace } from "../Utils/helpers";
 import PropTypes from "prop-types";
-import smoothscroll from 'smoothscroll-polyfill';
+import smoothscroll from "smoothscroll-polyfill";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Runs.css";
@@ -24,7 +24,7 @@ class FinishRun extends Component {
 
   componentDidMount() {
     smoothscroll.polyfill();
-    document.querySelector("body").scrollTo(0,0);
+    window.scrollTo(0,0);
     const goal = this.props.goals.Goals.find((goal) => goal._id === this.props.location.state.goal);
     const goalDist = goal.goalDist;
     const gTargetPace = goal.targetPace;
@@ -86,35 +86,20 @@ class FinishRun extends Component {
   };
 
   render() {
+    smoothscroll.polyfill();
+    window.scrollTo(0, 0);
     const { timeConv, distConv } = setUnitConv(this.props.settingUnits, this.state.distUnits);
     const targetPace = paceConvert(this.state.targetPace, timeConv);
     return (
-      <div className="format-run container">
-        <form onSubmit={(e) => this.handleSubmit(e)}>
-          <p>
-            <strong>Run: </strong>
-            {this.state.name}
-          </p>
-          <p>
-            <strong>Date: </strong>
-            {this.state.date.toString().substr(0, 15)}
-          </p>
-          <p>
-            <strong>Target Pace: </strong>
-            {` ${targetPace} min / ${this.props.settingUnits}`}
-          </p>
-          <p>
-            <strong>Distance: </strong>
-            {` ${(this.state.runDist * distConv).toFixed(2)} ${this.props.settingUnits}`}
-          </p>
-          <p>
-            <strong>Type: </strong>
-            {this.state.runType}
-          </p>
+      <div className="format-run">
+        <form className="container" onSubmit={(e) => this.handleSubmit(e)}>
+          <p><strong>Run: </strong>{this.state.name}</p>
+          <p><strong>Date: </strong>{this.state.date.toString().substr(0, 15)}</p>
+          <p><strong>Target Pace: </strong>{`${targetPace} min / ${this.props.settingUnits}`}</p>
+          <p><strong>Distance: </strong>{`${(this.state.runDist * distConv).toFixed(2)} ${this.props.settingUnits}`}</p>
+          <p><strong>Type: </strong>{this.state.runType}</p>
           <div className="">
-            <p>
-              <strong>Actual Pace</strong> (mm:ss)
-            </p>
+            <p><strong>Actual Pace</strong> (mm:ss)</p>
             <input
               type="text"
               required
@@ -168,7 +153,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { finishRun }
-)(FinishRun);
+export default connect(mapStateToProps,{ finishRun })(FinishRun);

@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { connect } from "react-redux";
+import smoothscroll from 'smoothscroll-polyfill';
 import PropTypes from "prop-types";
 import CurrStatsCrd from "./CurrStatsCrd";
 import GoalCrd from "./GoalCrd";
@@ -7,6 +8,12 @@ import OverAllStats from "./OverallStats";
 import "./Stats.css";
 
 function Stats(props) {
+  useEffect(() => {
+    smoothscroll.polyfill();
+    window.scrollTo(0,0);
+  }, [])
+  smoothscroll.polyfill();
+  window.scrollTo(0,0);
   Stats.propTypes = {
     goals: PropTypes.array,
     distUnits: PropTypes.string

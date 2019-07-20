@@ -37,7 +37,7 @@ class EditGoal extends Component {
 
     componentDidMount(){
         smoothscroll.polyfill();
-        document.querySelector("body").scrollTo(0,0);
+        window.scrollTo(0,0);
         const goal = this.props.goals.find(goal => goal._id === this.props.match.params.id);
         let {name, raceDay, targetPace, goalDist, goalType, completed, actualPace, mood} = goal;
         let {timeConv, distConv} = setUnitConv(goal.distUnits, this.props.settings.distUnits);
@@ -88,7 +88,6 @@ class EditGoal extends Component {
       goalDist: this.state.goalDist * distConv,
       goalType: this.state.goalType,
     };
-    console.log(updatedGoal)
     this.props.editGoal(updatedGoal);
     e.target.parentElement.click();
 }
@@ -102,6 +101,8 @@ class EditGoal extends Component {
   }
 
   render() {
+    smoothscroll.polyfill();
+    window.scrollTo(0,0);
     const goalTypes = [
       "Select an Option",
       "5K",
@@ -128,8 +129,8 @@ class EditGoal extends Component {
                         </div>
                       </Fragment>
     return (
-      <div className="format-goal container">
-        <form onSubmit={e => this.handleSubmit(e)}>
+      <div className="format-goal">
+        <form className="container" onSubmit={e => this.handleSubmit(e)}>
           <div className="form-group">
             <label htmlFor="name"><strong>Goal</strong></label>
             <input

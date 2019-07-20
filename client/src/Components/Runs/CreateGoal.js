@@ -93,12 +93,11 @@ class CreateGoal extends Component {
 
   render() {
     smoothscroll.polyfill();
-    document.querySelector("body").scrollTo(0,0);
-    console.log(this.props)
+    window.scrollTo(0,0);
     const goalTypes = ["Select an Option", "5K", "10K", "Half-Marathon", "Marathon", "Distance", "Fast Mile", "Relay"];
     return (
-      <div className="format-goal container">
-        <form onSubmit={(e) => this.handleSubmit(e)}>
+      <div className="format-goal">
+        <form className="container" onSubmit={(e) => this.handleSubmit(e)}>
           <div className="form-group">
             <label htmlFor="name"><strong>Goal</strong></label>
             <input
