@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { addGoal } from "../../store/actions/runActions";
-import { validateTitle, validatePace, validateDist } from "../Utils/helpers";
+import { validateTitle, validatePace, validateDist, validateType } from "../Utils/helpers";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import smoothscroll from 'smoothscroll-polyfill';
@@ -17,7 +17,8 @@ class CreateGoal extends Component {
     goalType: "",
     ttlMsg: null,
     paceMsg: null,
-    distMsg: null
+    distMsg: null,
+    typeMsg: null
   };
   static propTypes = {
     addGoal: PropTypes.func.isRequired,
@@ -31,12 +32,13 @@ class CreateGoal extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { name, targetPace, goalDist } = this.state;
+    const { name, targetPace, goalDist, goalType } = this.state;
     this.setState({ ttlMsg: null, paceMsg: null, distMsg: null });
     this.setState({ ttlMsg: validateTitle(name) });
-    this.setState({ paceMsg: validatePace(targetPace) });
-    this.setState({ distMsg: validateDist(goalDist) });
-    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(goalDist) !== null) {
+    this.setState({ paceMsg: validatePace(targetPace)});
+    this.setState({ distMsg: validateDist(goalDist)});
+    this.setState({ typeMsg: validateType(goalType)});
+    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(goalDist) !== null || validateType(goalType) !== null) {
       return null;
     }
     const newGoal = {
@@ -166,6 +168,7 @@ class CreateGoal extends Component {
                 );
               })}
             </select>
+            <p className="error-msg">{this.state.typeMsg}</p>
           </div>
           <Link to="/">
             <button type="submit" className="btn btn-primary" onClick={(e) => this.handleSubmit(e)}>

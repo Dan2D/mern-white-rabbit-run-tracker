@@ -47,8 +47,14 @@ return targetPace;
 
   export const validateDist = (dist) => {
     if (!(/^[\d/.]{1,5}$/).test(dist)){
-      console.log(dist, "DIST")
       return "Please enter a valid distance"
     }
+    return null;
+  }
+
+  export const validateType = (type) => {
+    if (type === "" || type === "Select an Option"){
+      return "Please choose a type before submitting"
+    }  
     return null;
   }

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { editGoal } from "../../store/actions/runActions";
-import {setUnitConv, paceConvert, validateTitle, validatePace, validateDist} from '../Utils/helpers';
+import {setUnitConv, paceConvert, validateTitle, validatePace, validateDist, validateType} from '../Utils/helpers';
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom';
 import smoothscroll from 'smoothscroll-polyfill';
@@ -21,6 +21,7 @@ class EditGoal extends Component {
     tPaceMsg: null,
     aPaceMsg: null,
     distMsg: null,
+    typeMsg: null
     }
 
     static propTypes = {
@@ -60,16 +61,20 @@ class EditGoal extends Component {
     }
   handleSubmit = (e) => {
     e.preventDefault();
-    let {name, targetPace, actualPace, goalDist} = this.state;
+    let {name, targetPace, actualPace, goalDist, goalType} = this.state;
     this.setState({ttlMsg: null, paceMsg: null, aPaceMsg: null, distMsg: null});
-    this.setState({ttlMsg: validateTitle(name)})
-    this.setState({tPaceMsg: validatePace(targetPace)})
-    this.setState({aPaceMsg: validatePace(actualPace)})
-    this.setState({distMsg: validateDist(goalDist)})
+    this.setState({ttlMsg: validateTitle(name)});
+    this.setState({tPaceMsg: validatePace(targetPace)});
+    this.setState({aPaceMsg: validatePace(actualPace)});
+    this.setState({distMsg: validateDist(goalDist)});
+    this.setState({typeMsg: validateType(goalType)});
     if (this.state.completed && validatePace(actualPace) !== null ){
       return null;
     }
-    if (validateTitle(name) !== null || validatePace(targetPace) !== null || validateDist(goalDist) !== null){
+    if (validateTitle(name) !== null || 
+    validatePace(targetPace) !== null || 
+    validateDist(goalDist) !== null || 
+    validateType(goalType) !== null){
       return null;
     }
     let {timeConv, distConv} = setUnitConv(this.props.settings.distUnits, this.state.gDistUnits);
@@ -182,6 +187,7 @@ class EditGoal extends Component {
                 );
               })}
             </select>
+            <p className="error-msg">{this.state.typeMsg}</p>
           </div>
           <Link to="/">
             <button type="submit" className="btn btn-primary" onClick={(e) => this.handleSubmit(e)}>Update Goal</button>
