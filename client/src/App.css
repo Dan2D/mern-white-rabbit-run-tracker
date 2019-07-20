@@ -32,6 +32,9 @@ html, body {
   background: #929dbf;
 }
 
+body {
+  overflow-x: hidden;
+}
 
 h1, h2, h3, h4, h5, p, button, a, div {
   font-family: 'Nunito', sans-serif;
@@ -74,9 +77,6 @@ hr {
 }
 
 .content-container {
-  /* height: 100vh;
-  width: 100vw; */
-  /* overflow-y: hidden; */
   background: #929dbf;
 }
 
@@ -89,27 +89,25 @@ hr {
   z-index: 0;
 }
 
-.slide-enter {
+.fade-enter {
+  z-index: 1;
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 500ms linear;
+}
+
+.fade-exit {
+  opacity: 1;
   z-index: 0;
-  top: 100%;
 }
 
-.slide-enter-active {
-  top: 10vh;
-  transition: top 1500ms ease-in-out;
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 50ms linear;
 }
-
-.slide-exit {
-  top: 10vh;
-  z-index: 0;
-}
-
-.slide-exit-active {
-  z-index: 0;
-  top: -100%;
-  transition: top 1500ms ease-in-out;
-}
-
 
 .push-enter {
   z-index: 1;
@@ -146,5 +144,5 @@ transition: opacity 500ms ease 1000ms;
 .push-exit-active {
   z-index: 0;
   opacity: 0;
-  transition:  opacity 500ms ease 500ms;
+  transition:  opacity 500ms ease;
 }

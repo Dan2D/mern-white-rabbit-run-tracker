@@ -27,12 +27,19 @@ class Home extends Component {
     modal: false
   };
   componentDidMount() {
-    if (this.props.auth.isAuthenticated && !this.props.auth.isLoading) {
+    if (this.props.auth.isAuthenticated && !this.props.auth.isLoading && !this.props.goals._id) {
       this.props.getUserGoals(this.props.auth.user._id);
       this.props.getUserSettings(this.props.auth.user._id);
-      // document.querySelector('a[data-ref="home"]').click();
     }
+  }
 
+      componentDidUpdate(prevProps, nextProps){
+      // if (prevProps.goals !== nextProps.goals){
+      //   this.props.getUserGoals(this.props.auth.user._id);
+      // }
+      // if (prevProps.settings !== nextProps.settings){
+      //   this.props.getUserSettings(this.props.auth.user._id);
+      // }
   }
 
   static propTypes = {
@@ -112,9 +119,18 @@ const mapStateToProps = (state) => {
   return {
     auth: state.auth,
     currentGoal: state.goals.Goals.find((goal) => goal.completed === false),
+    goals: state.goals,
     settings: state.settings
   };
 };
+
+// const MemoHome = React.memo((prevProps, nextProps) => {
+//   console.log(prevProps.currentGoal, nextProps.currentGoal)
+//     if (prevProps.currentGoal !== nextProps.currentGoal){
+//       return true;
+//     }
+//     return false;
+// })
 
 export default connect(
   mapStateToProps,

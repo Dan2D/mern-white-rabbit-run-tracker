@@ -45,8 +45,8 @@ class Content extends Component {
            <TransitionGroup>
            <CSSTransition
            key={location.pathname}
-           timeout={2000}
-           classNames="push"
+           timeout={1500}
+           classNames={(/add|edit|complete|login|register/g).test(location.pathname) ? "fade" : "push"}
            >
              <Switch location={location}>
                <Route path="/" exact component={Home} />

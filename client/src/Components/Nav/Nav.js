@@ -14,6 +14,8 @@ function Nav(props) {
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     handleResize();
+    setInterval(() => { document.documentElement.style.setProperty("--nav-link-color", "#009975");}, 100)
+    
   }, []);
 
   const handleResize = () => {

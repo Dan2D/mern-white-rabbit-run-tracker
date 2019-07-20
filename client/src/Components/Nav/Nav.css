@@ -1,5 +1,5 @@
 ::root{
-    --nav-link-color: white;
+    --nav-link-color: none;
 }
 
 .navBar-container {
@@ -58,11 +58,12 @@
 
   .navBar__menu--spread a.link-active {
       border-radius: 10px 10px 0 0;
-      padding: 5px;      
+      padding: 5px;
+      transition: background 500ms ease-out 1000ms;      
   }
 
   .navBar__menu--spread a.link-active.link-home {
-      background: #009975;
+      background: var(--nav-link-color); 
   }
 
   .navBar__menu--spread a.link-active.link-stats {

@@ -61,7 +61,7 @@ class FinishRun extends Component {
     if (validatePace(actualPace) !== null) {
       return null;
     }
-    const { timeConv, distConv } = setUnitConv(this.state.distUnits, this.props.settingUnits);
+    const { timeConv, distConv } = setUnitConv(this.props.settingUnits, this.state.distUnits);
     if (timeConv !== 1) {
       actualPace = paceConvert(actualPace, timeConv);
     }
