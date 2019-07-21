@@ -80,6 +80,10 @@ hr {
   background: #929dbf;
 }
 
+.loading {
+  height: 100vh;
+}
+
 .home, .stats-container, .settings-container, .stats-detail-container,
 .format-goal, .format-run {
   position: absolute;

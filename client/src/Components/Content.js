@@ -36,7 +36,7 @@ class Content extends Component {
       </Fragment>
     );
     if (this.props.auth.isLoading){
-      return <Spinner name="double-bounce"/>
+      return <div className="loading d-flex flex-column justify-content-center align-items-center"><Spinner name="line-scale" color="white"/></div>
     }
     return (
       <div className="content-container">
