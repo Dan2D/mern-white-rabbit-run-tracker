@@ -178,8 +178,23 @@ export const editRun = runObj => (dispatch, getState) => {
     runType,
     completed,
     mood,
-    runIndx
+    runIndx,
+    gTargetPace,
+    goalDist,
+    gProgress
   } = runObj;
+  let progress = progressCalc(
+    gTargetPace,
+    goalDist,
+    actualPace,
+    runDist 
+  );
+  if (progress < parseInt(gProgress)) {
+    progress = gProgress
+  }
+if (progress > 100){
+  progress = 100;
+}
   const body = JSON.stringify({
     userGoalsID,
     goalID,
@@ -190,14 +205,16 @@ export const editRun = runObj => (dispatch, getState) => {
     runDist,
     runType,
     completed,
-    mood
+    mood,
+    progress
   });
   axios.patch(`/goals/runs/${id}`, body, tokenConfig(getState)).then(res => {
     dispatch({
       type: EDIT_RUN,
       payload: res.data,
       goalID,
-      runIndx
+      runIndx,
+      progress
     });
   });
 };

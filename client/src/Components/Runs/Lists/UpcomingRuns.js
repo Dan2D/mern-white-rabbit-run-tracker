@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom';
-import RunTile from './RunTile';
+import RunTile from '../Tiles/RunTile';
 
 function UpcomingRuns(props) {
   const addRunBtn = <Link className="d-flex" to="/add/run">

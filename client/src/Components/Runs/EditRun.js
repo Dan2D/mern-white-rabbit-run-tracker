@@ -61,7 +61,10 @@ class EditRun extends Component {
             runType,
             completed,
             runMood: mood.toString(),
-            runIndx
+            runIndx,
+            gTargetPace: goal.targetPace,
+            goalDist: goal.goalDist,
+            progress: goal.progress
         })
     }
 
@@ -97,7 +100,10 @@ class EditRun extends Component {
       runType: this.state.runType,
       completed: this.state.completed,
       mood: this.state.runMood,
-      runIndx: this.state.runIndx
+      runIndx: this.state.runIndx,
+      gTargetPace: this.state.gTargetPace,
+      goalDist: this.state.goalDist,
+      gProgress: this.state.progress
     };
     this.props.editRun(updatedRun);
     e.target.parentElement.click();

@@ -2,9 +2,9 @@ import React, {useEffect} from "react";
 import { connect } from "react-redux";
 import smoothscroll from 'smoothscroll-polyfill';
 import PropTypes from "prop-types";
-import CurrStatsCrd from "./CurrStatsCrd";
-import GoalCrd from "./GoalCrd";
-import OverAllStats from "./OverallStats";
+import CurrStatsTile from "./Tiles/CurrStatsTile";
+import GoalStatsTile from "./Tiles/GoalStatsTile";
+import OverAllStatsTile from "./Tiles/OverallStatsTile";
 import "./Stats.css";
 
 function Stats(props) {
@@ -30,11 +30,11 @@ function Stats(props) {
             <h5 className="title-blk__title--stats"><strong>Current Stats</strong></h5>
           </div>
         <div className="stats-goals">
-          <CurrStatsCrd goal={currGoal} goalUnits={currGoal.distUnits} settingUnits={props.distUnits} />
+          <CurrStatsTile goal={currGoal} goalUnits={currGoal.distUnits} settingUnits={props.distUnits} />
           <h5>Goals</h5>
           {allGoals.map((goal) => {
             return (
-              <GoalCrd
+              <GoalStatsTile
                 key={goal._id}
                 id={goal._id}
                 name={goal.name}
@@ -48,7 +48,7 @@ function Stats(props) {
       <div>
         <img className="stats-rabbit" src={require("../../images/sign.png")} alt="Rabbit"/>
         <div className="overall-stats-container">
-          <OverAllStats goals={allGoals} settingUnits={props.distUnits} />
+          <OverAllStatsTile goals={allGoals} settingUnits={props.distUnits} />
         </div>
       </div>
     </div>

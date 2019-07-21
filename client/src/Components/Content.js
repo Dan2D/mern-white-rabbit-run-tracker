@@ -46,21 +46,21 @@ class Content extends Component {
            <CSSTransition
            key={location.pathname}
            timeout={1500}
-           classNames={(/add|edit|complete|login|register/g).test(location.pathname) ? "fade" : "push"}
+           classNames={(/add|edit|complete|login|register|detail/g).test(location.pathname) ? "fade" : "push"}
            >
              <Switch location={location}>
                <Route path="/" exact component={Home} />
-               <Route path="/login" exact component={Login} />
+               <Route path="/login" component={Login} />
                <Route path="/register" component={Register} />
-               <Route path="/add/goal" exact component={CreateGoal} />
+               <Route path="/add/goal" component={CreateGoal} />
                <Route path="/edit/goal/:id" component={EditGoal} />
                <Route path="/complete/goal/:id" component={FinishGoal} />
-               <Route path="/add/run" exact component={CreateRun} />
+               <Route path="/add/run" component={CreateRun} />
                <Route path="/edit/run/:id" component={EditRun} />
                <Route path="/complete/run/:id" component={FinishRun} />
                <Route path="/stats" exact component={Stats} />
-               <Route path="/stats/:id" exact component={StatsDetail} />
-               <Route path="/settings" exact component={Settings} />
+               <Route path="/stats/detail/:id" component={StatsDetail} />
+               <Route path="/settings" component={Settings} />
              </Switch>
            </CSSTransition>
          </TransitionGroup>

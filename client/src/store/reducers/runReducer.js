@@ -20,7 +20,9 @@ const runReducer = (state = initialState, action) => {
                     goal.runs.splice(runIndx, 1)
                 })
             case EDIT_RUN:
+                console.log(action)
                 return produce(state, draft => {
+                    draft.Goals.find(goal => goal._id === action.goalID).progress = action.progress;
                     draft.Goals.find(goal => goal._id === action.goalID).runs[action.runIndx] = action.payload;
                 })        
         case FINISH_RUN:

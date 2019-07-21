@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { delRun } from "../../store/actions/runActions";
-import { setUnitConv, paceConvert } from "../Utils/helpers";
+import { delRun } from "../../../store/actions/runActions";
+import { setUnitConv, paceConvert } from "../../Utils/helpers";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import "./Runs.css";
+import "../Runs.css";
 
 class RunTile extends Component {
   static propTypes = {
@@ -65,7 +65,7 @@ class RunTile extends Component {
             {this.props.completed ? (
               <p>
                 <strong>Felt Like: </strong>
-                <img src={require(`../../images/rating-${this.props.mood}.png`)} alt="ratings face" />
+                <img src={require(`../../../images/rating-${this.props.mood}.png`)} alt="ratings face" />
               </p>
             ) : null}
           </div>

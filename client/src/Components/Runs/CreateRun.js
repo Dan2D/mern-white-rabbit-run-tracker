@@ -117,7 +117,7 @@ class CreateRun extends Component {
             <p className="error-msg">{this.state.paceMsg}</p>
           </div>
           <div className="form-group">
-            <label htmlFor="distance"><strong>Distance </strong>{this.props.settings.distUnits}</label>
+            <label htmlFor="distance"><strong>Distance </strong>({this.props.settings.distUnits})</label>
             <input className="form-control" onChange={this.handleChange} type="text" name="runDist" />
             <p className="error-msg">{this.state.distMsg}</p>
           </div>

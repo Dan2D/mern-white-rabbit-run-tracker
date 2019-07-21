@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import GoalTile from "../Runs/GoalTile";
-import UpcomingRuns from "../Runs/UpcomingRuns";
-import CompletedRuns from "../Runs/CompletedRuns";
+import GoalTile from "../Runs/Tiles/GoalTile";
+import UpcomingRuns from "../Runs/Lists/UpcomingRuns";
+import CompletedRuns from "../Runs/Lists/CompletedRuns";
 import smoothscroll from 'smoothscroll-polyfill';
 import { delGoal } from "../../store/actions/runActions";
 import PropTypes from "prop-types";
@@ -25,7 +25,6 @@ class StatsDetail extends Component {
   componentDidMount() {
     smoothscroll.polyfill();
     window.scrollTo(0,0);
-    setInterval(() => { document.documentElement.style.setProperty("--nav-link-color", "#58b368");}, 100)
     const id = this.props.match.params.id;
     let statGoal = this.props.goals.filter((goal) => goal._id === id);
     this.setState({ statGoal: statGoal[0] });

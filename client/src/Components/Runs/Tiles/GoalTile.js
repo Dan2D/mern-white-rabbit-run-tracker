@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { setUnitConv, paceConvert } from "../Utils/helpers";
-import {delGoal} from '../../store/actions/runActions';
+import { setUnitConv, paceConvert } from "../../Utils/helpers";
+import {delGoal} from '../../../store/actions/runActions';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
@@ -71,7 +71,7 @@ class GoalTile extends Component {
                 <strong>
                   Felt Like:{" "}
                   <img
-                    src={require(`../../images/rating-${this.props.mood}.png`)}
+                    src={require(`../../../images/rating-${this.props.mood}.png`)}
                     alt="ratings face"
                   />
                 </strong>

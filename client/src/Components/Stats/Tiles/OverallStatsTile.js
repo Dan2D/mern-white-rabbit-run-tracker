@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import {setUnitConv, paceConvert} from '../Utils/helpers';
+import {setUnitConv, paceConvert} from '../../Utils/helpers';
 import PropTypes from 'prop-types';
 
-class overAllStats extends Component {
+class overAllStatsTile extends Component {
   state = {
     lngRun: 0,
     fstRun: 9999000,
@@ -72,4 +72,4 @@ class overAllStats extends Component {
   
 
 
-export default overAllStats;
+export default overAllStatsTile;

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import {setUnitConv, paceConvert} from '../Utils/helpers';
+import {setUnitConv, paceConvert} from '../../Utils/helpers';
 import PropTypes from 'prop-types';
 
-class CurrStatsCrd extends Component {
+class CurrStatsTile extends Component {
   state = {
     lngRun: 0,
     fstRun: 9999000,
@@ -66,4 +66,4 @@ class CurrStatsCrd extends Component {
   }
 }
 
-export default CurrStatsCrd;
+export default CurrStatsTile;

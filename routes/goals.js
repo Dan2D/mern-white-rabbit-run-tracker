@@ -4,7 +4,7 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 
 
-// Register New user goals 
+// REGISTER USER GOALS
 router.post("/register/:id", (req, res) => {
   const {username} = req.body
   const newGoal = new Goal({
@@ -16,7 +16,7 @@ router.post("/register/:id", (req, res) => {
   .catch(err => res.status(400).json(`Error: ${err}`))
 })
 
-// Get userGoals (WORKING)
+// GET GOALS
 router.get("/:id", auth, (req, res) => { 
    Goal.findById(req.params.id).sort({ raceDay: 1 })
     .then(goals => res.json(goals))
@@ -24,7 +24,7 @@ router.get("/:id", auth, (req, res) => {
     
 });
 
-// Add Goal (WORKING)
+//ADD GOAL
 router.post("/add", (req, res) => {
   const {
     userGoalsID,
@@ -60,7 +60,7 @@ router.post("/add", (req, res) => {
     .catch(err => res.status(400).json(`Error: ${err}`));
 });
 
-// Delete Goal (WORKING)
+// DELETE GOAL
 router.delete("/:userGoalsID/goal/:goalID", (req, res) => {
   Goal.findById(req.params.userGoalsID)
     .then(goalList => {
@@ -71,7 +71,7 @@ router.delete("/:userGoalsID/goal/:goalID", (req, res) => {
 });
 
 
-// Update Goal (WORKING)
+// UPDATE GOAL
 router.patch("/goal/:goalID", (req, res) => {
 
   const {
@@ -93,7 +93,7 @@ router.patch("/goal/:goalID", (req, res) => {
   .catch(err => res.status(400).json(`ERROR: ${err}`))
 });
 
-// Complete Goal
+// COMPLETE GOAL
 router.patch("/goal/complete/:goalID", (req, res) => {
   const{userGoalsID, actualPace, mood} = req.body;
   Goal.findById(userGoalsID)
@@ -107,7 +107,7 @@ router.patch("/goal/complete/:goalID", (req, res) => {
 })
 
 
-// Add Run to specific goal (WORKING)
+// ADD RUN
 router.post("/addrun", auth, (req, res) => {
   const { userGoalsID, goalID, name, targetPace, runDist, distUnits, date, runType } = req.body;
   if (!name || !targetPace || !runDist) {
@@ -124,7 +124,7 @@ router.post("/addrun", auth, (req, res) => {
     .catch(err => res.json("ERRORs: " + err));
 });
 
-// Delete Specific Run from Specific Goal (WORKING)
+// DELETE RUN
 router.delete("/:userID/goal/:goalID/runs/:runID", auth, (req, res) => {
   Goal.findById(req.params.userID)
     .then(goalList => {
@@ -134,7 +134,7 @@ router.delete("/:userID/goal/:goalID/runs/:runID", auth, (req, res) => {
     .catch(err => res.status(400).json(`Error: ${err}`));
 });
 
-// Update Run (WORKING)
+// UPDATE RUN
 router.patch("/runs/:runID", auth, (req, res) => {
   const {
     userGoalsID,
@@ -145,11 +145,14 @@ router.patch("/runs/:runID", auth, (req, res) => {
     date,
     actualPace,
     runType,
-    mood
+    mood,
+    progress
   } = req.body;
   Goal.findById(userGoalsID)
   .then(goalList => {
-      let run = goalList.Goals.id(goalID).runs.id(req.params.runID)
+      let goal = goalList.Goals.id(goalID);
+      goal.set({progress})
+      let run = goal.runs.id(req.params.runID);
       run.set({ name, targetPace, runDist, date, runType, actualPace, mood })
       goalList.save()
       .then(goalList => res.json(goalList.Goals.id(goalID).runs.id(req.params.runID)))

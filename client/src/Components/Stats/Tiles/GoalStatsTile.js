@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import carrot from "../../images/carrot.png";
+import carrot from "../../../images/carrot.png";
 
-class GoalCrd extends Component {
+class GoalStatsTile extends Component {
   render() {
     const complete = (
       <div className="goal-complete d-flex align-items-center">
@@ -13,7 +13,7 @@ class GoalCrd extends Component {
     const inProgress = <p>In Progress...</p>;
 
     return (
-      <Link to={`/stats/${this.props.id}`}>
+      <Link to={`/stats/detail/${this.props.id}`}>
         <div className="stat-card stat-card__goal mb-3 d-flex">
           <p>
             <strong>{this.props.name}</strong>
@@ -25,4 +25,4 @@ class GoalCrd extends Component {
   }
 }
 
-export default GoalCrd;
+export default GoalStatsTile;

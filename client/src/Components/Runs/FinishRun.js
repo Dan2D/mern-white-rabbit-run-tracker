@@ -26,9 +26,6 @@ class FinishRun extends Component {
     smoothscroll.polyfill();
     window.scrollTo(0,0);
     const goal = this.props.goals.Goals.find((goal) => goal._id === this.props.location.state.goal);
-    const goalDist = goal.goalDist;
-    const gTargetPace = goal.targetPace;
-    const progress = goal.progress;
     const id = this.props.match.params.id;
     const run = goal.runs.find((run) => run._id === id);
     const runIndx = goal.runs.indexOf(run);
@@ -47,9 +44,9 @@ class FinishRun extends Component {
       distUnits,
       goalUnits: goal.distUnits,
       runIndx,
-      gTargetPace,
-      goalDist,
-      progress
+      gTargetPace: goal.targetPace,
+      goalDist: goal.goalDist,
+      progress: goal.progress
     });
   }
 

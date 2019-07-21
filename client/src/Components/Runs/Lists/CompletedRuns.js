@@ -1,5 +1,5 @@
 import React from 'react'
-import RunTile from './RunTile';
+import RunTile from '../Tiles/RunTile';
 
 function CompletedRuns(props) {
   let completedRuns = 0;
