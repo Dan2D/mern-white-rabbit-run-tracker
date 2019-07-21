@@ -69,7 +69,4 @@ function Nav(props) {
   );
 }
 
-export default connect(
-  null,
-  { logOut }
-)(Nav);
+export default connect(null, { logOut })(Nav);

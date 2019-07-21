@@ -24,7 +24,6 @@
 
 .title-blk--progress {
     background: #009975;
-    /* color: #D9D872; */
 }
 
 .title-blk__prog-title {
@@ -176,7 +175,6 @@ button.add-goal {
        width: 100%;
        margin-right: auto;
        margin-left: auto;
-       background: #8e6558;
     }
    
     .tile-blk__title-bar {
@@ -211,10 +209,6 @@ button.add-goal {
    }
 
    }
-
-@media only screen and (min-device-width : 768px) {
-
-}
 
 @media only screen and (min-width: 992px) {
 

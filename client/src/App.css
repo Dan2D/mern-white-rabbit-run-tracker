@@ -1,5 +1,3 @@
-
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -22,12 +20,7 @@ time, mark, audio, video {
 }
 
 html, body {
-  overflow-y: scroll;
-}
-
-html, body {
   height: 100%;
-  overflow:auto;
   z-index: 2;
   background: #929dbf;
 }
@@ -45,13 +38,13 @@ strong {
   font-weight: 700;
 }
 
-button {
+button, a {
   background: none;
   outline: none;
   border: none;
 }
 
-button:focus {
+button:focus, a:focus {
   outline: none;
 }
 
@@ -71,7 +64,7 @@ hr {
   height: 0.05rem;
 }
 
-.App {
+.App, .loading {
   max-height: 100vh;
   max-width: 100vw;
 }
@@ -80,10 +73,7 @@ hr {
   background: #929dbf;
 }
 
-.loading {
-  height: 100vh;
-}
-
+/* --------------PAGE TRANSITIONS-------------- */
 .home, .stats-container, .settings-container, .stats-detail-container,
 .format-goal, .format-run {
   position: absolute;

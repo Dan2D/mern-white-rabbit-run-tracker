@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import GoalTile from "../Runs/Tiles/GoalTile";
-import UpcomingRuns from "../Runs/Lists/UpcomingRuns";
-import CompletedRuns from "../Runs/Lists/CompletedRuns";
+import RunList from "../Runs/Lists/RunList";
 import smoothscroll from 'smoothscroll-polyfill';
 import { delGoal } from "../../store/actions/runActions";
 import PropTypes from "prop-types";
@@ -63,8 +62,8 @@ class StatsDetail extends Component {
             goalDistUnits={this.state.statGoal.distUnits}
           />
         </div>
-        {this.state.statGoal.completed ? null : <UpcomingRuns goal={goal} />}
-        <CompletedRuns goal={goal} userID={this.props.userGoalsID} />
+        {this.state.statGoal.completed ? null : <RunList goal={goal} type="upcoming" />}
+        <RunList goal={goal} userID={this.props.userGoalsID} type="completed" />
       </div>
     );
   }
