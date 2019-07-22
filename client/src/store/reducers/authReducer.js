@@ -45,7 +45,6 @@ export default function (state = initialState, action){
                 isLoading: false
             }
         case LOGIN_SUCCESS:
-            // Get user and token from payload
             localStorage.setItem('token', action.payload.token);
             return {
                 ...state,

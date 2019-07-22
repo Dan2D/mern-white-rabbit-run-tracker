@@ -1,4 +1,4 @@
-import {REGISTER_GOALS, GET_GOALS, ADD_GOAL, DEL_GOAL, EDIT_GOAL, FINISH_GOAL, ADD_RUN, DEL_RUN, EDIT_RUN, FINISH_RUN} from '../actions/types';
+import {REGISTER_GOALS, GET_GOALS, ADD_GOAL, DEL_GOAL, EDIT_GOAL, FINISH_GOAL, ADD_RUN, DEL_RUN, EDIT_RUN, FINISH_RUN, LOGOUT_SUCCESS} from '../actions/types';
 import produce from 'immer';
 
 let initialState = {};
@@ -55,6 +55,10 @@ const runReducer = (state = initialState, action) => {
             return produce(state, draft => {
                 draft.Goals[action.goalIndx] = action.payload
             })
+        case LOGOUT_SUCCESS:
+            return {
+                Goals: []
+            }
         default:
             return state;
     }

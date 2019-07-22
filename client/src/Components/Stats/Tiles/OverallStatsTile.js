@@ -53,7 +53,9 @@ class overAllStatsTile extends Component {
       }   
     }
     render() {
-      let {timeConv, distConv} = setUnitConv(this.props.settingUnits, this.props.goals[0].distUnits);
+      console.log(Boolean(this.props.goals[0] != null))
+      let goalUnits = this.props.goals[0] != null ? this.props.goals[0].distUnits : this.props.settingUnits;
+      let {timeConv, distConv} = setUnitConv(this.props.settingUnits, goalUnits);
       let fastRun = paceConvert(this.state.fstRun, timeConv);
   
       return (

@@ -1,6 +1,4 @@
 import {
-  GOALS_LOADING,
-  GOALS_LOADED,
   GET_GOALS,
   ADD_GOAL,
   DEL_GOAL,
@@ -17,7 +15,6 @@ import { tokenConfig } from "./authActions";
 const config = { headers: { "Content-type": "application/json" } };
 
 export const getUserGoals = userGoalsID => (dispatch, getState) => {
-  // dispatch({type: GOALS_LOADING});
   axios
     .get(`/goals/${userGoalsID}`, tokenConfig(getState))
     .then(res => {
@@ -25,7 +22,6 @@ export const getUserGoals = userGoalsID => (dispatch, getState) => {
         type: GET_GOALS,
         payload: res.data
       })
-      // return dispatch({type: GOALS_LOADED})
     })
     .catch(err => console.log(`ERROR: ${err}`));
 };
@@ -76,21 +72,13 @@ export const editGoal = goalObj => (dispatch, getState) => {
     goalDist,
     goalType
   } = goalObj;
-  let goal = getState().goals.Goals.find(goal => goal._id === goalID);
-  // let oldDist = goal.goalDist;
-  // let oldPace = goal.targetPace;
-  // let newProgress = ((goalDist/oldDist) * 0.5) + ((targetPace/oldPace) * (goalDist/oldDist) * 0.5);
-  // console.log(oldDist, oldPace, newProgress)
   const body = JSON.stringify({
     userGoalsID,
     name,
     raceDay,
     targetPace,
     goalDist,
-    goalType,
-    // newProgress
   });
-  console.log(body)
   axios.patch(`/goals/goal/${goalID}`, body, config).then(res => {
     dispatch({
       type: EDIT_GOAL,
@@ -124,7 +112,6 @@ export const addRun = runObj => (dispatch, getState) => {
     distUnits,
     runType
   } = runObj;
-  console.log(runObj)
   const body = JSON.stringify({
     userGoalsID,
     goalID,
@@ -136,7 +123,6 @@ export const addRun = runObj => (dispatch, getState) => {
     runType
   });
   axios.post("/goals/addrun", body, tokenConfig(getState)).then(res => {
-    console.log(res.data, "RES DATA")
     dispatch({
       type: ADD_RUN,
       payload: res.data,
@@ -165,7 +151,6 @@ export const delRun = idObj => (dispatch, getState) => {
 };
 
 export const editRun = runObj => (dispatch, getState) => {
-  console.log("EDIT RUN", runObj)
   const {
     userGoalsID,
     goalID,
