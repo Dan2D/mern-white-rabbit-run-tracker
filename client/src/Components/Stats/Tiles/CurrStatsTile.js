@@ -50,7 +50,7 @@ class CurrStatsTile extends Component {
   }
 }
   render() {
-    let {timeConv, distConv} = setUnitConv(this.props.settingUnits, this.props.goalUnits);
+    let {timeConv, distConv} = setUnitConv(this.props.goalUnits, this.props.settingUnits);
     let fastRun = paceConvert(this.state.fstRun, timeConv);
     return (
       <div className="curr-stats-container">

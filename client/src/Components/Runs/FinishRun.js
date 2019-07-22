@@ -92,8 +92,8 @@ class FinishRun extends Component {
         <form className="container" onSubmit={(e) => this.handleSubmit(e)}>
           <p><strong>Run: </strong>{this.state.name}</p>
           <p><strong>Date: </strong>{this.state.date.toString().substr(0, 15)}</p>
-          <p><strong>Target Pace: </strong>{`${targetPace} min / ${this.props.settingUnits}`}</p>
-          <p><strong>Distance: </strong>{`${(this.state.runDist * distConv).toFixed(2)} ${this.props.settingUnits}`}</p>
+          <p><strong>Target Pace: </strong>{`${this.state.targetPace} min / ${this.props.settingUnits}`}</p>
+          <p><strong>Distance: </strong>{`${this.state.runDist} ${this.props.settingUnits}`}</p>
           <p><strong>Type: </strong>{this.state.runType}</p>
           <div className="">
             <p><strong>Actual Pace</strong> (mm:ss)</p>
