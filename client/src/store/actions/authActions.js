@@ -37,6 +37,7 @@ export const loadUser = () =>  (dispatch, getState) => {
 export const register = ({email, username, password}) => (dispatch, getState) => {
     dispatch({type: USER_LOADING});
     const body = JSON.stringify({email, username, password});
+    console.log(body);
     axios.post("/users", body, config)
     .then(res => {
         dispatch({
@@ -59,6 +60,7 @@ export const register = ({email, username, password}) => (dispatch, getState) =>
         })
     })
     .catch(err => {
+        console.log(err.response, err.response.data, err.response.status)
         dispatch(returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'));
         dispatch({
             type: REGISTER_FAIL

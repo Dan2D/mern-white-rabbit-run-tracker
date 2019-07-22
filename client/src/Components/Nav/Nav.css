@@ -47,7 +47,7 @@
       height: 120vw;
       width: 60vw;
       display:flex;
-      justify-content: end;
+      justify-content: flex-end;
       align-items: center;
       z-index: 5;
   }
