@@ -6,6 +6,7 @@ const goalsRoute = require('./routes/goals');
 const usersRoute = require('./routes/users');
 const authRoute = require('./routes/auth');
 const settingsRoute = require('./routes/settings');
+require ('newrelic');
 
 const app = express();
 app.use(express.json());
