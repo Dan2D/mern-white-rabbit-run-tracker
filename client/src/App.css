@@ -71,6 +71,8 @@ hr {
 
 .content-container {
   background: #929dbf;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* --------------PAGE TRANSITIONS-------------- */

@@ -42,6 +42,11 @@ button.add-goal {
     position: relative;
 }
 
+.home .upcoming-runs,
+.home .completed-runs {
+    background: #8e6558;
+}
+
 .title-blk {
     width: 100vw;
     padding:5px 15px;
