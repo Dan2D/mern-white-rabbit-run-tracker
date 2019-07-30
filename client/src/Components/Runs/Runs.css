@@ -43,13 +43,13 @@ label {
 
 .tile-blk__title-bar h5,
 .tile-blk__title-bar h6 {
-    height: 20px;
     margin-bottom: 0;
 }
 
 .title-bar__tile-btns {
     display: flex;
     align-items: center;
+    align-self: flex-start;
 }
 
 .title-bar__btn {
@@ -73,6 +73,10 @@ label {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+}
+
+.tile-blk__body-text {
+    white-space: nowrap;
 }
 
 .tile-blk__body a button {

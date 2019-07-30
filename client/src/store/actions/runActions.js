@@ -70,7 +70,6 @@ export const editGoal = goalObj => (dispatch, getState) => {
     raceDay,
     targetPace,
     goalDist,
-    goalType
   } = goalObj;
   const body = JSON.stringify({
     userGoalsID,

@@ -42,21 +42,29 @@ class RunTile extends Component {
           <div className="body__text">
             <p>
               <strong>Date: </strong>
-              {this.props.date.toString().substr(0, 10)}
+              <span className="tile-blk__body-text">
+                {this.props.date.toString().substr(0, 10)}
+              </span>
             </p>
             <p>
               <strong>Target Pace: </strong>
-              {` ${targetPace} min / ${this.props.settings.distUnits}`}
+              <span className="tile-blk__body-text">
+                {` ${targetPace} min / ${this.props.settings.distUnits}`}
+              </span>
             </p>
             {this.props.completed ? (
               <p>
                 <strong>Actual Pace: </strong>
-                {`${actualPace} min / ${this.props.settings.distUnits}`}
+                <span className="tile-blk__body-text">
+                  {`${actualPace} min / ${this.props.settings.distUnits}`}
+                </span>
               </p>
             ) : null}
             <p>
               <strong>Distance: </strong>
-              {` ${(this.props.dist * distConv).toFixed(2)} ${this.props.settings.distUnits}`}
+              <span className="tile-blk__body-text">
+                {` ${(this.props.dist * distConv).toFixed(2)} ${this.props.settings.distUnits}`}
+              </span>
             </p>
             <p>
               <strong>Type: </strong>

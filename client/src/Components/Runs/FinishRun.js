@@ -85,8 +85,6 @@ class FinishRun extends Component {
   render() {
     smoothscroll.polyfill();
     window.scrollTo(0, 0);
-    const { timeConv, distConv } = setUnitConv(this.props.settingUnits, this.state.distUnits);
-    const targetPace = paceConvert(this.state.targetPace, timeConv);
     return (
       <div className="format-run">
         <form className="container" onSubmit={(e) => this.handleSubmit(e)}>

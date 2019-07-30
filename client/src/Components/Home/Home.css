@@ -13,7 +13,7 @@
 .home {
     color: white;
     background: #8e6558;
-    min-height: 100vh;
+    max-height: 100vh;
 }
 
 .home button {

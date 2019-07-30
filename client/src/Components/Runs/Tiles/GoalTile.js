@@ -46,25 +46,35 @@ class GoalTile extends Component {
           <div>
             <h6>
               <strong>Goal Type: </strong>
-              {`${this.props.goalType}`}
+                <span className="tile-blk__body-text">
+                  {`${this.props.goalType}`}
+                </span>
             </h6>
             <h6>
               <strong>Goal Date: </strong>
-              {`${this.props.raceDay.substr(0, 10)}`}
+                <span className="tile-blk__body-text">
+                  {`${this.props.raceDay.substr(0, 10)}`}
+                </span>
             </h6>
             <h6>
               <strong>Target Pace: </strong>
-              {`${targetPace} min / ${this.props.settingUnits}`}
+                <span className="tile-blk__body-text">
+                  {`${targetPace} min / ${this.props.settingUnits}`}
+                </span>
             </h6>
             {this.props.completed ? (
               <h6>
                 <strong>Actual Pace: </strong>{" "}
-                {`${actualPace} min / ${this.props.settingUnits}`}
+                  <span className="tile-blk__body-text">
+                    {`${actualPace} min / ${this.props.settingUnits}`}
+                  </span>
               </h6>
             ) : null}
             <h6>
               <strong>Goal Distance: </strong>
-              {`${(this.props.goalDist * distConv).toFixed(2)} ${this.props.settingUnits}`}
+                <span className="tile-blk__body-text">
+                  {`${(this.props.goalDist * distConv).toFixed(2)} ${this.props.settingUnits}`}
+                </span>
             </h6>
             {this.props.completed ? (
               <h6>
