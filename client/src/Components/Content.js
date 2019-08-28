@@ -36,11 +36,13 @@ class Content extends Component {
       </Fragment>
     );
     if (this.props.auth.isLoading){
-      return <div className="loading d-flex flex-column justify-content-center align-items-center"><Spinner name="line-scale" color="white"/></div>
+      return  <div className="loading d-flex flex-column justify-content-center align-items-center">
+                <Spinner name="line-scale" color="white"/>
+              </div>
     }
     return (
       <div className="content-container">
-        {this.props.auth.isAuthenticated ? nav : null}
+        {this.props.auth.isAuthenticated && nav}
         <Route render={({location}) => (
            <TransitionGroup>
            <CSSTransition

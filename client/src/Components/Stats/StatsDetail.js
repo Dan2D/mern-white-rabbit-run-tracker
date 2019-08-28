@@ -5,6 +5,7 @@ import smoothscroll from 'smoothscroll-polyfill';
 import { delGoal } from "../../store/actions/runActions";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import {Redirect} from "react-router-dom";
 import "./Stats.css";
 
 class StatsDetail extends Component {
@@ -16,6 +17,7 @@ class StatsDetail extends Component {
     }
   };
   static propTypes = {
+    auth: PropTypes.object.isRequired,
     delGoal: PropTypes.func.isRequired,
     userGoalsID: PropTypes.string.isRequired,
     goals: PropTypes.array.isRequired,
@@ -35,6 +37,9 @@ class StatsDetail extends Component {
   render() {
     smoothscroll.polyfill();
     window.scrollTo(0,0);
+    if (this.props.auth.isAuthenticated === null) {
+      return <Redirect to="/login" />;
+    }
     let goal = this.props.goals.find((goal) => goal._id === this.props.match.params.id);
     return (
       <div className="stats-detail-container">
@@ -71,6 +76,7 @@ class StatsDetail extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    auth: state.auth,
     userGoalsID: state.goals._id,
     goals: [...state.goals.Goals],
     distUnits: state.settings.distUnits

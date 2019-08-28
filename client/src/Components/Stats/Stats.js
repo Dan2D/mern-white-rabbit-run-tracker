@@ -1,5 +1,6 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { connect } from "react-redux";
+import {Redirect} from 'react-router-dom';
 import smoothscroll from 'smoothscroll-polyfill';
 import PropTypes from "prop-types";
 import CurrStatsTile from "./Tiles/CurrStatsTile";
@@ -8,20 +9,24 @@ import OverAllStatsTile from "./Tiles/OverallStatsTile";
 import "./Stats.css";
 
 function Stats(props) {
-  useEffect(() => {
-    smoothscroll.polyfill();
-    window.scrollTo(0,0);
-  }, [])
   smoothscroll.polyfill();
   window.scrollTo(0,0);
+
   Stats.propTypes = {
+    auth: PropTypes.object.isRequired,
     goals: PropTypes.array,
     distUnits: PropTypes.string
   };
+
+  if (props.auth.isAuthenticated === null) {
+    return <Redirect to="/login" />;
+  }
+
   let currGoal = props.goals.find((goal) => goal.completed === false)
     ? props.goals.find((goal) => goal.completed === false)
     : { runs: [] };
   const allGoals = props.goals.map((goal) => goal);
+
   return (
     <div className="stats-container">
       <div className="clouds-bg" />
@@ -57,6 +62,7 @@ function Stats(props) {
 
 const mapStateToProps = (state) => {
   return {
+    auth: state.auth,
     goals: state.goals.Goals,
     distUnits: state.settings.distUnits
   };

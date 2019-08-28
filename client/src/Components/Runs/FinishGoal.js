@@ -104,7 +104,7 @@ static propTypes = {
               className=" d-flex justify-content-between"
               onChange={e => this.handleChange(e)}
             >
-             <label className="d-flex flex-column rating-radio">
+             <label className="d-flex flex-column rating-radio" htmlFor="runMood-1">
                <img src={require("../../images/rating-1.png")} alt="mad face"/>
                 <input
                   type="radio"
@@ -113,7 +113,7 @@ static propTypes = {
                   checked={this.state.goalMood === "1"}
                 />
               </label>
-              <label className="d-flex flex-column rating-radio">
+              <label className="d-flex flex-column rating-radio" htmlFor="runMood-2">
                 <img src={require("../../images/rating-2.png")} alt="sad face"/>
                 <input
                   type="radio"
@@ -122,7 +122,7 @@ static propTypes = {
                   checked={this.state.goalMood === "2"}
                 />
               </label>
-              <label className="d-flex flex-column rating-radio">
+              <label className="d-flex flex-column rating-radio" htmlFor="runMood-3">
                 <img src={require("../../images/rating-3.png")} alt="meh face"/>
                 <input
                   type="radio"
@@ -131,7 +131,7 @@ static propTypes = {
                   checked={this.state.goalMood === "3"}
                 />
               </label>
-              <label className="d-flex flex-column rating-radio">
+              <label className="d-flex flex-column rating-radio" htmlFor="runMood-4">
                 <img src={require("../../images/rating-4.png")} alt="happy face"/>
                 <input
                   type="radio"
@@ -140,7 +140,7 @@ static propTypes = {
                   checked={this.state.goalMood === "4"}
                 />
               </label>
-              <label className="d-flex flex-column rating-radio">
+              <label className="d-flex flex-column rating-radio" htmlFor="runMood-5">
                 <img src={require("../../images/rating-5.png")} alt="very happy face"/>
                 <input
                   type="radio"

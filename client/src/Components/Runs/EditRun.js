@@ -135,11 +135,26 @@ class EditRun extends Component {
                           <p>How Did Your Run Feel?</p>
                           <div className="form-group">
                             <fieldset className=" d-flex justify-content-between">
-                            <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-1.png')} alt="mad face"/><input type="radio" name="runMood" value="1" checked={this.state.runMood === "1"} onChange={(e) => this.handleChange(e)}/></label>
-                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-2.png')} alt="sad face"/><input type="radio" name="runMood" value="2" checked={this.state.runMood === "2"} onChange={(e) => this.handleChange(e)}/></label>
-                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-3.png')} alt="meh face"/><input type="radio" name="runMood" value="3" checked={this.state.runMood === "3"} onChange={(e) => this.handleChange(e)}/></label>
-                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-4.png')} alt="happy face"/><input type="radio" name="runMood" value="4" checked={this.state.runMood === "4"} onChange={(e) => this.handleChange(e)}/></label>
-                                <label className="d-flex flex-column rating-radio"><img src={require('../../images/rating-5.png')} alt="very happy face"/><input type="radio" name="runMood" value="5" checked={this.state.runMood === "5"} onChange={(e) => this.handleChange(e)}/></label>
+                                <label className="d-flex flex-column rating-radio" htmlFor="runMood-1">
+                                  <img src={require('../../images/rating-1.png')} alt="mad face"/>
+                                  <input type="radio" name="runMood" value="1" checked={this.state.runMood === "1"} onChange={(e) => this.handleChange(e)}/>
+                                </label>
+                                <label className="d-flex flex-column rating-radio" htmlFor="runMood-2">
+                                  <img src={require('../../images/rating-2.png')} alt="sad face"/>
+                                  <input type="radio" name="runMood" value="2" checked={this.state.runMood === "2"} onChange={(e) => this.handleChange(e)}/>
+                                </label>
+                                <label className="d-flex flex-column rating-radio" htmlFor="runMood-3">
+                                  <img src={require('../../images/rating-3.png')} alt="meh face"/>
+                                  <input type="radio" name="runMood" value="3" checked={this.state.runMood === "3"} onChange={(e) => this.handleChange(e)}/>
+                                </label>
+                                <label className="d-flex flex-column rating-radio" htmlFor="runMood-4">
+                                  <img src={require('../../images/rating-4.png')} alt="happy face"/>
+                                  <input type="radio" name="runMood" value="4" checked={this.state.runMood === "4"} onChange={(e) => this.handleChange(e)}/>
+                                </label>
+                                <label className="d-flex flex-column rating-radio" htmlFor="runMood-5">
+                                  <img src={require('../../images/rating-5.png')} alt="very happy face"/>
+                                  <input type="radio" name="runMood" value="5" checked={this.state.runMood === "5"} onChange={(e) => this.handleChange(e)}/>
+                                </label>
                             </fieldset>
                         </div>
                       </Fragment>

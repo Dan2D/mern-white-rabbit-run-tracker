@@ -24,6 +24,7 @@ class Home extends Component {
     },
     modal: false
   };
+
   componentDidMount() {
     smoothscroll.polyfill();
     window.scrollTo(0, 0);
@@ -53,13 +54,14 @@ class Home extends Component {
         <button className="add-goal m-2">+Goal</button>
       </Link>
     );
+
     return (
       <div className="home">
         <div className="title-blk title-blk--progress d-flex justify-content-between align-items-center">
           <h5 className="title-blk__prog-title">
             <strong>Progress</strong>
           </h5>
-          {currentGoal === this.state.noGoal ? addGoalBtn : null}
+          {currentGoal === this.state.noGoal && addGoalBtn}
         </div>
         <div className="goal-container my-container">
           <GoalTile

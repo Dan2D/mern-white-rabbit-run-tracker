@@ -23,13 +23,13 @@ function VisualProg(props) {
       <div className="rabbit-percent">
         <p className="rabbit-percent__percent">{`${props.currentGoal.progress}%`}</p>
         <p>&#9660;</p>
-        <img className="rabbit-percent__rabbit" src={progressRbbt} alt="white rabbit" />
+        <img className="rabbit-percent__rabbit" src={progressRbbt} alt="white rabbit progress indicator" />
       </div>
       <div className="tree-goal">
         <p className="tree-goal__goal">
           {`${(props.currentGoal.goalDist * distConv).toFixed(2)} ${props.settingUnits}`}
         </p>
-        <img className="tree-goal__tree" src={progressTree} alt="tree" />
+        <img className="tree-goal__tree" src={progressTree} alt="tree goal sign" />
       </div>
     </div>
   );

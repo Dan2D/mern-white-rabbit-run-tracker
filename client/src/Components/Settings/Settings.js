@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import {updateUserSettings} from '../../store/actions/settingsActions';
 import smoothscroll from 'smoothscroll-polyfill';
+import PropTypes from "prop-types";
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import './Settings.css';
 
 
@@ -10,6 +11,12 @@ class Settings extends Component {
     state = {
         distUnits: this.props.settings.distUnits
     }
+
+    static propTypes = {
+        auth: PropTypes.object.isRequired,
+        settings: PropTypes.object
+    }
+
     onChange = (e) => {
         this.setState({distUnits: e.target.name})
     }
@@ -23,6 +30,9 @@ class Settings extends Component {
     render(){
         smoothscroll.polyfill();
         window.scrollTo(0,0);
+        if (this.props.auth.isAuthenticated === null) {
+            return <Redirect to="/login" />;
+          }
         return (
             <div className="settings-container">
                 <div className="title-blk title-blk--ssettings d-flex justify-start align-center">
@@ -46,6 +56,7 @@ class Settings extends Component {
 }
 const mapStateToProps = (state) => {
   return {
+      auth: state.auth,
       settings: state.settings
   };
 };
